@@ -1,9 +1,9 @@
 asyncapi: 3.0.0
 info:
-  title: Catalog Maintenance
+  title: Catalog Search
   version: 1.0.0
   description: |
-    This service allows to maintain books in a catalog which can be searched through.
+    This service allows to search books in a catalog.
 servers:
   production:
     host: "events.online-library.com:9092"
@@ -131,7 +131,7 @@ components:
           type: string
           minLength: 2
           maxLength: 20
-          example: Purchase
+          example: Catalog Search
 
     SearchCriterias:
       description: Search criterias to find a book

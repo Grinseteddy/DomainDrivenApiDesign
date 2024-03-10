@@ -1,0 +1,260 @@
+openapi: 3.1.0
+info:
+  title: Messaging
+  description: The messaging service allows to send messages to a defined audience.
+  version: 1.0.0
+servers:
+  - url: 'https://apis.online-library.org/messaging'
+security:
+  - openIdConnect:
+      - message_read
+      - message_write
+tags:
+  - name: Message Creation
+    description: All endpoints to create and send messages to an audience
+  - name: Message Maintenance
+    description: All endpoints to maintain messages
+paths:
+  /resources:
+    get:
+      description: Gets messages based on the audience, only the last 100 messages are delivered back
+      operationId: getMessagesByAudience
+      tags:
+        - Message Maintenance
+      security:
+        - openConnectId:
+            - message_read
+      parameters:
+        - $ref: '#/components/parameters/AudiencesParameter'
+      responses:
+        200:
+          $ref: '#/components/responses/NotificationMessagesResponse'
+        400:
+          $ref: '#/components/responses/BadRequestResponse'
+        403:
+          $ref: '#/components/responses/ForbiddenResponse'
+        404:
+          $ref: '#/components/responses/NotFoundResponse'
+    post:
+      description: Creates a new message, sender needs to know the audience
+      operationId: createNotification
+      tags:
+        - Message Creation
+      security:
+        - openConnectId:
+            - resource_write
+      requestBody:
+        $ref: '#/components/requestBodies/CreateNewNotificationRequest'
+      responses:
+        200:
+          $ref: '#/components/responses/LinkToResourceResponse'
+        400:
+          $ref: '#/components/responses/BadRequestResponse'
+        403:
+          $ref: '#/components/responses/ForbiddenResponse'
+
+  /resources/{notificationIdentifier}:
+    get:
+      description: Delivers back a certain message
+      operationId: getNotificationById
+      tags:
+        - Name Tag
+      security:
+        - openIdConnect:
+            - resource_read
+      parameters:
+        - $ref: '#/components/parameters/NotificationIdentifierParameter'
+      responses:
+        200:
+          $ref: '#/components/responses/SingleNotificationResponse'
+        400:
+          $ref: '#/components/responses/BadRequestResponse'
+        403:
+          $ref: '#/components/responses/ForbiddenResponse'
+        404:
+          $ref: '#/components/responses/NotFoundResponse'
+
+components:
+  parameters:
+    NotificationIdentifierParameter:
+      name: notificationId
+      description: Notification identifier
+      required: true
+      in: path
+      schema:
+        type: string
+        format: uuid
+        example: aff97ffd-3371-45a4-baad-a8e171717a08
+
+    AudiencesParameter:
+      name: audiences[]
+      description: Audience search parameter
+      in: query
+      required: false
+      schema:
+        type: array
+        items:
+          type: string
+          enum:
+            - MEMBER
+            - LIBERIAN
+            - MANAGEMENT
+          example: MEMBER
+
+  requestBodies:
+    CreateNewNotificationRequest:
+      description: A notification message should be created
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/NotificationMessageToBeCreated'
+
+  responses:
+    BadRequestResponse:
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Message'
+
+
+    ForbiddenResponse:
+      description: Forbidden
+
+    LinkToResourceResponse:
+      description: Successful operation - Catalog entry created
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Link"
+
+    NotFoundResponse:
+      description: Not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Message'
+
+    NotificationMessagesResponse:
+      description: A list of notification messages is delivered back
+      content:
+        application/json:
+          schema:
+            type: array
+            minItems: 1
+            maxItems: 100
+            items:
+              $ref: '#/components/schemas/NotificationMessage'
+
+    SingleNotificationResponse:
+      description: Delivers a single Notification
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/NotificationMessage'
+
+    SuccessfulOperationResponse:
+      description: Successful operation
+
+  schemas:
+
+    Link:
+      description: Link to an entity
+      type: object
+      required:
+        - type
+        - link
+      properties:
+        type:
+          description: Not fully qualified type name of the object
+          type: string
+          minLength: 2
+          maxLength: 155
+          example: "CatalogEntry"
+        link:
+          description: URL to the according entity
+          type: string
+          format: uri
+          example:
+            "https://apis.online-library.org/catalog-maintenance/catalog-entries/74d870fa-9e93-4ffd-907e-038c85e8bc20"
+
+    NotificationMessage:
+      description: A short notification to users in general
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/NotificationMessageToBeCreated'
+      required:
+        - notificationIdentifier
+      properties:
+        notificationIdentifier:
+          description: A unique identifier for the notification
+          type: string
+          format: uuid
+          example: aff97ffd-3371-45a4-baad-a8e171717a08
+
+    NotificationMessageToBeCreated:
+      description: A short notification to users in general
+      type: object
+      required:
+        - notificationTitle
+        - audience
+      properties:
+        notificationTitle:
+          description: Title of the notification to be shown in the notification banner
+          type: string
+          minLength: 2
+          maxLength: 25
+          example: New books arrived
+        notificationBody:
+          description: A longer description what the notification is about
+          type: string
+          minLength: 2
+          maxLength: 512
+          example: Read our new mysteries about vampires and wolfes and other creatures of the dark
+        audience:
+          type: string
+          enum:
+            - MEMBER
+            - LIBERIAN
+            - MANAGEMENT
+          example: MEMBER
+
+    Message:
+      description: Message to a request containing detailed information
+      type: object
+      required:
+        - messageIdentifier
+        - title
+        - severity
+      properties:
+        messageIdentifier:
+          description: Identifier to the message in case of errors means the error code
+          type: string
+          pattern: ^[A-Z]{3}[0-9]{7}
+        title:
+          description: Title of the message
+          type: string
+          minLength: 2
+          maxLength: 50
+          example: Request is not allowed
+        description:
+          description: Description to the message
+          type: string
+          minLength: 2
+          maxLength: 1024
+          example: A search request with less than 2 characters is not allowed
+        severity:
+          description: Severity of the message
+          type: string
+          enum:
+            - FATAL
+            - ERROR
+            - INFO
+            - DEBUG
+          example: INFO
+
+  securitySchemes:
+    openIdConnect:
+      type: openIdConnect
+      description: Security scheme for events
+      openIdConnectUrl: "https://idp.online-library.org/configuration"

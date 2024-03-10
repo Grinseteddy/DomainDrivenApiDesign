@@ -1,0 +1,94 @@
+asyncapi: 3.0.0
+info:
+  title: Messaging
+  version: 1.0.0
+  description: |
+    This service allows to send messages to a defined audience.
+servers:
+  production:
+    host: "events.online-library.com:9092"
+    protocol: "kafka"
+    description: "Produktion broker"
+
+defaultContentType:
+  application/json
+
+channels:
+  bookNotFound:
+    address: "messaging/bookNotFound"
+    messages:
+      bookNotFoundMessage:
+        $ref: '#/components/messages/bookNotFound'
+
+operations:
+
+  bookNotFound:
+    action: "receive"
+    channel:
+      $ref: '#/channels/bookNotFound'
+
+
+components:
+  messages:
+    bookNotFound:
+      headers:
+        $ref: '#/components/schemas/MessageHeader'
+      payload:
+        $ref: '#/components/schemas/SearchCriterias'
+
+  schemas:
+
+    MessageHeader:
+      description: Header Information for each message
+      type: object
+      required:
+        - correlationId
+        - messageId
+      properties:
+        correlationId:
+          description: Identifier to be set by application to trace end-to-end-api-journey
+          type: string
+          format: uuid
+          example: "b3416449-5f69-4cd2-a6c4-1ff82da96bce"
+        messageId:
+          description: Identifier for the particular message, is needed in case of cascading infrastructure
+          type: string
+          format: uuid
+          example: "5a1d305b-19f3-46eb-ada1-9a9770e56fd1"
+        source:
+          description: Application name creating the message
+          type: string
+          minLength: 2
+          maxLength: 20
+          example: Messaging
+
+    SearchCriterias:
+      description: Search criterias to find a book
+      type: object
+      required:
+        - searchCriterias
+      properties:
+        searchCriterias:
+          type: array
+          minItems: 1
+          maxItems: 10
+          items:
+            type: string
+            minLength: 2
+            maxLength: 20
+            example: "Evans"
+
+  securitySchemes:
+    openIdConnect:
+      type: openIdConnect
+      description: Security scheme for events
+      openIdConnectUrl: "https://idp.online-library.org/configuration"
+      scopes:
+        - librarian_write
+
+
+
+
+
+
+

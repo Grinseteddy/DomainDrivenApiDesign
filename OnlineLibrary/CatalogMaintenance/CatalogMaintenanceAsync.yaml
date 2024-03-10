@@ -209,7 +209,7 @@ components:
           type: string
           minLength: 2
           maxLength: 20
-          example: Purchase
+          example: CatalogMaintenance
 
 
 
