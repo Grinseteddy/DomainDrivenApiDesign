@@ -12,11 +12,11 @@ security:
       - resource_admin
 tags:
   - name: Name Tag
-    description:
+    description: Description
 paths:
   /resources:
     get:
-      description: # describe your function
+      description: Description # describe your function
       # operationId: define a unique operationId: getBooksByTitleOrAuthorOrEditorOrBlurb
       tags:
         - Name Tag
@@ -36,7 +36,7 @@ paths:
         404:
           $ref: '#/components/responses/NotFoundResponse'
     post:
-      description: # describe your function
+      description: Description # describe your function
       # operationId: define a unique operationId: createNewCatalogEntry
       tags:
         - Name Tag
@@ -55,7 +55,7 @@ paths:
 
   /resources/{resourceIdentifier}:
     get:
-      description: # describe your function
+      description: Description # describe your function
       #operationId: define a unique operationId: createNewCatalogEntry
       tags:
         - Name Tag
@@ -75,7 +75,7 @@ paths:
           $ref: '#/components/responses/NotFoundResponse'
 
     put:
-      description: # describe your function
+      description: Description # describe your function
       #operationId: define a unique operationId: updateCatalogEntryById
       tags:
         - Name Tag
@@ -97,7 +97,7 @@ paths:
           $ref: '#/components/responses/NotFoundResponse'
 
     delete:
-      description: # describe your function
+      description: Description # describe your function
       #operationId: define a unique operationId: updateCatalogEntryById
       tags:
         - Name Tag
