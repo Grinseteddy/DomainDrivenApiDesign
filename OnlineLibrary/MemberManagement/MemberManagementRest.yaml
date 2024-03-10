@@ -1,14 +1,345 @@
-openapi: 3.0.3
+openapi: 3.1.0
 info:
   title: Member Management
   description: Rest APIs to create, change and delete members of the library
   version: 1.0.0
 servers:
-  - url: 'https://apis.online-library/member-management'
+  - url: 'https://apis.online-library.org/member-management'
+tags:
+  - name: Member Search
+    description: Search for a member
+  - name: Member Management
+    description: Creation or Change of a member
+  - name: Member Lock
+    description: |
+      A member restricted so that he or she doesn't appear anymore and is not able to login
+security:
+  - openIdConnect:
+      - member_read
+      - member_write
+      - member_admin
 paths:
+  /members:
+    get:
+      description: Gets members based on certain search criteria
+      security:
+        - openIdConnect:
+            - member_read
+      tags:
+        - Member Search
+      parameters:
+        - $ref: '#/components/parameters/SearchCriteriasParameter'
+      responses:
+        200:
+          $ref: '#/components/responses/MembersResponse'
+        400:
+          $ref: '#/components/responses/BadRequestResponse'
+        403:
+          $ref: '#/components/responses/ForbiddenResponse'
+        404:
+          $ref: '#/components/responses/NotFoundResponse'
+    post:
+      description: Creates a new member
+      security:
+        - openIdConnect:
+            - member_write
+      tags:
+        - Member Management
+      requestBody:
+        $ref: '#/components/requestBodies/MemberToBeCreatedRequest'
+      responses:
+        200:
+          $ref: '#/components/responses/LinkResponse'
+        400:
+          $ref: '#/components/responses/BadRequestResponse'
+        403:
+          $ref: '#/components/responses/ForbiddenResponse'
 
+  /members/{memberId}:
+    get:
+      description: Delivers back a single member
+      security:
+        - openIdConnect:
+            - member_read
+      tags:
+        - Member Search
+      parameters:
+        - $ref: '#/components/parameters/MemberIdentifierParameter'
+      responses:
+        200:
+          $ref: '#/components/responses/SingleMemberResponse'
+        400:
+          $ref: '#/components/responses/BadRequestResponse'
+        403:
+          $ref: '#/components/responses/ForbiddenResponse'
+        404:
+          $ref: '#/components/responses/NotFoundResponse'
+    put:
+      description: Changes a single member
+      security:
+        - openIdConnect:
+            - member_write
+      tags:
+        - Member Management
+      parameters:
+        - $ref: '#/components/parameters/MemberIdentifierParameter'
+      requestBody:
+        $ref: '#/components/requestBodies/MemberToBeChangedRequest'
+      responses:
+        200:
+          $ref: '#/components/responses/LinkResponse'
+        400:
+          $ref: '#/components/responses/BadRequestResponse'
+        403:
+          $ref: '#/components/responses/ForbiddenResponse'
+        404:
+          $ref: '#/components/responses/NotFoundResponse'
+    delete:
+      description: A member is locked or deleted completed. the member status is changed.
+      security:
+        - openIdConnect:
+            - member_admin
+      tags:
+        - Member Lock
+      parameters:
+        - $ref: '#/components/parameters/MemberIdentifierParameter'
+      responses:
+        200:
+          $ref: '#/components/responses/LinkResponse'
+        400:
+          $ref: '#/components/responses/BadRequestResponse'
+        403:
+          $ref: '#/components/responses/ForbiddenResponse'
+        404:
+          $ref: '#/components/responses/NotFoundResponse'
 
 components:
+  parameters:
+    MemberIdentifierParameter:
+      name: memberId
+      description: Member identifier
+      in: path
+      schema:
+        type: string
+        format: uuid
+        example: f4c8f793-a53e-40b2-bad5-597e0e3e116e
+
+    SearchCriteriasParameter:
+      name: searchCriterias[]
+      description: A single search criteria e.g. email or name
+      in: query
+      required: false
+      schema:
+        type: array
+        items:
+          type: string
+          minLength: 2
+          maxLength: 200
+          example: "Jane"
+
+  requestBodies:
+    MemberToBeCreatedRequest:
+      description: A request to create a new member
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/MemberToBeCreated'
+
+    MemberToBeChangedRequest:
+      description: A member should be changed - e.g. the name or the payment period
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Member'
+
+  responses:
+    BadRequestResponse:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Message'
+
+    ForbiddenResponse:
+      description: Access not allowed
+
+    LinkResponse:
+      description: Delivers back a link to a certain resource
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Link'
+
+    MembersResponse:
+      description: |
+        Successful operation - A response with a list of members
+        If more than 100 members found only the first 100 are delivered back
+      content:
+        application/json:
+          schema:
+            type: array
+            minItems: 1
+            maxItems: 100
+            items:
+              $ref: '#/components/schemas/Member'
+
+    NotFoundResponse:
+      description: Resource not found
+      content:
+        application/json:
+          $ref: '#/components/schemas/Message'
+
+    SingleMemberResponse:
+      description: Delivers back a single member of the library
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Member'
+
+  schemas:
+    Amount:
+      description: Amount in value and currency
+      type: object
+      required:
+        - value
+        - currency
+      properties:
+        value:
+          description: Value of the amount
+          type: number
+          example: 26.99
+        currency:
+          description: Currency of the amount as three-letter acronym according to ISO 4217
+          type: string
+          pattern: ^[A-Z]{3}
+          example: "EUR"
+
+    Link:
+      description: Link to an entity
+      type: object
+      required:
+        - type
+        - link
+      properties:
+        type:
+          description: Not fully qualified type name of the object
+          type: string
+          minLength: 2
+          maxLength: 155
+          example: "Member"
+        link:
+          description: URL to the according entity
+          type: string
+          format: uri
+          example:
+            "https://apis.online-library.org/member-management/members/f4c8f793-a53e-40b2-bad5-597e0e3e116e"
+
+    MemberToBeCreated:
+      description: Data needed to create a member
+      type: object
+      required:
+        - name
+        - emailAddress
+        - birthDate
+      properties:
+        name:
+          description: Name of the member
+          type: string
+          minLength: 2
+          maxLength: 51
+          example: Doe
+        givenName:
+          description: Given name of the member
+          type: string
+          minLength: 2
+          maxLength: 51
+          example: Jane
+        emailAddress:
+          description: E-mail address of the member - can be used as login name
+          type: string
+          format: email
+          example: jane.doe@gmail.com
+        birthDate:
+          description: Birth date of the member to be created - needed for certain content
+          type: string
+          format: date
+          example: 1982-01-01
+
+    Member:
+      description: Member of the library
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/MemberToBeCreated'
+      required:
+        - memberIdentifier
+        - fee
+        - nextFeeDueDate
+        - status
+      properties:
+        memberIdentifier:
+          description: Unique identifier of a member
+          type: string
+          format: uuid
+          example: f4c8f793-a53e-40b2-bad5-597e0e3e116e
+        fee:
+          $ref: '#/components/schemas/Amount'
+        paymentPeriod:
+          description: Period in which the according fee needs to be payed
+          type: string
+          enum:
+            - MONTHLY
+            - QUARTERLY
+            - YEARLY
+          example: QUARTERLY
+        nextFeeDueDate:
+          description: Date when the next fee is due
+          type: string
+          format: date
+          example: 2024-06-01
+        status:
+          description: Status of the member
+          type: string
+          enum:
+            - ACTIVE
+            - LOCKED
+            - DELETED
+          example: ACTIVE
+
+
+    Message:
+      description: Message to a request containing detailed information
+      type: object
+      required:
+        - messageIdentifier
+        - title
+        - severity
+      properties:
+        messageIdentifier:
+          description: Identifier to the message in case of errors means the error code
+          type: string
+          pattern: ^[A-Z]{3}[0-9]{7}
+        title:
+          description: Title of the message
+          type: string
+          minLength: 2
+          maxLength: 50
+          example: Request is not allowed
+        description:
+          description: Description to the message
+          type: string
+          minLength: 2
+          maxLength: 1024
+          example: A search request with less than 2 characters is not allowed
+        severity:
+          description: Severity of the message
+          type: string
+          enum:
+            - FATAL
+            - ERROR
+            - INFO
+            - DEBUG
+          example: INFO
+
   securitySchemes:
     openIdConnect:
       type: openIdConnect

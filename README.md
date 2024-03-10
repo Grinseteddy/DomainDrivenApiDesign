@@ -6,3 +6,14 @@ The sample of an online library contains interfaces for REST and general events.
 
 Please contact annegret.junker@codecentric.de for questions.
 
+The principle architecture approach was developed during domain storytelling and event storming sessions.
+
+![Domain Storytelling](./OnlineLibrary/images/DomainStorytelling.jpg)
+
+![Event Storming - Context Map](./OnlineLibrary/images/ContextMapOnlineLibrary.jpg)
+
+
+
+
+
+

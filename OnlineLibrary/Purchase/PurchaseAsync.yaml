@@ -35,29 +35,23 @@ components:
         $ref: '#/components/schemas/Book'
 
   schemas:
-    MessageHeader:
-      description: Header Information for each message
+
+    Amount:
+      description: Amount in value and currency
       type: object
       required:
-        - correlationId
-        - messageId
+        - value
+        - currency
       properties:
-        correlationId:
-          description: Identifier to be set by application to trace end-to-end-api-journey
+        value:
+          description: Value of the amount
+          type: number
+          example: 26.99
+        currency:
+          description: Currency of the amount as three-letter acronym according to ISO 4217
           type: string
-          format: uuid
-          example: "b3416449-5f69-4cd2-a6c4-1ff82da96bce"
-        messageId:
-          description: Identifier for the particular message, is needed in case of cascading infrastructure
-          type: string
-          format: uuid
-          example: "5a1d305b-19f3-46eb-ada1-9a9770e56fd1"
-        source:
-          description: Application name creating the message
-          type: string
-          minLength: 2
-          maxLength: 20
-          example: Purchase
+          pattern: ^[A-Z]{3}
+          example: "EUR"
 
     Book:
       description: |
@@ -125,22 +119,30 @@ components:
           example: "The software development community widely 
             acknowledges that domain modeling is central to software design."
 
-    Amount:
-      description: Amount in value and currency
+    MessageHeader:
+      description: Header Information for each message
       type: object
       required:
-        - value
-        - currency
+        - correlationId
+        - messageId
       properties:
-        value:
-          description: Value of the amount
-          type: number
-          example: 26.99
-        currency:
-          description: Currency of the amount as three-letter acronym according to ISO 4217
+        correlationId:
+          description: Identifier to be set by application to trace end-to-end-api-journey
           type: string
-          pattern: ^[A-Z]{3}
-          example: "EUR"
+          format: uuid
+          example: "b3416449-5f69-4cd2-a6c4-1ff82da96bce"
+        messageId:
+          description: Identifier for the particular message, is needed in case of cascading infrastructure
+          type: string
+          format: uuid
+          example: "5a1d305b-19f3-46eb-ada1-9a9770e56fd1"
+        source:
+          description: Application name creating the message
+          type: string
+          minLength: 2
+          maxLength: 20
+          example: Purchase
+
 
   securitySchemes:
     openIdConnect:

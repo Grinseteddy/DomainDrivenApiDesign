@@ -19,14 +19,24 @@ channels:
     messages:
       newMemberRegisteredMessage:
         $ref: "#/components/messages/NewMemberRegistered"
+  memberLocked:
+    address: "member/locked"
+    messages:
+      memberLockedMessage:
+        $ref: '#/components/messages/MemberLocked'
+
   paymentDone:
     address: "payment/done"
     messages:
       PaymentDoneMessage:
-        $ref: '#/components/messages/PaymentDoneMessage'
+        $ref: '#/components/messages/PaymentDone'
 
 operations:
-  processUserSignups:
+  memberLocked:
+    action: "send"
+    channel:
+      $ref: '#/channels/memberLocked'
+  newMemberRegistered:
     action: "send"
     channel:
       $ref: "#/channels/newMemberRegistered"
@@ -37,10 +47,19 @@ operations:
 
 components:
   messages:
+    MemberLocked:
+      headers:
+        $ref: '#/components/schemas/MessageHeader'
+      payload:
+        $ref: '#/components/schemas/Link'
     NewMemberRegistered:
+      headers:
+        $ref: '#/components/schemas/MessageHeader'
       payload:
         $ref: '#/components/schemas/MemberRegistered'
     PaymentDone:
+      headers:
+        $ref: '#/components/schemas/MessageHeader'
       payload:
         $ref: '#/components/schemas/PaymentAffirmation'
 
@@ -61,6 +80,26 @@ components:
           type: string
           pattern: ^[A-Z]{3}
           example: "EUR"
+
+    Link:
+      description: Link to an entity
+      type: object
+      required:
+        - type
+        - link
+      properties:
+        type:
+          description: Not fully qualified type name of the object
+          type: string
+          minLength: 2
+          maxLength: 155
+          example: "Member"
+        link:
+          description: URL to the according entity
+          type: string
+          format: uri
+          example:
+            "https://apis.online-library.org/member-management/members/f4c8f793-a53e-40b2-bad5-597e0e3e116e"
 
     MemberRegistered:
       description: |
@@ -94,6 +133,30 @@ components:
           type: string
           format: email
           example: jane.doe@gmail.com
+
+    MessageHeader:
+      description: Header Information for each message
+      type: object
+      required:
+        - correlationId
+        - messageId
+      properties:
+        correlationId:
+          description: Identifier to be set by application to trace end-to-end-api-journey
+          type: string
+          format: uuid
+          example: "b3416449-5f69-4cd2-a6c4-1ff82da96bce"
+        messageId:
+          description: Identifier for the particular message, is needed in case of cascading infrastructure
+          type: string
+          format: uuid
+          example: "5a1d305b-19f3-46eb-ada1-9a9770e56fd1"
+        source:
+          description: Application name creating the message
+          type: string
+          minLength: 2
+          maxLength: 20
+          example: Member Management
 
     PaymentAffirmation:
       description: An affirmation that a certain payment has been done

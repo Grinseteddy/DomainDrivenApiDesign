@@ -4,7 +4,7 @@ info:
   description: This service allows to maintain catalog entries based on purchased books.
   version: 1.0.0
 servers:
-  - url: 'https://apis.online-library/catalog-maintenance'
+  - url: 'https://apis.online-library.org/catalog-maintenance'
 tags:
   - name: Catalog Entry Creation
     description: Creation of a catalog Entry
@@ -267,7 +267,9 @@ components:
       description: Message to a request containing detailed information
       type: object
       required:
-
+        - messageIdentifier
+        - title
+        - severity
       properties:
         messageIdentifier:
           description: Identifier to the message in case of errors means the error code
