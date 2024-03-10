@@ -2,6 +2,9 @@ openapi: 3.1.0
 info:
   title: Member Management
   description: Rest APIs to create, change and delete members of the library
+  contact:
+    name: Annegret Junker
+    email: annegret.junker@codecentric.de
   version: 1.0.0
 servers:
   - url: 'https://apis.online-library.org/member-management'

@@ -2,6 +2,10 @@ openapi: 3.1.0
 info:
   title: Skeleton
   description: A skeleton which can be used to create OpenAPI specifications
+  contact:
+    name: whoever
+    url: https://sample.org/sample
+    email: who.ever@sample.org
   version: 1.0.0
 servers:
   - url: 'https://{server-to-the-api}.myorganization.com/service'

@@ -4,6 +4,10 @@ info:
   version: 1.0.0
   description: |
     Skeleton for an AsyncAPI definition
+  contact:
+    name: whoever
+    url: https://sample.org/sample
+    email: who.ever@sample.org
 servers:
   production:
     # other messaging brokers needs to be defined - look in the documentation

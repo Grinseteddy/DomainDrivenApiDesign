@@ -2,6 +2,9 @@ openapi: 3.1.0
 info:
   title: Catalog Search
   description: Using this service a user is able to search for books in the catalog
+  contact:
+    name: Annegret Junker
+    email: annegret.junker@codecentric.de
   version: 1.0.0
 servers:
   - url: 'https://apis.online-library.org/catalog-search'

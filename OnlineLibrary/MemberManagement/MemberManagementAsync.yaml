@@ -3,7 +3,9 @@ info:
   title: Member Management
   version: 1.0.0
   description: This service manages the members of the library and their payments.
-
+  contact:
+    name: Annegret Junker
+    email: annegret.junker@codecentric.de
 servers:
   production:
     host: "events.online-library.com:9092"
