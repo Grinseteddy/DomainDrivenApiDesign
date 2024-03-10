@@ -18,8 +18,9 @@ paths:
   /catalog-entries:
     post:
       description: Creates a new catalog entry, usually used to create catalog entries manually
+      operationId: createNewCatalogEntry
       tags:
-        - Catalog Entry creation
+        - Catalog Entry Creation
       security:
         - openIdConnect:
           - liberian_write
@@ -38,6 +39,7 @@ paths:
         Searches for catalog entries based on given parameters, title, author etc.
         are just given as strings. Publication date can be filtered by start and end.
         When the search results are too large only the first 100 are given back.
+      operationId: getCatalogEntriesBySearchByDate
       tags:
         - Catalog Search
       security:
@@ -60,6 +62,7 @@ paths:
   /catalog-entries/{catalogEntryIdentifier}:
     get:
       description: Delivers back a catalog entry based on its identifier
+      operationId: getCatalogEntryById
       tags:
         - Catalog Search
       security:

@@ -22,6 +22,7 @@ paths:
   /members:
     get:
       description: Gets members based on certain search criteria
+      operationId: getMembersBySearchCriteria
       security:
         - openIdConnect:
             - member_read
@@ -40,6 +41,7 @@ paths:
           $ref: '#/components/responses/NotFoundResponse'
     post:
       description: Creates a new member
+      operationId: createNewMember
       security:
         - openIdConnect:
             - member_write
@@ -58,6 +60,7 @@ paths:
   /members/{memberId}:
     get:
       description: Delivers back a single member
+      operationId: getMemberById
       security:
         - openIdConnect:
             - member_read
@@ -76,6 +79,7 @@ paths:
           $ref: '#/components/responses/NotFoundResponse'
     put:
       description: Changes a single member
+      operationId: updateMemberById
       security:
         - openIdConnect:
             - member_write
@@ -96,6 +100,7 @@ paths:
           $ref: '#/components/responses/NotFoundResponse'
     delete:
       description: A member is locked or deleted completed. the member status is changed.
+      operationId: lockMemberById
       security:
         - openIdConnect:
             - member_admin

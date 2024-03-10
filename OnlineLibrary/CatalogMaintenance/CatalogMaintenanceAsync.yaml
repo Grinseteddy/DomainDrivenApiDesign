@@ -211,10 +211,6 @@ components:
           maxLength: 20
           example: CatalogMaintenance
 
-
-
-
-
   securitySchemes:
     openIdConnect:
       type: openIdConnect

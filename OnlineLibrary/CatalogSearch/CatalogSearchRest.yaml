@@ -18,6 +18,7 @@ paths:
   /catalog-entries:
     get:
       description: Delivers back a list of catalog entries according to the search parameters
+      operationId: getCatalogEntriesBySearchEntries
       tags:
         - Searching
       security:
@@ -36,6 +37,7 @@ paths:
           $ref: '#/components/responses/NotFoundResponse'
     post:
       description: Creates a new catalog entry
+      operationId: createNewCatalogEntry
       tags:
         - Catalog Update
       security:
@@ -54,8 +56,9 @@ paths:
   /catalogEntries/{catalogEntryId}:
     get:
       description: Delivers back a catalog entry based on its identifier
+      operationId: getCatalogEntryById
       tags:
-        - Catalog Search
+        - Searching
       security:
         - openIdConnect:
             - catalog_search
@@ -73,6 +76,7 @@ paths:
 
     put:
       description: Changes a catalog entry based on its identifier
+      operationId: updateCatalogEntryById
       tags:
         - Catalog Update
       security:
