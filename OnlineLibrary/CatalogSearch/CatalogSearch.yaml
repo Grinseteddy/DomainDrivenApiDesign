@@ -1,0 +1,249 @@
+openapi: 3.1.0
+info:
+  title: Catalog Search
+  description: Using this service a user is able to search for books in the catalog
+  version: 1.0.0
+servers:
+  - url: 'https://apis.online-library.org/catalog-search'
+security:
+  - openIdConnect:
+    - catalog_search
+    - catalog_update
+tags:
+  - name: Searching
+    description: All endpoints allowing members for search
+  - name: Catalog Update
+    description: All endpoints which allow to update the catalog
+paths:
+  /catalog-entries:
+    get:
+      description: Delivers back a list of catalog entries according to the search parameters
+      tags:
+        - Searching
+      security:
+        - openIdConnect:
+            - catalog_search
+      parameters:
+        - $ref: '#/components/parameters/SearchCriteriasParameter'
+      responses:
+        200:
+          $ref: '#/components/responses/CatalogEntriesResponse'
+        400:
+          $ref: '#/components/responses/BadRequestResponse'
+        403:
+          $ref: '#/components/responses/ForbiddenResponse'
+        404:
+          $ref: '#/components/responses/NotFoundResponse'
+    post:
+      description: Creates a new catalog entry
+      tags:
+        - Catalog Update
+      security:
+        - openIdConnect:
+            - catalog_update
+      requestBody:
+        $ref: '#/components/requestBodies/NewCatalogEntryRequest'
+      responses:
+        200:
+          $ref: '#/components/responses/LinkToCatalogEntryResponse'
+        400:
+          $ref: '#/components/responses/BadRequestResponse'
+        403:
+          $ref: '#/components/responses/ForbiddenResponse'
+
+  /catalogEntries/{catalogEntryId}:
+    get:
+      description: Delivers back a catalog entry based on its identifier
+      tags:
+        - Catalog Search
+      security:
+        - openIdConnect:
+            - catalog_search
+      parameters:
+        - $ref: '#/components/parameters/CatalogEntryIdentifierParameter'
+      responses:
+        200:
+          $ref: '#/components/responses/SingleCatalogEntryResponse'
+        400:
+          $ref: '#/components/responses/BadRequestResponse'
+        403:
+          $ref: '#/components/responses/ForbiddenResponse'
+        404:
+          $ref: '#/components/responses/NotFoundResponse'
+
+    put:
+      description: Changes a catalog entry based on its identifier
+      tags:
+        - Catalog Update
+      security:
+        - openIdConnect:
+            - catalog_update
+      parameters:
+        - $ref: '#/components/parameters/CatalogEntryIdentifierParameter'
+      requestBody:
+        $ref: '#/components/requestBodies/NewCatalogEntryRequest'
+      responses:
+        200:
+          $ref: '#/components/responses/LinkToCatalogEntryResponse'
+        400:
+          $ref: '#/components/responses/BadRequestResponse'
+        403:
+          $ref: '#/components/responses/ForbiddenResponse'
+        404:
+          $ref: '#/components/responses/NotFoundResponse'
+
+
+components:
+  parameters:
+    CatalogEntryIdentifierParameter:
+      name: memberId
+      description: Member identifier
+      required: true
+      in: path
+      schema:
+        type: string
+        format: uuid
+        example: d448b5bc-a9bc-4036-8899-c77f781a76d5
+
+    SearchCriteriasParameter:
+      name: searchCriterias[]
+      description: A single search criteria e.g. a title or an author
+      in: query
+      required: false
+      schema:
+        type: array
+        items:
+          type: string
+          minLength: 2
+          maxLength: 200
+          example: "Evans"
+
+  responses:
+    BadRequestResponse:
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Message'
+
+    CatalogEntriesResponse:
+      description: |
+        Successful operation - a response with a list of catalog entries
+        For larger result sets only the first 100 are delivered back
+      content:
+        application/json:
+          schema:
+            type: array
+            minItems: 1
+            maxItems: 100
+            items:
+              $ref: '#/components/schemas/CatalogEntry'
+
+    ForbiddenResponse:
+      description: Forbidden
+
+    LinkToCatalogEntryResponse:
+      description: Successful operation - Catalog entry created
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Link"
+
+    SingleCatalogEntryResponse:
+      description: Successful operation - entry found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CatalogEntry'
+
+    NotFoundResponse:
+      description: Not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Message'
+
+  requestBodies:
+    NewCatalogEntryRequest:
+      description: Request to create a new catalog entry in the catalog
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/CatalogEntryToBeCreated"
+
+    CatalogEntryChange:
+      description: Changes a catalog entry
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CatalogEntry'
+
+  schemas:
+    CatalogEntryToBeCreated:
+      $ref: '../CatalogMaintenance/CatalogMaintenanceRest.yaml#/components/schemas/CatalogEntryToBeCreated'
+
+    CatalogEntry:
+      $ref: '../CatalogMaintenance/CatalogMaintenanceRest.yaml#/components/schemas/CatalogEntry'
+
+
+    Link:
+      description: Link to an entity
+      type: object
+      required:
+        - type
+        - link
+      properties:
+        type:
+          description: Not fully qualified type name of the object
+          type: string
+          minLength: 2
+          maxLength: 155
+          example: "CatalogEntry"
+        link:
+          description: URL to the according entity
+          type: string
+          format: uri
+          example:
+            "https://apis.online-library.org/catalog-maintenance/catalog-entries/74d870fa-9e93-4ffd-907e-038c85e8bc20"
+
+    Message:
+      description: Message to a request containing detailed information
+      type: object
+      required:
+        - messageIdentifier
+        - title
+        - severity
+      properties:
+        messageIdentifier:
+          description: Identifier to the message in case of errors means the error code
+          type: string
+          pattern: ^[A-Z]{3}[0-9]{7}
+        title:
+          description: Title of the message
+          type: string
+          minLength: 2
+          maxLength: 50
+          example: Request is not allowed
+        description:
+          description: Description to the message
+          type: string
+          minLength: 2
+          maxLength: 1024
+          example: A search request with less than 2 characters is not allowed
+        severity:
+          description: Severity of the message
+          type: string
+          enum:
+            - FATAL
+            - ERROR
+            - INFO
+            - DEBUG
+          example: INFO
+
+  securitySchemes:
+    openIdConnect:
+      type: openIdConnect
+      description: Security scheme for events
+      openIdConnectUrl: "https://idp.online-library.org/configuration"
+
+  

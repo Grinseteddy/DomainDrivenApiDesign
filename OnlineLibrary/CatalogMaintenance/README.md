@@ -2,11 +2,11 @@
 
 The catalog maintenance serves as area to add and manage books in the library.
 
-Async:
+## Async:
 - Receive: Book bought (Book)
-- Send: Catalog updated (Catalog entry)
+- Send: New catalog entry added (Catalog entry)
 
-Sync:
+## Sync:
 
 - Post Catalog entry
 - Get Catalog entry

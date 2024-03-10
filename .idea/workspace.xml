@@ -5,15 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9f418031-fa2f-4dcf-9ad8-1bd8158fd7e4" name="Changes" comment="Member Management">
-      <change afterPath="$PROJECT_DIR$/OnlineLibrary/CatalogMaintenance/README.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/OnlineLibrary/images/ContextMapOnlineLibrary.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/OnlineLibrary/images/DomainStorytelling.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/OnlineLibrary/CatalogSearch/CatalogSearch.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/OnlineLibrary/CatalogSearch/CatalogSearchAsync.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/OnlineLibrary/CatalogSearch/README.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OnlineLibrary/CatalogMaintenance/CatalogMaintenanceRest.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/OnlineLibrary/CatalogMaintenance/CatalogMaintenanceRest.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OnlineLibrary/MemberManagement/MemberManagementAsync.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/OnlineLibrary/MemberManagement/MemberManagementAsync.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OnlineLibrary/MemberManagement/MemberManagementRest.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/OnlineLibrary/MemberManagement/MemberManagementRest.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OnlineLibrary/Purchase/Purchase.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/OnlineLibrary/Purchase/PurchaseAsync.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OnlineLibrary/CatalogMaintenance/CatalogMaintenanceAsync.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/OnlineLibrary/CatalogMaintenance/CatalogMaintenanceAsync.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OnlineLibrary/CatalogMaintenance/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/OnlineLibrary/CatalogMaintenance/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OnlineLibrary/MemberManagement/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/OnlineLibrary/MemberManagement/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OnlineLibrary/Purchase/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/OnlineLibrary/Purchase/README.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -78,7 +77,7 @@
       <workItem from="1709999510517" duration="757000" />
       <workItem from="1710000291564" duration="4365000" />
       <workItem from="1710061131889" duration="5686000" />
-      <workItem from="1710066908239" duration="2071000" />
+      <workItem from="1710066908239" duration="5398000" />
     </task>
     <task id="LOCAL-00001" summary="Initial creation">
       <option name="closed" value="true" />
@@ -112,7 +111,15 @@
       <option name="project" value="LOCAL" />
       <updated>1710063697188</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="Member Management">
+      <option name="closed" value="true" />
+      <created>1710072529754</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1710072529754</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
