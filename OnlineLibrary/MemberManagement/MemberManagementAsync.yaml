@@ -1,0 +1,130 @@
+asyncapi: 3.0.0
+info:
+  title: Member Management
+  version: 1.0.0
+  description: This service manages the members of the library and their payments.
+
+servers:
+  production:
+    host: "events.online-library.com:9092"
+    protocol: "kafka"
+    description: "Produktion broker"
+
+defaultContentType:
+  application/json
+
+channels:
+  newMemberRegistered:
+    address: "member/registered"
+    messages:
+      newMemberRegisteredMessage:
+        $ref: "#/components/messages/NewMemberRegistered"
+  paymentDone:
+    address: "payment/done"
+    messages:
+      PaymentDoneMessage:
+        $ref: '#/components/messages/PaymentDoneMessage'
+
+operations:
+  processUserSignups:
+    action: "send"
+    channel:
+      $ref: "#/channels/newMemberRegistered"
+  paymentDone:
+    action: "receive"
+    channel:
+      $ref: '#/channels/paymentDone'
+
+components:
+  messages:
+    NewMemberRegistered:
+      payload:
+        $ref: '#/components/schemas/MemberRegistered'
+    PaymentDone:
+      payload:
+        $ref: '#/components/schemas/PaymentAffirmation'
+
+  schemas:
+    Amount:
+      description: Amount in value and currency
+      type: object
+      required:
+        - value
+        - currency
+      properties:
+        value:
+          description: Value of the amount
+          type: number
+          example: 26.99
+        currency:
+          description: Currency of the amount as three-letter acronym according to ISO 4217
+          type: string
+          pattern: ^[A-Z]{3}
+          example: "EUR"
+
+    MemberRegistered:
+      description: |
+        A user has payed his or her member fee and is able to lend books.
+        He or she became a member.
+      type: object
+      required:
+        - memberIdentifier
+        - name
+        - emailAddress
+      properties:
+        memberIdentifier:
+          description: Unique identifier of a member
+          type: string
+          format: uuid
+          example: f4c8f793-a53e-40b2-bad5-597e0e3e116e
+        name:
+          description: Name of the member
+          type: string
+          minLength: 2
+          maxLength: 51
+          example: Doe
+        givenName:
+          description: Given name of the member
+          type: string
+          minLength: 2
+          maxLength: 51
+          example: Jane
+        emailAddress:
+          description: E-mail address of the member - can be used as login name
+          type: string
+          format: email
+          example: jane.doe@gmail.com
+
+    PaymentAffirmation:
+      description: An affirmation that a certain payment has been done
+      type: object
+      required:
+        - member
+      properties:
+        member:
+          description: Identifier of the member who did the payment
+          type: string
+          format: uuid
+          example: f4c8f793-a53e-40b2-bad5-597e0e3e116e
+        memberName:
+          description: Name of the member
+          type: string
+          minLength: 2
+          maxLength: 51
+          example: Doe
+        amount:
+          $ref: '#/components/schemas/Amount'
+        paymentDateTime:
+          description: Date-time when the payment was funded at the payment provider
+          type: string
+          format: date-time
+          example: 2024-03-04T10:33:27+01:00
+
+
+  securitySchemes:
+    openIdConnect:
+      type: openIdConnect
+      description: Security scheme for events
+      openIdConnectUrl: "https://idp.online-library.org/configuration"
+      scopes:
+        - librarian_write

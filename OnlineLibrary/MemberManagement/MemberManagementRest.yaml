@@ -1,0 +1,17 @@
+openapi: 3.0.3
+info:
+  title: Member Management
+  description: Rest APIs to create, change and delete members of the library
+  version: 1.0.0
+servers:
+  - url: 'https://apis.online-library/member-management'
+paths:
+
+
+components:
+  securitySchemes:
+    openIdConnect:
+      type: openIdConnect
+      description: Security scheme for events
+      openIdConnectUrl: "https://idp.online-library.org/configuration"
+  
