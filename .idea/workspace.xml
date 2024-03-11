@@ -4,19 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9f418031-fa2f-4dcf-9ad8-1bd8158fd7e4" name="Changes" comment="operationId">
+    <list default="true" id="9f418031-fa2f-4dcf-9ad8-1bd8158fd7e4" name="Changes" comment="Contact">
+      <change afterPath="$PROJECT_DIR$/OnlineLibrary/ReadingService/ReadingService.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/swagger-settings.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OnlineLibrary/AsyncSkeleton.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/OnlineLibrary/AsyncSkeleton.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OnlineLibrary/CatalogMaintenance/CatalogMaintenanceAsync.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/OnlineLibrary/CatalogMaintenance/CatalogMaintenanceAsync.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OnlineLibrary/CatalogMaintenance/CatalogMaintenanceRest.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/OnlineLibrary/CatalogMaintenance/CatalogMaintenanceRest.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OnlineLibrary/CatalogSearch/CatalogSearchAsync.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/OnlineLibrary/CatalogSearch/CatalogSearchAsync.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OnlineLibrary/CatalogSearch/CatalogSearchRest.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/OnlineLibrary/CatalogSearch/CatalogSearchRest.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OnlineLibrary/MemberManagement/MemberManagementAsync.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/OnlineLibrary/MemberManagement/MemberManagementAsync.yaml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/OnlineLibrary/MemberManagement/MemberManagementRest.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/OnlineLibrary/MemberManagement/MemberManagementRest.yaml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/OnlineLibrary/Messaging/MessagingAsync.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/OnlineLibrary/Messaging/MessagingAsync.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OnlineLibrary/Messaging/MessagingRest.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/OnlineLibrary/Messaging/MessagingRest.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OnlineLibrary/Purchase/PurchaseAsync.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/OnlineLibrary/Purchase/PurchaseAsync.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OnlineLibrary/RestSkeleton.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/OnlineLibrary/RestSkeleton.yaml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -101,7 +94,9 @@
       <workItem from="1710061131889" duration="5686000" />
       <workItem from="1710066908239" duration="7763000" />
       <workItem from="1710078041318" duration="2588000" />
-      <workItem from="1710080665089" duration="1283000" />
+      <workItem from="1710080665089" duration="2091000" />
+      <workItem from="1710146450321" duration="8626000" />
+      <workItem from="1710185573783" duration="2088000" />
     </task>
     <task id="LOCAL-00001" summary="Initial creation">
       <option name="closed" value="true" />
@@ -175,7 +170,15 @@
       <option name="project" value="LOCAL" />
       <updated>1710081138432</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="Contact">
+      <option name="closed" value="true" />
+      <created>1710081957240</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1710081957240</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -200,6 +203,7 @@
     <MESSAGE value="Catalog Search" />
     <MESSAGE value="Messaging" />
     <MESSAGE value="operationId" />
-    <option name="LAST_COMMIT_MESSAGE" value="operationId" />
+    <MESSAGE value="Contact" />
+    <option name="LAST_COMMIT_MESSAGE" value="Contact" />
   </component>
 </project>

@@ -24,12 +24,10 @@ channels:
         $ref: '#/components/messages/bookNotFound'
 
 operations:
-
   bookNotFound:
     action: "receive"
     channel:
       $ref: '#/channels/bookNotFound'
-
 
 components:
   messages:

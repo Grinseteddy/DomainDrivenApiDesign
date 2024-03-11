@@ -1,0 +1,546 @@
+openapi: 3.1.0
+info:
+  title: Reading Service
+  description: |
+    The reading service only provides synchronous APIs to lend books and put them on a individual bookshelf.
+    Each member of the library has its own bookshelf.
+    Each book onto the bookshelf gets one bookmark automatically.
+    A reader can add additional bookmarks.
+    Bookmarks are deleted when a book is released from the bookshelf.
+  contact:
+    name: Annegret Junker
+    email: annegret.junker@codecentric.de
+  version: 1.0.0
+servers:
+  - url: 'https://apis.online-library.org/reading-service'
+tags:
+  - name: Shelf
+    description: Marks all endpoints regarding a shelf belonging to a member
+  - name: Books on Shelf
+    description: Marks all endpoints to manage books on a shelf
+  - name: Bookmarks
+    description: Endpoints which allow to manipulate bookmarks in a book
+security:
+  - openIdConnect:
+      - shelf_read
+      - shelf_write
+      - book_read
+      - book_write
+paths:
+  /shelfs:
+    get:
+      description: Gives back a list of bookshelfs based on the member name
+      operationId: getShelfByMember
+      tags:
+        - Shelf
+      security:
+        - openIdConnect:
+            - shelf_read
+      parameters:
+        - $ref: '#/components/parameters/SearchCriteriaParameter'
+      responses:
+        200:
+          $ref: '#/components/responses/ShelfsResponse'
+
+  /shelfs/members/{memberId}:
+    get:
+      description: Gives back the shelf of a certain member given by his or her identification
+      operationId: getShelfByMemberId
+      tags:
+        - Shelf
+      security:
+        - openIdConnect:
+            - shelf_read
+      parameters:
+        - $ref: '#/components/parameters/MemberIdentifierParameter'
+      responses:
+        200:
+          $ref: '#/components/responses/SingleShelfResponse'
+        400:
+          $ref: '#/components/responses/BadRequestResponse'
+        403:
+          $ref: '#/components/responses/ForbiddenResponse'
+        404:
+          $ref: '#/components/responses/NotFoundResponse'
+
+  /shelfs/{shelfId}:
+    get:
+      description: Delivers back a shelf based on its identifier
+      operationId: getShelfById
+      tags:
+        - Shelf
+      security:
+        - openIdConnect:
+            - shelf_read
+      parameters:
+        - $ref: '#/components/parameters/ShelfIdentifierParameter'
+      responses:
+        200:
+          $ref: '#/components/responses/SingleShelfResponse'
+        400:
+          $ref: '#/components/responses/BadRequestResponse'
+        403:
+          $ref: '#/components/responses/ForbiddenResponse'
+        404:
+          $ref: '#/components/responses/NotFoundResponse'
+
+  /shelfs/{shelfId}/books:
+    get:
+      description: Delivers back all books on a particular shelf
+      operationId: getAllBooksOfShelf
+      tags:
+        - Books on Shelf
+      security:
+        - openIdConnect:
+            - book_read
+      parameters:
+        - $ref: '#/components/parameters/ShelfIdentifierParameter'
+      responses:
+        200:
+          $ref: '#/components/responses/BooksOnShelfResponse'
+        400:
+          $ref: '#/components/responses/BadRequestResponse'
+        403:
+          $ref: '#/components/responses/ForbiddenResponse'
+        404:
+          $ref: '#/components/responses/NotFoundResponse'
+
+    post:
+      description: Put a new book on the shelf
+      operationId: addBookToShelf
+      tags:
+        - Books on Shelf
+      security:
+        - openIdConnect:
+            - book_write
+      parameters:
+        - $ref: '#/components/parameters/ShelfIdentifierParameter'
+      requestBody:
+        $ref: '#/components/requestBodies/BookToBeAddedOnShelfRequest'
+      responses:
+        200:
+          $ref: '#/components/responses/LinkToResourceResponse'
+        400:
+          $ref: '#/components/responses/BadRequestResponse'
+        403:
+          $ref: '#/components/responses/ForbiddenResponse'
+        404:
+          $ref: '#/components/responses/NotFoundResponse'
+
+  /shelfs/{shelfId}/books/{bookId}:
+    get:
+      description: Gives back a book stored on a shelf
+      operationId: getBookByShelfIdAndBookId
+      tags:
+        - Books on Shelf
+      security:
+        - openIdConnect:
+            - book_read
+      parameters:
+        - $ref: '#/components/parameters/ShelfIdentifierParameter'
+        - $ref: '#/components/parameters/BookOnShelfIdentifierParameter'
+      responses:
+        200:
+          $ref: '#/components/responses/SingleBookOnShelfResponse'
+        400:
+          $ref: '#/components/responses/BadRequestResponse'
+        403:
+          $ref: '#/components/responses/ForbiddenResponse'
+        404:
+          $ref: '#/components/responses/NotFoundResponse'
+
+    delete:
+      description: Removes a book from the shelf
+      operationId: deleteBookByShelfIdAndBookId
+      tags:
+        - Books on Shelf
+      security:
+        - openIdConnect:
+            - book_write
+      parameters:
+        - $ref: '#/components/parameters/ShelfIdentifierParameter'
+        - $ref: '#/components/parameters/BookOnShelfIdentifierParameter'
+      responses:
+        200:
+          $ref: '#/components/responses/SuccessfulOperationResponse'
+        400:
+          $ref: '#/components/responses/BadRequestResponse'
+        403:
+          $ref: '#/components/responses/ForbiddenResponse'
+        404:
+          $ref: '#/components/responses/NotFoundResponse'
+
+  /shelfs/{shelfId}/books/{bookId}/bookmarks:
+    # Bookmarks don't have their own lifecycle, but the entries in the books can't
+    # be changes as well, therefore this endpoints can be used to change bookmarks
+
+    post:
+      description: |
+        Adds a new bookmark to a book at a given position
+        Produces an error when the number of bookmarks in the book are already 10
+      operationId: addBookmarkByShelfIdAndByBookId
+      tags:
+        - Bookmarks
+      security:
+        - openIdConnect:
+            - book_write
+      parameters:
+        - $ref: '#/components/parameters/ShelfIdentifierParameter'
+        - $ref: '#/components/parameters/BookOnShelfIdentifierParameter'
+      requestBody:
+        $ref: '#/components/requestBodies/BookmarkPositionRequest'
+      responses:
+        200:
+          $ref: '#/components/responses/LinkToResourceResponse'
+        400:
+          $ref: '#/components/responses/BadRequestResponse'
+        403:
+          $ref: '#/components/responses/ForbiddenResponse'
+        404:
+          $ref: '#/components/responses/NotFoundResponse'
+
+    put:
+      description: Changes the position of a certain bookmark identified by its postion
+      operationId: updateBookmarkPosition
+      tags:
+        - Bookmarks
+      security:
+        - openIdConnect:
+            - book_write
+      parameters:
+        - $ref: '#/components/parameters/ShelfIdentifierParameter'
+        - $ref: '#/components/parameters/BookOnShelfIdentifierParameter'
+        - $ref: '#/components/parameters/BookmarkPositionParameter'
+      requestBody:
+        $ref: '#/components/requestBodies/BookmarkPositionRequest'
+      responses:
+        200:
+          $ref: '#/components/responses/LinkToResourceResponse'
+        400:
+          $ref: '#/components/responses/BadRequestResponse'
+        403:
+          $ref: '#/components/responses/ForbiddenResponse'
+        404:
+          $ref: '#/components/responses/NotFoundResponse'
+
+    delete:
+      description: Deletes a bookmark on a certain position
+      operationId: deleteBookmarkByPosition
+      security:
+        - openIdConnect:
+            - book_write
+      parameters:
+        - $ref: '#/components/parameters/ShelfIdentifierParameter'
+        - $ref: '#/components/parameters/BookOnShelfIdentifierParameter'
+        - $ref: '#/components/parameters/BookmarkPositionParameter'
+      responses:
+        200:
+          $ref: '#/components/responses/SuccessfulOperationResponse'
+        400:
+          $ref: '#/components/responses/BadRequestResponse'
+        403:
+          $ref: '#/components/responses/ForbiddenResponse'
+        404:
+          $ref: '#/components/responses/NotFoundResponse'
+
+components:
+
+  parameters:
+
+    BookmarkPositionParameter:
+      name: bookMarkPosition
+      description: Bookmark position (number of words)
+      in: query
+      required: true
+      schema:
+        type: integer
+        format: int64
+        example: 198292
+
+    BookOnShelfIdentifierParameter:
+      name: bookId
+      description: Book identifier which was put on a shelf
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+        example: f40f5a0f-c4c9-4f01-a200-421244061812
+
+    MemberIdentifierParameter:
+      name: memberId
+      description: Member identifier
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+        example: f4c8f793-a53e-40b2-bad5-597e0e3e116e
+
+    SearchCriteriaParameter:
+      name: searchCriteria
+      description: A single search criteria e.g. teh member name
+      in: query
+      required: true
+      schema:
+        type: string
+        minLength: 2
+        maxLength: 200
+        example: "Doe"
+
+    ShelfIdentifierParameter:
+      name: shelfId
+      description: Shelf identifier
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+        example: a2033bf2-5562-46f1-875b-affe7d38e2a8
+
+  requestBodies:
+    BookmarkPositionRequest:
+      description: Changes or adds a bookmark on a certain position
+      content:
+        application/json:
+          schema:
+            type: integer
+            format: int64
+            example: 198292
+
+    BookToBeAddedOnShelfRequest:
+      description: Requests to put a book on certain shelf
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/BookToBeAddedToShelf'
+
+  responses:
+
+    BadRequestResponse:
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Message'
+
+    BooksOnShelfResponse:
+      description: Delivers back a list of books on a shelf
+      content:
+        application/json:
+          schema:
+            type: array
+            minItems: 1
+            # Number of maximum books on a shelf needs to be defined
+            maxItems: 10
+            items:
+              $ref: '#/components/schemas/BookOnShelf'
+
+    ForbiddenResponse:
+      description: Forbidden
+
+    LinkToResourceResponse:
+      description: Successful operation - Book added to shelf
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Link"
+
+    NotFoundResponse:
+      description: Not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Message'
+
+    ShelfsResponse:
+      description: |
+        Delivers back a list of shelfs based on a certain search criteria
+        For larger result sets only the first 100 are delivered back
+      content:
+        application/json:
+          schema:
+            type: array
+            minItem: 1
+            maxItem: 100
+            items:
+              $ref: '#/components/schemas/Shelf'
+
+    SingleBookOnShelfResponse:
+      description: Delivers back a single book stored on a shelf
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/BookOnShelf'
+
+    SingleShelfResponse:
+      description: Delivers back a single shelf belonging to a member
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Shelf'
+
+    SuccessfulOperationResponse:
+      description: Successful operation
+
+  schemas:
+    BookOnShelf:
+      description: Single catalog entry
+      type: object
+      allOf:
+        - $ref: "#/components/schemas/BookToBeAddedToShelf"
+      required:
+        - bookOnShelfIdentifier
+        - bookMarks
+      properties:
+        bookOnShelfIdentifier:
+          description: Unique identifier of a catalog entry
+          type: string
+          format: uuid
+          example: f40f5a0f-c4c9-4f01-a200-421244061812
+        bookMarks:
+          description: Bookmarks indicating a certain position (number of words) in a book
+          type: array
+          minItems: 1
+          maxItems: 10
+          items:
+            type: integer
+            format: int64
+            example: 198292
+
+    BookToBeAddedToShelf:
+      description: An entry in the catalog which describes a certain book
+      type: object
+      required:
+        - title
+        - authors
+        - editor
+        - publicationDate
+      properties:
+        catalogEntryIdentifier:
+          description: Unique identifier of a catalog entry
+          type: string
+          format: uuid
+          example: d448b5bc-a9bc-4036-8899-c77f781a76d5
+        title:
+          description: Title of the book
+          type: string
+          minLength: 2
+          maxLength: 254
+          example: "Domain-Driven Design"
+        subTitle:
+          description:
+            Subtitle of the book
+          type: string
+          minLength: 2
+          maxLength: 254
+          example: "Tackling Complexity in the Heart of Software"
+        authors:
+          description: Authors of the book
+          type: array
+          minItems: 1
+          maxItems: 10
+          items:
+            type: string
+            minLength: 2
+            maxLength: 63
+            example:
+              - "Eric Evans"
+        editor:
+          description: Name of the editor
+          type: string
+          minLength: 2
+          maxLength: 63
+          example: "Pearson International"
+        publicationDate:
+          description: |
+            Date of publication
+          type: string
+          format: date
+          example: "2003-09-04"
+        shelf:
+          $ref: '#/components/schemas/Shelf'
+
+    Link:
+      description: Link to an entity
+      type: object
+      required:
+        - type
+        - link
+      properties:
+        type:
+          description: Not fully qualified type name of the object
+          type: string
+          minLength: 2
+          maxLength: 155
+          example: "BookOnShelf"
+        link:
+          description: URL to the according entity
+          type: string
+          format: uri
+          example:
+            "https://apis.online-library.org/reading-service/books/f40f5a0f-c4c9-4f01-a200-421244061812"
+
+    Message:
+      description: Message to a request containing detailed information
+      type: object
+      required:
+        - messageIdentifier
+        - title
+        - severity
+      properties:
+        messageIdentifier:
+          description: Identifier to the message in case of errors means the error code
+          type: string
+          pattern: ^[A-Z]{3}[0-9]{7}
+        title:
+          description: Title of the message
+          type: string
+          minLength: 2
+          maxLength: 50
+          example: Request is not allowed
+        description:
+          description: Description to the message
+          type: string
+          minLength: 2
+          maxLength: 1024
+          example: A search request with less than 2 characters is not allowed
+        severity:
+          description: Severity of the message
+          type: string
+          enum:
+            - FATAL
+            - ERROR
+            - INFO
+            - DEBUG
+          example: INFO
+
+    Shelf:
+      description: Bookshelf of a member containing his or her books
+      type: object
+      required:
+        - shelfIdentifier
+        - member
+      properties:
+        shelfIdentifier:
+          description: Unique identifier of shelf belonging to a member
+          type: string
+          format: uuid
+          example: a2033bf2-5562-46f1-875b-affe7d38e2a8
+        member:
+          $ref: '#/components/schemas/Link'
+
+  securitySchemes:
+    openIdConnect:
+      type: openIdConnect
+      description: Security scheme for events
+      openIdConnectUrl: "https://idp.online-library.org/configuration"
+
+
+
+
+
+
+    
+  
+  

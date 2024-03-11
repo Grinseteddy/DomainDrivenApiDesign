@@ -126,6 +126,7 @@ components:
     MemberIdentifierParameter:
       name: memberId
       description: Member identifier
+      required: true
       in: path
       schema:
         type: string
