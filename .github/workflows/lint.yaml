@@ -1,0 +1,20 @@
+name: Lint Specs
+
+on:
+  push:
+
+jobs:
+  ascynapi:
+    runs-on: [ubuntu-latest]
+    strategy:
+      fail-fast: false
+      matrix:
+        api: ['CatalogMaintenance', 'CatalogSearch','MemberManagement','Messaging','Purchase']
+    steps:
+    - uses: actions/checkout@v4
+    - run: npm i -g asyncapi
+    - name: Validate ${{ matrix.api }}
+      uses: asyncapi/github-action-for-cli@v3.1.1
+      with:
+        command: validate
+        filepath: ./OnlineLibrary/${{ matrix.api }}/${{ matrix.api }}Async.yaml
