@@ -9,10 +9,10 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        api: ['CatalogMaintenance', 'CatalogSearch','MemberManagement','Messaging','Purchase']
+        api: ['CatalogMaintenance', 'CatalogSearch','MemberManagement','Messaging','Purchase', 'ReadingService']
+    name: lint AsyncAPI ${{ matrix.api }}
     steps:
     - uses: actions/checkout@v4
-    - run: npm i -g asyncapi
     - name: Validate ${{ matrix.api }}
       uses: asyncapi/github-action-for-cli@v3.1.1
       with:
