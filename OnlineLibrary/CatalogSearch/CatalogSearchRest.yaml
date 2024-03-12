@@ -38,23 +38,6 @@ paths:
           $ref: '#/components/responses/ForbiddenResponse'
         404:
           $ref: '#/components/responses/NotFoundResponse'
-    post:
-      description: Creates a new catalog entry
-      operationId: createNewCatalogEntry
-      tags:
-        - Catalog Update
-      security:
-        - openIdConnect:
-            - catalog_update
-      requestBody:
-        $ref: '#/components/requestBodies/NewCatalogEntryRequest'
-      responses:
-        200:
-          $ref: '#/components/responses/LinkToCatalogEntryResponse'
-        400:
-          $ref: '#/components/responses/BadRequestResponse'
-        403:
-          $ref: '#/components/responses/ForbiddenResponse'
 
   /catalogEntries/{catalogEntryId}:
     get:
@@ -76,29 +59,6 @@ paths:
           $ref: '#/components/responses/ForbiddenResponse'
         404:
           $ref: '#/components/responses/NotFoundResponse'
-
-    put:
-      description: Changes a catalog entry based on its identifier
-      operationId: updateCatalogEntryById
-      tags:
-        - Catalog Update
-      security:
-        - openIdConnect:
-            - catalog_update
-      parameters:
-        - $ref: '#/components/parameters/CatalogEntryIdentifierParameter'
-      requestBody:
-        $ref: '#/components/requestBodies/NewCatalogEntryRequest'
-      responses:
-        200:
-          $ref: '#/components/responses/LinkToCatalogEntryResponse'
-        400:
-          $ref: '#/components/responses/BadRequestResponse'
-        403:
-          $ref: '#/components/responses/ForbiddenResponse'
-        404:
-          $ref: '#/components/responses/NotFoundResponse'
-
 
 components:
   parameters:
@@ -169,21 +129,6 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Message'
-
-  requestBodies:
-    NewCatalogEntryRequest:
-      description: Request to create a new catalog entry in the catalog
-      content:
-        application/json:
-          schema:
-            $ref: "#/components/schemas/CatalogEntryToBeCreated"
-
-    CatalogEntryChange:
-      description: Changes a catalog entry
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/CatalogEntry'
 
   schemas:
     CatalogEntryToBeCreated:
