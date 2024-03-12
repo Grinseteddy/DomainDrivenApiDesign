@@ -235,19 +235,9 @@ components:
         format: uuid
         example: f40f5a0f-c4c9-4f01-a200-421244061812
 
-    MemberIdentifierParameter:
-      name: memberId
-      description: Member identifier
-      in: path
-      required: true
-      schema:
-        type: string
-        format: uuid
-        example: f4c8f793-a53e-40b2-bad5-597e0e3e116e
-
     SearchCriteriaParameter:
       name: searchCriteria
-      description: A single search criteria e.g. teh member name
+      description: A single search criteria e.g. the member name
       in: query
       required: true
       schema:
