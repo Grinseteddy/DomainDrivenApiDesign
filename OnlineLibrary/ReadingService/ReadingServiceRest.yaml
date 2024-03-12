@@ -42,17 +42,15 @@ paths:
         200:
           $ref: '#/components/responses/ShelfsResponse'
 
-  /shelfs/members/{memberId}:
+  /myshelf:
     get:
-      description: Gives back the shelf of a certain member given by his or her identification
+      description: Gives back the shelf of a certain member given by his or her authentication
       operationId: getShelfByMemberId
       tags:
         - Shelf
       security:
         - openIdConnect:
             - shelf_read
-      parameters:
-        - $ref: '#/components/parameters/MemberIdentifierParameter'
       responses:
         200:
           $ref: '#/components/responses/SingleShelfResponse'
@@ -63,38 +61,15 @@ paths:
         404:
           $ref: '#/components/responses/NotFoundResponse'
 
-  /shelfs/{shelfId}:
+  /myshelf/books:
     get:
-      description: Delivers back a shelf based on its identifier
-      operationId: getShelfById
-      tags:
-        - Shelf
-      security:
-        - openIdConnect:
-            - shelf_read
-      parameters:
-        - $ref: '#/components/parameters/ShelfIdentifierParameter'
-      responses:
-        200:
-          $ref: '#/components/responses/SingleShelfResponse'
-        400:
-          $ref: '#/components/responses/BadRequestResponse'
-        403:
-          $ref: '#/components/responses/ForbiddenResponse'
-        404:
-          $ref: '#/components/responses/NotFoundResponse'
-
-  /shelfs/{shelfId}/books:
-    get:
-      description: Delivers back all books on a particular shelf
+      description: Delivers back all books of the shelf of the current user
       operationId: getAllBooksOfShelf
       tags:
         - Books on Shelf
       security:
         - openIdConnect:
             - book_read
-      parameters:
-        - $ref: '#/components/parameters/ShelfIdentifierParameter'
       responses:
         200:
           $ref: '#/components/responses/BooksOnShelfResponse'
@@ -113,8 +88,6 @@ paths:
       security:
         - openIdConnect:
             - book_write
-      parameters:
-        - $ref: '#/components/parameters/ShelfIdentifierParameter'
       requestBody:
         $ref: '#/components/requestBodies/BookToBeAddedOnShelfRequest'
       responses:
@@ -127,7 +100,7 @@ paths:
         404:
           $ref: '#/components/responses/NotFoundResponse'
 
-  /shelfs/{shelfId}/books/{bookId}:
+  /myshelf/books/{bookId}:
     get:
       description: Gives back a book stored on a shelf
       operationId: getBookByShelfIdAndBookId
@@ -137,7 +110,6 @@ paths:
         - openIdConnect:
             - book_read
       parameters:
-        - $ref: '#/components/parameters/ShelfIdentifierParameter'
         - $ref: '#/components/parameters/BookOnShelfIdentifierParameter'
       responses:
         200:
@@ -158,7 +130,6 @@ paths:
         - openIdConnect:
             - book_write
       parameters:
-        - $ref: '#/components/parameters/ShelfIdentifierParameter'
         - $ref: '#/components/parameters/BookOnShelfIdentifierParameter'
       responses:
         200:
@@ -170,7 +141,7 @@ paths:
         404:
           $ref: '#/components/responses/NotFoundResponse'
 
-  /shelfs/{shelfId}/books/{bookId}/bookmarks:
+  /myshelf/books/{bookId}/bookmarks:
     # Bookmarks don't have their own lifecycle, but the entries in the books can't
     # be changes as well, therefore this endpoints can be used to change bookmarks
 
@@ -185,7 +156,6 @@ paths:
         - openIdConnect:
             - book_write
       parameters:
-        - $ref: '#/components/parameters/ShelfIdentifierParameter'
         - $ref: '#/components/parameters/BookOnShelfIdentifierParameter'
       requestBody:
         $ref: '#/components/requestBodies/BookmarkPositionRequest'
@@ -208,7 +178,6 @@ paths:
         - openIdConnect:
             - book_write
       parameters:
-        - $ref: '#/components/parameters/ShelfIdentifierParameter'
         - $ref: '#/components/parameters/BookOnShelfIdentifierParameter'
         - $ref: '#/components/parameters/BookmarkPositionParameter'
       requestBody:
@@ -230,7 +199,6 @@ paths:
         - openIdConnect:
             - book_write
       parameters:
-        - $ref: '#/components/parameters/ShelfIdentifierParameter'
         - $ref: '#/components/parameters/BookOnShelfIdentifierParameter'
         - $ref: '#/components/parameters/BookmarkPositionParameter'
       responses:
@@ -287,16 +255,6 @@ components:
         minLength: 2
         maxLength: 200
         example: "Doe"
-
-    ShelfIdentifierParameter:
-      name: shelfId
-      description: Shelf identifier
-      in: path
-      required: true
-      schema:
-        type: string
-        format: uuid
-        example: a2033bf2-5562-46f1-875b-affe7d38e2a8
 
   requestBodies:
     BookmarkPositionRequest:
