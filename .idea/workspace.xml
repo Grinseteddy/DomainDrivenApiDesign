@@ -5,11 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9f418031-fa2f-4dcf-9ad8-1bd8158fd7e4" name="Changes" comment="Contact">
-      <change afterPath="$PROJECT_DIR$/OnlineLibrary/ReadingService/ReadingService.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/swagger-settings.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OnlineLibrary/MemberManagement/MemberManagementRest.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/OnlineLibrary/MemberManagement/MemberManagementRest.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OnlineLibrary/Messaging/MessagingAsync.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/OnlineLibrary/Messaging/MessagingAsync.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OnlineLibrary/CatalogMaintenance/CatalogMaintenanceAsync.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/OnlineLibrary/CatalogAdministration/CatalogAdministrationAsync.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OnlineLibrary/CatalogMaintenance/CatalogMaintenanceRest.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/OnlineLibrary/CatalogAdministration/CatalogAdministrationRest.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OnlineLibrary/CatalogMaintenance/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/OnlineLibrary/CatalogAdministration/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OnlineLibrary/CatalogSearch/CatalogSearchRest.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/OnlineLibrary/CatalogSearch/CatalogSearchRest.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OnlineLibrary/images/ContextMapOnlineLibrary.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/OnlineLibrary/images/ContextMapOnlineLibrary.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OnlineLibrary/images/DomainStorytelling.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/OnlineLibrary/images/DomainStorytelling.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -96,7 +99,8 @@
       <workItem from="1710078041318" duration="2588000" />
       <workItem from="1710080665089" duration="2091000" />
       <workItem from="1710146450321" duration="8626000" />
-      <workItem from="1710185573783" duration="2088000" />
+      <workItem from="1710185573783" duration="2470000" />
+      <workItem from="1710228478296" duration="1235000" />
     </task>
     <task id="LOCAL-00001" summary="Initial creation">
       <option name="closed" value="true" />
@@ -178,7 +182,15 @@
       <option name="project" value="LOCAL" />
       <updated>1710081957240</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="Contact">
+      <option name="closed" value="true" />
+      <created>1710187668434</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1710187668434</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

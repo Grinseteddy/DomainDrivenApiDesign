@@ -187,10 +187,10 @@ components:
 
   schemas:
     CatalogEntryToBeCreated:
-      $ref: '../CatalogMaintenance/CatalogMaintenanceRest.yaml#/components/schemas/CatalogEntryToBeCreated'
+      $ref: '../CatalogAdministration/CatalogAdministrationRest.yaml#/components/schemas/CatalogEntryToBeCreated'
 
     CatalogEntry:
-      $ref: '../CatalogMaintenance/CatalogMaintenanceRest.yaml#/components/schemas/CatalogEntry'
+      $ref: '../CatalogAdministration/CatalogAdministrationRest.yaml#/components/schemas/CatalogEntry'
 
 
     Link:
