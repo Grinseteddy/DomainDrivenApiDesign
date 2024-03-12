@@ -4,14 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9f418031-fa2f-4dcf-9ad8-1bd8158fd7e4" name="Changes" comment="Changing only in Administration">
-      <change afterPath="$PROJECT_DIR$/DDApiD-2024-03-13/Group1/AsyncSkeleton.yaml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DDApiD-2024-03-13/Group1/RestSkeleton.yaml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DDApiD-2024-03-13/Group2/AsyncSkeleton.yaml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DDApiD-2024-03-13/Group2/RestSkeleton.yaml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DDApiD-2024-03-13/Group3/AsyncSkeleton.yaml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DDApiD-2024-03-13/Group3/RestSkeleton.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    <list default="true" id="9f418031-fa2f-4dcf-9ad8-1bd8158fd7e4" name="Changes" comment="Groups">
+      <change beforePath="$PROJECT_DIR$/OnlineLibrary/ReadingService/ReadingServiceAsync.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/OnlineLibrary/ReadingService/ReadingServiceRest.yaml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -105,7 +99,7 @@
       <workItem from="1710080665089" duration="2091000" />
       <workItem from="1710146450321" duration="8626000" />
       <workItem from="1710185573783" duration="2470000" />
-      <workItem from="1710228478296" duration="1893000" />
+      <workItem from="1710228478296" duration="2370000" />
     </task>
     <task id="LOCAL-00001" summary="Initial creation">
       <option name="closed" value="true" />
@@ -211,7 +205,15 @@
       <option name="project" value="LOCAL" />
       <updated>1710230143496</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="Groups">
+      <option name="closed" value="true" />
+      <created>1710230389114</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1710230389114</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -239,6 +241,7 @@
     <MESSAGE value="Contact" />
     <MESSAGE value="Renaming Catalog Adminstration" />
     <MESSAGE value="Changing only in Administration" />
-    <option name="LAST_COMMIT_MESSAGE" value="Changing only in Administration" />
+    <MESSAGE value="Groups" />
+    <option name="LAST_COMMIT_MESSAGE" value="Groups" />
   </component>
 </project>
