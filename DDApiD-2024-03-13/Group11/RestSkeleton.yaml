@@ -1,0 +1,238 @@
+openapi: 3.1.0
+info:
+  title: Skeleton
+  description: A skeleton which can be used to create OpenAPI specifications
+  contact:
+    name: whoever
+    url: https://sample.org/sample
+    email: who.ever@sample.org
+  version: 1.0.0
+servers:
+  - url: 'https://{server-to-the-api}.myorganization.com/service'
+security:
+  - openIdConnect:
+      - resource_read
+      - resource_write
+      - resource_admin
+tags:
+  - name: Name Tag
+    description: Description
+paths:
+  /resources:
+    get:
+      description: Description # describe your function
+      # operationId: define a unique operationId: getBooksByTitleOrAuthorOrEditorOrBlurb
+      tags:
+        - Name Tag
+      security:
+        - openConnectId:
+            - resource_read
+      parameters:
+        - $ref: '#/components/parameters/SearchCriteriasParameter'
+      responses:
+        200:
+          description: Successful operation
+          # put here an array to resource
+        400:
+          $ref: '#/components/responses/BadRequestResponse'
+        403:
+          $ref: '#/components/responses/ForbiddenResponse'
+        404:
+          $ref: '#/components/responses/NotFoundResponse'
+    post:
+      description: Description # describe your function
+      # operationId: define a unique operationId: createNewCatalogEntry
+      tags:
+        - Name Tag
+      security:
+        - openConnectId:
+            - resource_write
+      requestBody:
+        # link to your resource to be created
+      responses:
+        200:
+          $ref: '#/components/responses/LinkToResourceResponse'
+        400:
+          $ref: '#/components/responses/BadRequestResponse'
+        403:
+          $ref: '#/components/responses/ForbiddenResponse'
+
+  /resources/{resourceIdentifier}:
+    get:
+      description: Description # describe your function
+      #operationId: define a unique operationId: createNewCatalogEntry
+      tags:
+        - Name Tag
+      security:
+        - openIdConnect:
+            - resource_read
+      parameters:
+        - $ref: '#/components/parameters/ResourceIdentifierParameter'
+      responses:
+        200:
+          # Answer with your resource
+        400:
+          $ref: '#/components/responses/BadRequestResponse'
+        403:
+          $ref: '#/components/responses/ForbiddenResponse'
+        404:
+          $ref: '#/components/responses/NotFoundResponse'
+
+    put:
+      description: Description # describe your function
+      #operationId: define a unique operationId: updateCatalogEntryById
+      tags:
+        - Name Tag
+      security:
+        - openIdConnect:
+            - resource_write
+      parameters:
+        - $ref: '#/components/parameters/ResourceIdentifierParameter'
+      requestBody:
+        # Link to your resource to be updated
+      responses:
+        200:
+          $ref: '#/components/responses/LinkToResourceResponse'
+        400:
+          $ref: '#/components/responses/BadRequestResponse'
+        403:
+          $ref: '#/components/responses/ForbiddenResponse'
+        404:
+          $ref: '#/components/responses/NotFoundResponse'
+
+    delete:
+      description: Description # describe your function
+      #operationId: define a unique operationId: updateCatalogEntryById
+      tags:
+        - Name Tag
+      security:
+        - openIdConnect:
+            - resource_admin
+      parameters:
+        - $ref: '#/components/parameters/ResourceIdentifierParameter'
+      responses:
+        200:
+          $ref: '#/components/responses/SuccessfulOperationResponse'
+        400:
+          $ref: '#/components/responses/BadRequestResponse'
+        403:
+          $ref: '#/components/responses/ForbiddenResponse'
+        404:
+          $ref: '#/components/responses/NotFoundResponse'
+
+
+components:
+  parameters:
+    ResourceIdentifierParameter:
+      name: memberId
+      description: Member identifier
+      required: true
+      in: path
+      schema:
+        type: string
+        format: uuid
+        example: d448b5bc-a9bc-4036-8899-c77f781a76d5
+
+    SearchCriteriasParameter:
+      name: searchCriterias[]
+      description: A single search criteria
+      in: query
+      required: false
+      schema:
+        type: array
+        items:
+          type: string
+          minLength: 2
+          maxLength: 200
+          example: "bla bla"
+
+  responses:
+    BadRequestResponse:
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Message'
+
+
+    ForbiddenResponse:
+      description: Forbidden
+
+    LinkToResourceResponse:
+      description: Successful operation - Catalog entry created
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Link"
+
+    NotFoundResponse:
+      description: Not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Message'
+
+
+    SuccessfulOperationResponse:
+      description: Successful operation
+
+  schemas:
+    Link:
+      description: Link to an entity
+      type: object
+      required:
+        - type
+        - link
+      properties:
+        type:
+          description: Not fully qualified type name of the object
+          type: string
+          minLength: 2
+          maxLength: 155
+          example: "CatalogEntry"
+        link:
+          description: URL to the according entity
+          type: string
+          format: uri
+          example:
+            "https://apis.online-library.org/catalog-maintenance/catalog-entries/74d870fa-9e93-4ffd-907e-038c85e8bc20"
+
+    Message:
+      description: Message to a request containing detailed information
+      type: object
+      required:
+        - messageIdentifier
+        - title
+        - severity
+      properties:
+        messageIdentifier:
+          description: Identifier to the message in case of errors means the error code
+          type: string
+          pattern: ^[A-Z]{3}[0-9]{7}
+        title:
+          description: Title of the message
+          type: string
+          minLength: 2
+          maxLength: 50
+          example: Request is not allowed
+        description:
+          description: Description to the message
+          type: string
+          minLength: 2
+          maxLength: 1024
+          example: A search request with less than 2 characters is not allowed
+        severity:
+          description: Severity of the message
+          type: string
+          enum:
+            - FATAL
+            - ERROR
+            - INFO
+            - DEBUG
+          example: INFO
+
+  securitySchemes:
+    openIdConnect:
+      type: openIdConnect
+      description: Security scheme for events
+      openIdConnectUrl: "https://idp.online-library.org/configuration"
