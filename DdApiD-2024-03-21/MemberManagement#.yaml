@@ -1,0 +1,169 @@
+  Based on the new diagram you've shared, which appears to be a detailed model of a library system encompassing entities like Book, User, Membership, Catalog, and their relationships, I'll enhance the original Member Management API schema to include aspects of this library system model. This expanded API will cater to the management of books, users, memberships, catalog entries, and related functionalities.
+    
+    ```yaml
+  openapi: 3.1.0
+  info:
+    title: Library Management API
+    description: API for managing books, members, and catalog entries in a library system.
+    contact:
+      name: API Support
+      url: https://example.com/support
+      email: support@example.com
+    version: 1.0.0
+  servers:
+    - url: 'https://{server-to-the-api}.example.com/library-management'
+  security:
+    - openIdConnect:
+        - resource_read
+        - resource_write
+        - resource_admin
+  tags:
+    - name: Members
+      description: Operations related to members management
+    - name: Books
+      description: Operations related to books management
+    - name: Catalog
+      description: Operations related to catalog entries
+
+  paths:
+    # Members endpoints
+    /members:
+      get:
+        description: Retrieves a list of members based on search criteria.
+        tags:
+          - Members
+        security:
+          - openConnectId:
+              - resource_read
+        parameters:
+          - $ref: '#/components/parameters/SearchCriteriasParameter'
+        responses:
+          200:
+            description: A list of members.
+            content:
+              application/json:
+                schema:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/Member'
+          400:
+            $ref: '#/components/responses/BadRequestResponse'
+          403:
+            $ref: '#/components/responses/ForbiddenResponse'
+          404:
+            $ref: '#/components/responses/NotFoundResponse'
+      post:
+        description: Registers a new member.
+        tags:
+          - Members
+        security:
+          - openConnectId:
+              - resource_write
+        requestBody:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Member'
+        responses:
+          201:
+            description: Member registered successfully.
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/Member'
+          400:
+            $ref: '#/components/responses/BadRequestResponse'
+          403:
+            $ref: '#/components/responses/ForbiddenResponse'
+    # Books endpoints (simplified for brevity)
+    /books:
+      get:
+        description: Retrieves a list of books based on search criteria.
+        tags:
+          - Books
+        security:
+          - openConnectId:
+              - resource_read
+        responses:
+          200:
+            description: A list of books.
+          400:
+            $ref: '#/components/responses/BadRequestResponse'
+      post:
+        description: Adds a new book to the catalog.
+        tags:
+          - Books
+        security:
+          - openConnectId:
+              - resource_write
+        responses:
+          201:
+            description: Book added successfully.
+          400:
+            $ref: '#/components/responses/BadRequestResponse'
+    # Catalog endpoints (simplified for brevity)
+    /catalog:
+      get:
+        description: Retrieves the catalog containing books.
+        tags:
+          - Catalog
+        security:
+          - openConnectId:
+              - resource_read
+        responses:
+          200:
+            description: Catalog retrieved successfully.
+          400:
+            $ref: '#/components/responses/BadRequestResponse'
+
+  components:
+    parameters:
+      ResourceIdentifierParameter:
+        name: memberId
+        description: Member identifier
+        required: true
+        in: path
+        schema:
+          type: string
+          format: uuid
+          example: d448b5bc-a9bc-4036-8899-c77f781a76d5
+
+      SearchCriteriasParameter:
+        name: searchCriterias[]
+        description: A single search criteria
+        in: query
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+            minLength: 2
+            maxLength: 200
+            example: "John Doe"
+
+    responses:
+      BadRequestResponse:
+        description: Bad request
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Message'
+      ForbiddenResponse:
+        description: Forbidden
+      NotFoundResponse:
+        description: Not found
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Message'
+      SuccessfulOperationResponse:
+        description: Successful operation
+
+    schemas:
+      Member:
+        description: A library member
+        type: object
+        required:
+          - memberId
+          - name
+        properties:

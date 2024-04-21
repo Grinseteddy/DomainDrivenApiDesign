@@ -178,7 +178,7 @@ components:
 
   schemas:
     Link:
-      description: Link to an entity
+      description: Link to an entityå
       type: object
       required:
         - type

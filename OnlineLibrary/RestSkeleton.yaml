@@ -25,7 +25,7 @@ paths:
       tags:
         - Name Tag
       security:
-        - openConnectId:
+        - openIdConnect:
             - resource_read
       parameters:
         - $ref: '#/components/parameters/SearchCriteriasParameter'
@@ -45,7 +45,7 @@ paths:
       tags:
         - Name Tag
       security:
-        - openConnectId:
+        - openIdConnect:
             - resource_write
       requestBody:
         # link to your resource to be created
@@ -178,7 +178,7 @@ components:
 
   schemas:
     Link:
-      description: Link to an entity
+      description: Link to an entityå
       type: object
       required:
         - type

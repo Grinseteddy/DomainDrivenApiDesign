@@ -1,0 +1,344 @@
+openapi: 3.1.0
+info:
+  title: Task Management
+  description: The task management fulfills the management of given task for clerks.
+  contact:
+    name: Annegret Junker
+    email: annegret.junker@codecentric.de
+  version: 1.0.0
+servers:
+  - url: 'https://{server-to-the-api}.myorganization.com/service'
+security:
+  - openIdConnect:
+      - task_read
+      - task_write
+      - task_admin
+tags:
+  - name: Task
+    description: Endpoints to get and manipulate tasks
+paths:
+  /tasks:
+    get:
+      description: |
+        Delivers back all tasks fulfilling containing at least one of the words in the query
+        Search parameters are given as array
+      operationId: getTasksByTitleOrDescription
+      tags:
+        - Task
+      security:
+        - openIdConnect:
+            - task_read
+      parameters:
+        - $ref: '#/components/parameters/SearchCriteriasParameter'
+      responses:
+        200:
+          $ref: '#/components/responses/TaskListResponse'
+        400:
+          $ref: '#/components/responses/BadRequestResponse'
+        403:
+          $ref: '#/components/responses/ForbiddenResponse'
+        404:
+          $ref: '#/components/responses/NotFoundResponse'
+    post:
+      description: Creates a new task
+      operationId: createTask
+      tags:
+        - Task
+      security:
+        - openIdConnect:
+            - task_write
+      requestBody:
+        $ref: '#/components/requestBodies/TaskToBeCreatedRequest'
+      responses:
+        201:
+          $ref: '#/components/responses/LinkToResourceResponse'
+        400:
+          $ref: '#/components/responses/BadRequestResponse'
+        403:
+          $ref: '#/components/responses/ForbiddenResponse'
+
+  /task/{taskIdentifier}:
+    get:
+      description: Gets back a task based on its ID
+      tags:
+        - Task
+      security:
+        - openIdConnect:
+            - task_read
+      parameters:
+        - $ref: '#/components/parameters/TaskIdentifierParameter'
+      responses:
+        200:
+          $ref: '#/components/responses/SingleTaskResponse'
+        400:
+          $ref: '#/components/responses/BadRequestResponse'
+        403:
+          $ref: '#/components/responses/ForbiddenResponse'
+        404:
+          $ref: '#/components/responses/NotFoundResponse'
+
+    put:
+      description: Changes an existing task e.g. for a changed status or an assignee
+      operationId: updateTaskById
+      tags:
+        - Task
+      security:
+        - openIdConnect:
+            - task_write
+      parameters:
+        - $ref: '#/components/parameters/TaskIdentifierParameter'
+      requestBody:
+        $ref: '#/components/requestBodies/TaskToBeChangedRequest'
+      responses:
+        200:
+          $ref: '#/components/responses/LinkToResourceResponse'
+        400:
+          $ref: '#/components/responses/BadRequestResponse'
+        403:
+          $ref: '#/components/responses/ForbiddenResponse'
+        404:
+          $ref: '#/components/responses/NotFoundResponse'
+
+    delete:
+      description: Deletes a task
+      operationId: deleteTaskById
+      tags:
+        - Task
+      security:
+        - openIdConnect:
+            - resource_admin
+      parameters:
+        - $ref: '#/components/parameters/TaskIdentifierParameter'
+      responses:
+        200:
+          $ref: '#/components/responses/SuccessfulOperationResponse'
+        400:
+          $ref: '#/components/responses/BadRequestResponse'
+        403:
+          $ref: '#/components/responses/ForbiddenResponse'
+        404:
+          $ref: '#/components/responses/NotFoundResponse'
+
+
+components:
+  parameters:
+    TaskIdentifierParameter:
+      name: taskId
+      description: Task identifier
+      required: true
+      in: path
+      schema:
+        type: string
+        format: uuid
+        examples:
+         - e3508686-61d8-4e83-9a7f-bc373e1974b6
+
+    SearchCriteriasParameter:
+      name: searchCriterias[]
+      description: An array of search criteria
+      in: query
+      required: false
+      schema:
+        type: array
+        items:
+          type: string
+          minLength: 2
+          maxLength: 200
+          examples:
+          - [Create,task]
+
+  responses:
+    BadRequestResponse:
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Message'
+
+
+    ForbiddenResponse:
+      description: Forbidden
+
+    LinkToResourceResponse:
+      description: Successful operation - Catalog entry created
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Link"
+
+    NotFoundResponse:
+      description: Not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Message'
+
+
+    SuccessfulOperationResponse:
+      description: Successful operation
+
+    SingleTaskResponse:
+      description: Successful operation
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Task'
+
+    TaskListResponse:
+      description: Successful operation
+      content:
+        application/json:
+          schema:
+            type: array
+            minItems: 1
+            maxItems: 1024
+            items:
+              $ref: '#/components/schemas/Task'
+
+  requestBodies:
+    TaskToBeCreatedRequest:
+      description: Creates a new task
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/TaskToBeCreated'
+
+    TaskToBeChangedRequest:
+      description: Changes a task
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Task'
+
+  schemas:
+    Link:
+      description: Link to an entity
+      type: object
+      required:
+        - type
+        - link
+      properties:
+        type:
+          description: Not fully qualified type name of the object
+          type: string
+          minLength: 2
+          maxLength: 155
+          examples:
+            - Task
+        link:
+          description: URL to the according entity
+          type: string
+          format: uri
+          examples:
+            - https://apis.somemanagement.org/task-management/tasks/e3508686-61d8-4e83-9a7f-bc373e1974b6
+
+    Message:
+      description: Message to a request containing detailed information
+      type: object
+      required:
+        - messageIdentifier
+        - title
+        - severity
+      properties:
+        messageIdentifier:
+          description: Identifier to the message in case of errors means the error code
+          type: string
+          format: uuid
+          examples:
+            - 4e06782d-ffe8-42a1-8a00-87c6a7661acd
+        title:
+          description: Title of the message
+          type: string
+          minLength: 2
+          maxLength: 50
+          examples:
+            - Request is not allowed
+        description:
+          description: Description to the message
+          type: string
+          minLength: 2
+          maxLength: 1024
+          examples:
+              - A search request with less than 2 characters is not allowed
+        severity:
+          description: Severity of the message
+          type: string
+          enum:
+            - FATAL
+            - ERROR
+            - INFO
+            - DEBUG
+          examples:
+            - INFO
+
+    Task:
+      description: A single task to be fulfilled by a clerk
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/TaskToBeCreated'
+      required:
+        - identifier
+        - status
+      properties:
+        identifier:
+          description: Unique identifier of the task
+          type: string
+          format: uuid
+          examples:
+            - e3508686-61d8-4e83-9a7f-bc373e1974b6
+        status:
+          description: Current status of the task
+          type: string
+          enum:
+            - NEW
+            - IN_PROGRESS
+            - DONE
+          examples:
+            - NEW
+        assignee:
+          description: Clerk to whom the task is assigned
+          type: string
+          format: uuid
+          examples:
+            - fb64bc52-c3b4-45f4-9efd-b0033515ad21
+
+    TaskToBeCreated:
+      description: A single task to be created in task management
+      type: object
+      required:
+        - title
+        - dueDate
+        - status
+      properties:
+        title:
+          description: Title of the task
+          type: string
+          minLength: 2
+          maxLength: 255
+          examples:
+            - Something is to do
+        description:
+          description: Description of the task
+          type: string
+          minLength: 10
+          maxLength: 1024
+          examples:
+            - Just do it
+        dueDate:
+          description: Date when the task is due
+          type: string
+          format: date
+          examples:
+            - 2024-04-30
+        creator:
+          description: Creator of the task
+          type: string
+          format: uuid
+          examples:
+            - fb64bc52-c3b4-45f4-9efd-b0033515ad21
+
+  securitySchemes:
+    openIdConnect:
+      type: openIdConnect
+      description: Security scheme for events
+      openIdConnectUrl: "https://idp.online-library.org/configuration"
