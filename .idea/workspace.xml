@@ -4,34 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9f418031-fa2f-4dcf-9ad8-1bd8158fd7e4" name="Changes" comment="Groups">
-      <change afterPath="$PROJECT_DIR$/DdApiD-2024-03-21/MemberManagement#.yaml" afterDir="false" />
+    <list default="true" id="9f418031-fa2f-4dcf-9ad8-1bd8158fd7e4" name="Changes" comment="Linting">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DDApiD-2024-03-13/Group1/AsyncSkeleton.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/TestingAlongLifecycle-2024-04-25/AsyncSkeleton.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DDApiD-2024-03-13/Group1/RestSkeleton.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/TestingAlongLifecycle-2024-04-25/RestSkeleton.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DDApiD-2024-03-13/Group10/AsyncSkeleton.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/DDApiD-2024-03-13/Group10/RestSkeleton.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/DDApiD-2024-03-13/Group11/AsyncSkeleton.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/DDApiD-2024-03-13/Group11/RestSkeleton.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/TestingAlongLifecycle-2024-04-25/TaskManagement.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DDApiD-2024-03-13/Group12/AsyncSkeleton.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/DDApiD-2024-03-13/Group12/RestSkeleton.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/DDApiD-2024-03-13/Group2/AsyncSkeleton.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/DDApiD-2024-03-13/Group2/RestSkeleton.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/DDApiD-2024-03-13/Group3/AsyncSkeleton.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/DDApiD-2024-03-13/Group3/RestSkeleton.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/DDApiD-2024-03-13/Group4/AsyncSkeleton.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/DDApiD-2024-03-13/Group4/RestSkeleton.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/DDApiD-2024-03-13/Group5/AsyncSkeleton.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/DDApiD-2024-03-13/Group5/RestSkeleton.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/DDApiD-2024-03-13/Group6/AsyncSkeleton.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/DDApiD-2024-03-13/Group6/RestSkeleton.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/DDApiD-2024-03-13/Group7/AsyncSkeleton.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/DDApiD-2024-03-13/Group7/RestSkeleton.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/DDApiD-2024-03-13/Group8/AsyncSkeleton.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/DDApiD-2024-03-13/Group8/RestSkeleton.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/DDApiD-2024-03-13/Group9/AsyncSkeleton.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/DDApiD-2024-03-13/Group9/RestSkeleton.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/OnlineLibrary/RestSkeleton.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/OnlineLibrary/RestSkeleton.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TestingAlongLifecycle-2024-04-25/RestSkeleton.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/TestingAlongLifecycle-2024-04-25/RestSkeleton.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TestingAlongLifecycle-2024-04-25/TaskManagement.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/TestingAlongLifecycle-2024-04-25/TaskManagement.yaml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -77,24 +53,23 @@
     <option name="openDirectoriesWithSingleClick" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "full.screen.before.presentation.mode": "false",
-    "git-widget-placeholder": "main",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "/Users/annegretjunkercodecentricag/IdeaProjects/DdApiD/TestingAlongLifecycle",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "preferences.pluginManager",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;full.screen.before.presentation.mode&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/annegretjunkercodecentricag/IdeaProjects/DdApiD/TestingAlongLifecycle&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/TestingAlongLifecycle" />
@@ -133,7 +108,9 @@
       <workItem from="1711808123608" duration="597000" />
       <workItem from="1712152603238" duration="2327000" />
       <workItem from="1712587841050" duration="1627000" />
-      <workItem from="1712736026897" duration="15467000" />
+      <workItem from="1712736026897" duration="16233000" />
+      <workItem from="1713766300588" duration="4344000" />
+      <workItem from="1713779023161" duration="3617000" />
     </task>
     <task id="LOCAL-00001" summary="Initial creation">
       <option name="closed" value="true" />
@@ -279,7 +256,23 @@
       <option name="project" value="LOCAL" />
       <updated>1710334483517</updated>
     </task>
-    <option name="localTasksCounter" value="19" />
+    <task id="LOCAL-00019" summary="Groups">
+      <option name="closed" value="true" />
+      <created>1713688283709</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1713688283709</updated>
+    </task>
+    <task id="LOCAL-00020" summary="Rest Skeleton">
+      <option name="closed" value="true" />
+      <created>1713688755461</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1713688755461</updated>
+    </task>
+    <option name="localTasksCounter" value="21" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -309,6 +302,7 @@
     <MESSAGE value="Changing only in Administration" />
     <MESSAGE value="MyShelf - searched by member via authentication" />
     <MESSAGE value="Groups" />
-    <option name="LAST_COMMIT_MESSAGE" value="Groups" />
+    <MESSAGE value="Rest Skeleton" />
+    <option name="LAST_COMMIT_MESSAGE" value="Rest Skeleton" />
   </component>
 </project>

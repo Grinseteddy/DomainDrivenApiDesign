@@ -7,7 +7,7 @@ info:
     email: annegret.junker@codecentric.de
   version: 1.0.0
 servers:
-  - url: 'https://{server-to-the-api}.myorganization.com/service'
+  - url: 'https://task-management.myorganization.com/service'
 security:
   - openIdConnect:
       - task_read
@@ -31,13 +31,13 @@ paths:
       parameters:
         - $ref: '#/components/parameters/SearchCriteriasParameter'
       responses:
-        200:
+        '200':
           $ref: '#/components/responses/TaskListResponse'
-        400:
+        '400':
           $ref: '#/components/responses/BadRequestResponse'
-        403:
+        '403':
           $ref: '#/components/responses/ForbiddenResponse'
-        404:
+        '404':
           $ref: '#/components/responses/NotFoundResponse'
     post:
       description: Creates a new task
@@ -50,16 +50,17 @@ paths:
       requestBody:
         $ref: '#/components/requestBodies/TaskToBeCreatedRequest'
       responses:
-        201:
+        '201':
           $ref: '#/components/responses/LinkToResourceResponse'
-        400:
+        '400':
           $ref: '#/components/responses/BadRequestResponse'
-        403:
+        '403':
           $ref: '#/components/responses/ForbiddenResponse'
 
   /task/{taskIdentifier}:
     get:
       description: Gets back a task based on its ID
+      operationId: getTaskById
       tags:
         - Task
       security:
@@ -68,13 +69,13 @@ paths:
       parameters:
         - $ref: '#/components/parameters/TaskIdentifierParameter'
       responses:
-        200:
+        '200':
           $ref: '#/components/responses/SingleTaskResponse'
-        400:
+        '400':
           $ref: '#/components/responses/BadRequestResponse'
-        403:
+        '403':
           $ref: '#/components/responses/ForbiddenResponse'
-        404:
+        '404':
           $ref: '#/components/responses/NotFoundResponse'
 
     put:
@@ -90,13 +91,13 @@ paths:
       requestBody:
         $ref: '#/components/requestBodies/TaskToBeChangedRequest'
       responses:
-        200:
+        '200':
           $ref: '#/components/responses/LinkToResourceResponse'
-        400:
+        '400':
           $ref: '#/components/responses/BadRequestResponse'
-        403:
+        '403':
           $ref: '#/components/responses/ForbiddenResponse'
-        404:
+        '404':
           $ref: '#/components/responses/NotFoundResponse'
 
     delete:
@@ -106,24 +107,24 @@ paths:
         - Task
       security:
         - openIdConnect:
-            - resource_admin
+            - task_admin
       parameters:
         - $ref: '#/components/parameters/TaskIdentifierParameter'
       responses:
-        200:
+        '200':
           $ref: '#/components/responses/SuccessfulOperationResponse'
-        400:
+        '400':
           $ref: '#/components/responses/BadRequestResponse'
-        403:
+        '403':
           $ref: '#/components/responses/ForbiddenResponse'
-        404:
+        '404':
           $ref: '#/components/responses/NotFoundResponse'
 
 
 components:
   parameters:
     TaskIdentifierParameter:
-      name: taskId
+      name: taskIdentifier
       description: Task identifier
       required: true
       in: path
@@ -131,7 +132,7 @@ components:
         type: string
         format: uuid
         examples:
-         - e3508686-61d8-4e83-9a7f-bc373e1974b6
+          - e3508686-61d8-4e83-9a7f-bc373e1974b6
 
     SearchCriteriasParameter:
       name: searchCriterias[]
@@ -145,7 +146,7 @@ components:
           minLength: 2
           maxLength: 200
           examples:
-          - [Create,task]
+            - [Create,task]
 
   responses:
     BadRequestResponse:
@@ -259,7 +260,7 @@ components:
           minLength: 2
           maxLength: 1024
           examples:
-              - A search request with less than 2 characters is not allowed
+            - A search request with less than 2 characters is not allowed
         severity:
           description: Severity of the message
           type: string

@@ -30,14 +30,14 @@ paths:
       parameters:
         - $ref: '#/components/parameters/SearchCriteriasParameter'
       responses:
-        200:
+        '200':
           description: Successful operation
           # put here an array to resource
-        400:
+        '400':
           $ref: '#/components/responses/BadRequestResponse'
-        403:
+        '403':
           $ref: '#/components/responses/ForbiddenResponse'
-        404:
+        '404':
           $ref: '#/components/responses/NotFoundResponse'
     post:
       description: Description # describe your function
@@ -50,11 +50,11 @@ paths:
       requestBody:
         # link to your resource to be created
       responses:
-        200:
+        '200':
           $ref: '#/components/responses/LinkToResourceResponse'
-        400:
+        '400':
           $ref: '#/components/responses/BadRequestResponse'
-        403:
+        '403':
           $ref: '#/components/responses/ForbiddenResponse'
 
   /resources/{resourceIdentifier}:
@@ -69,13 +69,13 @@ paths:
       parameters:
         - $ref: '#/components/parameters/ResourceIdentifierParameter'
       responses:
-        200:
+        '200':
           # Answer with your resource
-        400:
+        '400':
           $ref: '#/components/responses/BadRequestResponse'
-        403:
+        '403':
           $ref: '#/components/responses/ForbiddenResponse'
-        404:
+        '404':
           $ref: '#/components/responses/NotFoundResponse'
 
     put:
@@ -91,13 +91,13 @@ paths:
       requestBody:
         # Link to your resource to be updated
       responses:
-        200:
+        '200':
           $ref: '#/components/responses/LinkToResourceResponse'
-        400:
+        '400':
           $ref: '#/components/responses/BadRequestResponse'
-        403:
+        '403':
           $ref: '#/components/responses/ForbiddenResponse'
-        404:
+        '404':
           $ref: '#/components/responses/NotFoundResponse'
 
     delete:
@@ -111,13 +111,13 @@ paths:
       parameters:
         - $ref: '#/components/parameters/ResourceIdentifierParameter'
       responses:
-        200:
+        '200':
           $ref: '#/components/responses/SuccessfulOperationResponse'
-        400:
+        '400':
           $ref: '#/components/responses/BadRequestResponse'
-        403:
+        '403':
           $ref: '#/components/responses/ForbiddenResponse'
-        404:
+        '404':
           $ref: '#/components/responses/NotFoundResponse'
 
 
