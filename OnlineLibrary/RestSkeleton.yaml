@@ -48,7 +48,7 @@ paths:
         - openIdConnect:
             - resource_write
       requestBody:
-        # link to your resource to be created
+      # link to your resource to be created
       responses:
         200:
           $ref: '#/components/responses/LinkToResourceResponse'
@@ -70,7 +70,7 @@ paths:
         - $ref: '#/components/parameters/ResourceIdentifierParameter'
       responses:
         200:
-          # Answer with your resource
+        # Answer with your resource
         400:
           $ref: '#/components/responses/BadRequestResponse'
         403:
@@ -89,7 +89,7 @@ paths:
       parameters:
         - $ref: '#/components/parameters/ResourceIdentifierParameter'
       requestBody:
-        # Link to your resource to be updated
+      # Link to your resource to be updated
       responses:
         200:
           $ref: '#/components/responses/LinkToResourceResponse'
@@ -131,7 +131,8 @@ components:
       schema:
         type: string
         format: uuid
-        example: d448b5bc-a9bc-4036-8899-c77f781a76d5
+        examples:
+          - 448b5bc-a9bc-4036-8899-c77f781a76d5
 
     SearchCriteriasParameter:
       name: searchCriterias[]
@@ -144,7 +145,8 @@ components:
           type: string
           minLength: 2
           maxLength: 200
-          example: "bla bla"
+          examples:
+            - bla bla
 
   responses:
     BadRequestResponse:
@@ -189,13 +191,14 @@ components:
           type: string
           minLength: 2
           maxLength: 155
-          example: "CatalogEntry"
+          examples:
+            - CatalogEntry
         link:
           description: URL to the according entity
           type: string
           format: uri
-          example:
-            "https://apis.online-library.org/catalog-maintenance/catalog-entries/74d870fa-9e93-4ffd-907e-038c85e8bc20"
+          examples:
+            - https://apis.online-library.org/catalog-maintenance/catalog-entries/74d870fa-9e93-4ffd-907e-038c85e8bc20
 
     Message:
       description: Message to a request containing detailed information
@@ -214,13 +217,15 @@ components:
           type: string
           minLength: 2
           maxLength: 50
-          example: Request is not allowed
+          examples:
+            - Request is not allowed
         description:
           description: Description to the message
           type: string
           minLength: 2
           maxLength: 1024
-          example: A search request with less than 2 characters is not allowed
+          examples:
+            - A search request with less than 2 characters is not allowed
         severity:
           description: Severity of the message
           type: string
@@ -229,7 +234,8 @@ components:
             - ERROR
             - INFO
             - DEBUG
-          example: INFO
+          examples:
+            - INFO
 
   securitySchemes:
     openIdConnect:

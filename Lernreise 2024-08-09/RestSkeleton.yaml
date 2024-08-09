@@ -1,0 +1,392 @@
+openapi: 3.1.0
+info:
+  title: Skeleton
+  description: A skeleton which can be used to create OpenAPI specifications
+  contact:
+    email: annegret.junker@codecentric.de
+    name: Annegret Junker
+  version: 1.0.0
+  x-api-id: c004ebd2-f9c6-4e21-aa41-826f8eaf4092
+  x-audience: external-public
+servers:
+  - url: 'https://api.mycompany.de/service'
+security:
+  - openIdConnect:
+      - resource:read
+      - resource:write
+      - resource:admin
+tags:
+  - name: Name Tag
+    description: Description
+paths:
+  /resources:
+    get:
+      description: Description # describe your function
+      # define a unique operationId
+      operationId: getResourceByFilterCriteria
+      tags:
+        - Name Tag
+      security:
+        - openIdConnect:
+            - resource:read
+      parameters:
+        - $ref: '#/components/parameters/SearchCriteriasParameter'
+        - $ref: '#/components/parameters/VersionParameter'
+      responses:
+        '200':
+          $ref: '#/components/responses/ResourceListResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '500':
+          $ref: '#/components/responses/ServiceNotAvailableResponse'
+        default:
+          $ref: '#/components/responses/DefaultResponse'
+
+    post:
+      description: Description # describe your function
+      # define a unique operationId
+      operationId: createNewRessource
+      tags:
+        - Name Tag
+      security:
+        - openIdConnect:
+            - resource:write
+      parameters:
+        - $ref: '#/components/parameters/VersionParameter'
+      requestBody:
+        # link to your resource to be created
+        $ref: '#/components/requestBodies/ResourceToBeCreatedRequest'
+      responses:
+        '201':
+          $ref: '#/components/responses/LinkToResourceResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '500':
+          $ref: '#/components/responses/ServiceNotAvailableResponse'
+        default:
+          $ref: '#/components/responses/DefaultResponse'
+
+  /resources/{resourceId}:
+    get:
+      description: Description # describe your function
+      # define a unique operationId
+      operationId: getResourceById
+      tags:
+        - Name Tag
+      security:
+        - openIdConnect:
+            - resource:read
+      parameters:
+        - $ref: '#/components/parameters/ResourceIdentifierParameter'
+        - $ref: '#/components/parameters/VersionParameter'
+      responses:
+        '200':
+          # Answer with your resource
+          $ref: '#/components/responses/SingleResourceResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '404':
+          $ref: '#/components/responses/NotFoundResponse'
+        '500':
+          $ref: '#/components/responses/ServiceNotAvailableResponse'
+        default:
+          $ref: '#/components/responses/DefaultResponse'
+
+    put:
+      description: Description # describe your function
+      # define a unique operationId
+      operationId: updateResourceById
+      tags:
+        - Name Tag
+      security:
+        - openIdConnect:
+            - resource:write
+      parameters:
+        - $ref: '#/components/parameters/ResourceIdentifierParameter'
+        - $ref: '#/components/parameters/VersionParameter'
+      requestBody:
+        # Link to your resource to be updated
+        $ref: '#/components/requestBodies/ResourceToBeChangedRequest'
+      responses:
+        '200':
+          $ref: '#/components/responses/LinkToResourceResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '404':
+          $ref: '#/components/responses/NotFoundResponse'
+        '500':
+          $ref: '#/components/responses/ServiceNotAvailableResponse'
+        default:
+          $ref: '#/components/responses/DefaultResponse'
+
+    delete:
+      description: Description # describe your function
+      # define a unique operationId
+      operationId: deleteResourceById
+      tags:
+        - Name Tag
+      security:
+        - openIdConnect:
+            - resource:admin
+      parameters:
+        - $ref: '#/components/parameters/ResourceIdentifierParameter'
+        - $ref: '#/components/parameters/VersionParameter'
+      responses:
+        '200':
+          $ref: '#/components/responses/SuccessfulOperationResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '404':
+          $ref: '#/components/responses/NotFoundResponse'
+        '500':
+          $ref: '#/components/responses/ServiceNotAvailableResponse'
+        default:
+          $ref: '#/components/responses/DefaultResponse'
+
+
+components:
+  parameters:
+    ResourceIdentifierParameter:
+      name: resourceId
+      description: Resource identifier
+      required: true
+      in: path
+      schema:
+        type: string
+        format: uuid
+        examples:
+          - 448b5bc-a9bc-4036-8899-c77f781a76d5
+
+    SearchCriteriasParameter:
+      name: searchCriterias
+      description: A single search criteria
+      in: query
+      required: false
+      schema:
+        type: array
+        items:
+          type: string
+          minLength: 2
+          maxLength: 200
+          examples:
+            - bla bla
+
+    VersionParameter:
+      name: x-version
+      description: Version of the API specification used delivered in header
+      in: header
+      required: true
+      schema:
+        type: string
+        # Give here the versions of your specification supported by your implementation
+        x-extensible-enum:
+          - 1.0.0
+        default: 1.0.0
+        examples:
+          - 1.0.0
+
+
+  responses:
+    BadRequestResponse:
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+
+
+    ForbiddenResponse:
+      description: Forbidden
+
+    LinkToResourceResponse:
+      description: Successful operation - Catalog entry created
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Link"
+
+    NotFoundResponse:
+      description: Not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+
+
+    # Needs to be substituted by the resource you want to expose
+    ResourceListResponse:
+      description: List of the resource you want to expose
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Resources'
+
+    # Needs to be substituted by the resource you want to expose
+    SingleResourceResponse:
+      description: Delivers back the resource to be exposed
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Resource'
+
+    ServiceNotAvailableResponse:
+      description: Service not available
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+
+    DefaultResponse:
+      description: Unexpected error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+
+    SuccessfulOperationResponse:
+      description: Successful operation
+
+
+  requestBodies:
+    # needs to be substituted by the resource you want to expose
+    ResourceToBeCreatedRequest:
+      description: Creates a new resource
+      content:
+        # could be an array in case a bunch of the resource should be created
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ResourceToBeCreated'
+
+    ResourceToBeChangedRequest:
+      # needs to be updated by the resource you want to expose
+      description: Updates the resource provided
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Resource'
+
+  schemas:
+    Error:
+      description: An error object used for error responses
+      type: object
+      required:
+        - title
+        - status
+        - timestamp
+      properties:
+        title:
+          description: A short description of the problem using kebab-cases
+          type: string
+          minLength: 2
+          maxLength: 255
+          examples:
+            - out-of-stock
+        detail:
+          description: |
+            A human-readable description of the problem which can be used by technicians to solve the problem.
+          type: string
+          examples:
+            - The item is currently out of stock.
+        timestamp:
+          description: Point in time when the error occurred
+          type: string
+          format: date-time
+          examples:
+            - 2024-07-01T23:32:54T+01:00
+        traceparent:
+          description: Tracking ID of the API journey
+          type: string
+          pattern: ^[0-9]{2}-[0-9a-z]{16}-[0-9a-z]{8}-[0-9a-z]{1}[0-9a-z]{1}$
+          examples:
+            - 00-0af7651916cd43dd8448eb211c80319c-b7ad6b7169203331-01
+        severity:
+          description: Severity of the according error
+          type: string
+          enum:
+            - FATAL
+            - ERROR
+            - WARNING
+            - INFO
+          examples:
+            - ERROR
+
+    Link:
+      description: Link to an entity
+      type: object
+      required:
+        - type
+        - link
+      properties:
+        type:
+          description: Not fully qualified type name of the object
+          type: string
+          minLength: 2
+          maxLength: 155
+          # adapt the examples with your exposed resource
+          examples:
+            - Resource
+        link:
+          description: URL to the according entity
+          type: string
+          format: uri
+          examples:
+            - https://api.aok.de/resource-management/resources/74d870fa-9e93-4ffd-907e-038c85e8bc20
+
+    Resource:
+      description: Description of the resource
+      type: object
+      # allows some kind of polymorphism
+      allOf:
+        - $ref: '#/components/schemas/ResourceToBeCreated'
+      required:
+        - id
+      properties:
+        id:
+          description: Unique identifier for the resource
+          type: string
+          format: uuid
+          examples:
+            - a07d62e1-5e2e-4e15-b50d-6ed412175443
+
+    Resources:
+      # needs t obe substituted by the resource you want to expose
+      # Resource array to be delivered as bulk
+      type: array
+      minItems: 0
+      maxItems: 127
+      items:
+        $ref: '#/components/schemas/Resource'
+
+    # needs to be substituted by the resource you want to expose
+    # To be created - usually the resource without identifier
+    ResourceToBeCreated:
+      description: Description of the resource
+      type: object
+      required:
+        # put here the properties which are mandatory for your resource
+        - aTypicalProperty
+      properties:
+        aTypicalProperty:
+          description: A property of your resource
+          type: string
+          # try to define your properties as precise as possible
+          # use formats and patterns to limit th value area
+          pattern: ^[0-9A-Z]{1,125}$
+          examples:
+            - ABC2345
+
+  securitySchemes:
+    openIdConnect:
+      type: openIdConnect
+      description: Security scheme for events
+      openIdConnectUrl: "https://idp.kunde.de/configuration"

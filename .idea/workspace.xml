@@ -5,8 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9f418031-fa2f-4dcf-9ad8-1bd8158fd7e4" name="Changes" comment="Linting">
+      <change afterPath="$PROJECT_DIR$/Lernreise 2024-08-09/CatalogFactoryService.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Lernreise 2024-08-09/RestSkeleton.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/OnlineLibrary/ReadingService/TEst.yaml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TestingAlongLifecycle-2024-04-25/RestSkeleton.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/TestingAlongLifecycle-2024-04-25/RestSkeleton.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OnlineLibrary/RestSkeleton.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/OnlineLibrary/RestSkeleton.yaml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/TestingAlongLifecycle-2024-04-25/TaskManagement.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/TestingAlongLifecycle-2024-04-25/TaskManagement.yaml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -31,14 +34,12 @@
     &quot;assignee&quot;: &quot;Grinseteddy&quot;
   }
 }</component>
-  <component name="GithubPullRequestsUISettings">
-    <option name="selectedUrlAndAccountId">
-      <UrlAndAccount>
-        <option name="accountId" value="28bb49a8-dc30-4772-a8ad-7a22eec84899" />
-        <option name="url" value="https://github.com/Grinseteddy/DomainDrivenApiDesign" />
-      </UrlAndAccount>
-    </option>
-  </component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/Grinseteddy/DomainDrivenApiDesign&quot;,
+    &quot;accountId&quot;: &quot;28bb49a8-dc30-4772-a8ad-7a22eec84899&quot;
+  }
+}</component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
@@ -60,7 +61,7 @@
     &quot;full.screen.before.presentation.mode&quot;: &quot;false&quot;,
     &quot;git-widget-placeholder&quot;: &quot;main&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/Users/annegretjunkercodecentricag/IdeaProjects/DdApiD/TestingAlongLifecycle&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/annegretjunkercodecentricag/IdeaProjects/DdApiD/Lernreise 2024-08-09&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
@@ -72,16 +73,24 @@
 }</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/Lernreise 2024-08-09" />
       <recent name="$PROJECT_DIR$/TestingAlongLifecycle" />
       <recent name="$PROJECT_DIR$/DDApiD-2024-03-13" />
       <recent name="$PROJECT_DIR$/DDApiD-2024-03-13/Group3" />
       <recent name="$PROJECT_DIR$/DDApiD-2024-03-13/Group2" />
-      <recent name="$PROJECT_DIR$/DDApiD-2024-03-13/Group1" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/OnlineLibrary" />
       <recent name="$PROJECT_DIR$/DDApiD-2024-03-13/Group1" />
     </key>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-9f38398b9061-39b83d9b5494-intellij.indexing.shared.core-IU-241.18034.62" />
+        <option value="bundled-js-predefined-1d06a55b98c1-0b3e54e931b4-JavaScript-IU-241.18034.62" />
+      </set>
+    </attachedChunks>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -111,6 +120,32 @@
       <workItem from="1712736026897" duration="16233000" />
       <workItem from="1713766300588" duration="4344000" />
       <workItem from="1713779023161" duration="3617000" />
+      <workItem from="1713942116111" duration="9476000" />
+      <workItem from="1715092850914" duration="7149000" />
+      <workItem from="1715847711345" duration="1237000" />
+      <workItem from="1716275397505" duration="598000" />
+      <workItem from="1716279850411" duration="1196000" />
+      <workItem from="1716470096466" duration="1269000" />
+      <workItem from="1716634364210" duration="599000" />
+      <workItem from="1716830137336" duration="3374000" />
+      <workItem from="1717773493309" duration="599000" />
+      <workItem from="1718200083950" duration="599000" />
+      <workItem from="1718370772461" duration="1817000" />
+      <workItem from="1718866223150" duration="2211000" />
+      <workItem from="1718957545880" duration="637000" />
+      <workItem from="1718985871315" duration="3121000" />
+      <workItem from="1719673201061" duration="3000" />
+      <workItem from="1719673345147" duration="4000" />
+      <workItem from="1719913093132" duration="717000" />
+      <workItem from="1720526927779" duration="599000" />
+      <workItem from="1720536143601" duration="598000" />
+      <workItem from="1720615042748" duration="598000" />
+      <workItem from="1721141487762" duration="5537000" />
+      <workItem from="1721306610086" duration="597000" />
+      <workItem from="1721368798920" duration="13000" />
+      <workItem from="1721634284401" duration="3296000" />
+      <workItem from="1723128000118" duration="6150000" />
+      <workItem from="1723194548562" duration="2109000" />
     </task>
     <task id="LOCAL-00001" summary="Initial creation">
       <option name="closed" value="true" />
@@ -272,7 +307,15 @@
       <option name="project" value="LOCAL" />
       <updated>1713688755461</updated>
     </task>
-    <option name="localTasksCounter" value="21" />
+    <task id="LOCAL-00021" summary="Linting">
+      <option name="closed" value="true" />
+      <created>1713942131820</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1713942131820</updated>
+    </task>
+    <option name="localTasksCounter" value="22" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -303,6 +346,7 @@
     <MESSAGE value="MyShelf - searched by member via authentication" />
     <MESSAGE value="Groups" />
     <MESSAGE value="Rest Skeleton" />
-    <option name="LAST_COMMIT_MESSAGE" value="Rest Skeleton" />
+    <MESSAGE value="Linting" />
+    <option name="LAST_COMMIT_MESSAGE" value="Linting" />
   </component>
 </project>
