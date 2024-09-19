@@ -75,18 +75,21 @@ components:
           description: Identifier to be set by application to trace end-to-end-api-journey
           type: string
           format: uuid
-          example: "b3416449-5f69-4cd2-a6c4-1ff82da96bce"
+          examples:
+            - b3416449-5f69-4cd2-a6c4-1ff82da96bce
         messageId:
           description: Identifier for the particular message, is needed in case of cascading infrastructure
           type: string
           format: uuid
-          example: "5a1d305b-19f3-46eb-ada1-9a9770e56fd1"
+          examples:
+            - 5a1d305b-19f3-46eb-ada1-9a9770e56fd1
         source:
           description: Application name creating the message
           type: string
           minLength: 2
           maxLength: 20
-          example: YourService
+          examples:
+            - YourService
 
     ResourceIn:
       # define your resource

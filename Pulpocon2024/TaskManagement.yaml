@@ -1,17 +1,20 @@
 asyncapi: 3.0.0
 info:
-  title: Skeleton
+  title: Task Management - Events
   version: 1.0.0
   description: |
-    Skeleton for an AsyncAPI definition
+    Task Management creates the events
+    - Task created
+    - Task done
+    Task Management does not consume events.
   contact:
-    name: whoever
-    url: https://sample.org/sample
-    email: who.ever@sample.org
+    name: Annegret Junker
+    url: https://task-management.org/task-management
+    email: annegret.junker@codecentric.de
 servers:
   production:
     # other messaging brokers needs to be defined - look in the documentation
-    host: "events.{your organization}.com:9092"
+    host: "events.myorganization.com:9092"
     protocol: "kafka"
     description: "Produktion broker"
 
@@ -20,49 +23,145 @@ defaultContentType:
 
 channels:
 
-  resourceEventIn:
-    address: "service/resourceIn"
-    messages:
-      resourceEventIn:
-        $ref: '#/components/messages/resourceEventIn'
+  #resourceEventIn:
+  #  address: "service/taskIn"
+  #  messages:
+  #    resourceEventIn:
+  #      $ref: '#/components/messages/resourceEventIn'
 
-  resourceEventOut:
-    address: "service/resourceOut"
+  taskCreatedEvent:
+    address: "task-management/taskCreatedEvent"
     messages:
       resourceEventOut:
-        $ref: '#/components/messages/resourceEventOut'
+        $ref: '#/components/messages/taskCreatedMessage'
+
+  askCreatedEvent:
+    address: "task-management/taskDoneEvent"
+    messages:
+      resourceEventOut:
+        $ref: '#/components/messages/taskDoneMessage'
 
 operations:
-  resourceEventIn:
-    action: "receive"
-    channel:
-      $ref: "#/channels/resourceEventIn"
+  #resourceEventIn:
+  #  action: "receive"
+  #  channel:
+  #    $ref: "#/channels/resourceEventIn"
 
-  resourceEventOut:
+  taskCreatedOperation:
     action: "send"
     channel:
-      $ref: '#/channels/resourceEventOut'
+      $ref: '#/channels/taskCreatedEvent'
+
+  taskDoneOperation:
+    action: "send"
+    channel:
+      $ref: '#/channels/taskDoneEvent'
 
 
 components:
   messages:
-    resourceEventIn:
-      headers:
-        $ref: '#/components/schemas/MessageHeader'
-      payload:
-        $ref: '#/components/schemas/ResourceIn'
+   # resourceEventIn:
+   #   headers:
+   #     $ref: '#/components/schemas/MessageHeader'
+   #   payload:
+   #     $ref: '#/components/schemas/ResourceIn'
 
-    resourceEventOut:
+    taskCreatedMessage:
       headers:
         $ref: '#/components/schemas/MessageHeader'
       payload:
-        $ref: '#/components/schemas/ResourceOut'
+        $ref: '#/components/schemas/TaskCreated'
+
+    taskDoneMessage:
+      headers:
+        $ref: '#/components/schemas/MessageHeader'
+      payload:
+        $ref: '#/components/schemas/TaskDone'
 
 
   schemas:
 
-    ResourceOut:
-      # Define your resource
+    Task:
+      description: A task which can be done by a freelancer or a craftsman
+      type: object
+      required:
+        - id
+        - title
+        - dueDate
+      properties:
+        id:
+          description: Identifier of the task
+          type: string
+          format: uuid
+          examples:
+            - 81b8611d-9c64-4a38-b743-89c302800ee6
+        title:
+          description: Title of the task
+          type: string
+          minLength: 2
+          maxLength: 155
+          examples:
+            - Do a conference talk
+        description:
+          description: Create a conference talk with presentation about async API
+          type: string
+          minLength: 2
+          maxLength: 2048
+          examples:
+            - Prepare the presentation and make a dry-run with your friends
+        dueDate:
+          description: Date when the task is due
+          type: string
+          format: date
+          examples:
+            - 2024-09-21
+        creator:
+          description: Identifier of the user who created the task
+          type: string
+          format: uuid
+          examples:
+            - c1e55cc2-8098-4f20-8916-094dd1aed035
+        assignee:
+          description: Identifier of the user to whom the task is assigned
+          type: string
+          format: uuid
+          examples:
+            - 3971e167-57df-4749-b588-335a438c13f4
+
+
+    TaskCreated:
+      description: A new created task
+      allOf:
+        - $ref: '#/components/schemas/Task'
+      required:
+        - status
+      properties:
+        status:
+          description: Status of the task
+          type: string
+          default: NEW
+          enum:
+            - NEW
+            - IN_PROGRESS
+          examples:
+            - NEW
+
+      TaskDone:
+        description: A finished task
+        allOf:
+          - $ref: '#/components/schemas/Task'
+        required:
+          - assignee
+          - status
+        properties:
+          status:
+            description: Status of the task
+            type: string
+            default: DONE
+            enum:
+              - DONE
+            examples:
+              - DONE
 
     MessageHeader:
       description: Header Information for each message
@@ -75,29 +174,29 @@ components:
           description: Identifier to be set by application to trace end-to-end-api-journey
           type: string
           format: uuid
-          example: "b3416449-5f69-4cd2-a6c4-1ff82da96bce"
+          examples:
+            - b3416449-5f69-4cd2-a6c4-1ff82da96bce
         messageId:
           description: Identifier for the particular message, is needed in case of cascading infrastructure
           type: string
           format: uuid
-          example: "5a1d305b-19f3-46eb-ada1-9a9770e56fd1"
+          examples:
+            - 5a1d305b-19f3-46eb-ada1-9a9770e56fd1
         source:
           description: Application name creating the message
           type: string
           minLength: 2
           maxLength: 20
-          example: YourService
-
-    ResourceIn:
-      # define your resource
+          examples:
+            - TaskManagement
 
   securitySchemes:
     openIdConnect:
       type: openIdConnect
       description: Security scheme for events
-      openIdConnectUrl: "https://idp.online-library.org/configuration"
+      openIdConnectUrl: "https://idp.task-management.org/configuration"
       scopes:
-        - librarian_write
+        - task_write
 
 
 
