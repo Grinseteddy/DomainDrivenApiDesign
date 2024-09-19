@@ -4,13 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9f418031-fa2f-4dcf-9ad8-1bd8158fd7e4" name="Changes" comment="Linting">
-      <change afterPath="$PROJECT_DIR$/Lernreise 2024-08-09/CatalogFactoryService.yaml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Lernreise 2024-08-09/RestSkeleton.yaml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/OnlineLibrary/ReadingService/TEst.yaml" afterDir="false" />
+    <list default="true" id="9f418031-fa2f-4dcf-9ad8-1bd8158fd7e4" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OnlineLibrary/RestSkeleton.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/OnlineLibrary/RestSkeleton.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TestingAlongLifecycle-2024-04-25/TaskManagement.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/TestingAlongLifecycle-2024-04-25/TaskManagement.yaml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -145,7 +140,10 @@
       <workItem from="1721368798920" duration="13000" />
       <workItem from="1721634284401" duration="3296000" />
       <workItem from="1723128000118" duration="6150000" />
-      <workItem from="1723194548562" duration="2109000" />
+      <workItem from="1723194548562" duration="16403000" />
+      <workItem from="1723792178020" duration="3041000" />
+      <workItem from="1724311439793" duration="610000" />
+      <workItem from="1724340992293" duration="37000" />
     </task>
     <task id="LOCAL-00001" summary="Initial creation">
       <option name="closed" value="true" />
@@ -315,7 +313,15 @@
       <option name="project" value="LOCAL" />
       <updated>1713942131820</updated>
     </task>
-    <option name="localTasksCounter" value="22" />
+    <task id="LOCAL-00022" summary="Linting">
+      <option name="closed" value="true" />
+      <created>1723197749967</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1723197749967</updated>
+    </task>
+    <option name="localTasksCounter" value="23" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
