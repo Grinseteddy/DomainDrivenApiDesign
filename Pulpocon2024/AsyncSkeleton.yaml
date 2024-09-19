@@ -13,7 +13,7 @@ servers:
     # other messaging brokers needs to be defined - look in the documentation
     host: "events.{your organization}.com:9092"
     protocol: "kafka"
-    description: "Produktion broker"
+    description: "Production broker"
 
 defaultContentType:
   application/json
@@ -91,7 +91,7 @@ components:
           examples:
             - YourService
 
-    ResourceIn:
+    # ResourceIn:
       # define your resource
 
   securitySchemes:

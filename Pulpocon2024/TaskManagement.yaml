@@ -16,7 +16,7 @@ servers:
     # other messaging brokers needs to be defined - look in the documentation
     host: "events.myorganization.com:9092"
     protocol: "kafka"
-    description: "Produktion broker"
+    description: "Production broker"
 
 defaultContentType:
   application/json
@@ -128,7 +128,6 @@ components:
           examples:
             - 3971e167-57df-4749-b588-335a438c13f4
 
-
     TaskCreated:
       description: A new created task
       allOf:
@@ -146,22 +145,22 @@ components:
           examples:
             - NEW
 
-      TaskDone:
-        description: A finished task
-        allOf:
-          - $ref: '#/components/schemas/Task'
-        required:
-          - assignee
-          - status
-        properties:
-          status:
-            description: Status of the task
-            type: string
-            default: DONE
-            enum:
-              - DONE
-            examples:
-              - DONE
+    TaskDone:
+      description: A finished task
+      allOf:
+        - $ref: '#/components/schemas/Task'
+      required:
+        - assignee
+        - status
+      properties:
+        status:
+          description: Status of the task
+          type: string
+          default: DONE
+          enum:
+            - DONE
+          examples:
+            - DONE
 
     MessageHeader:
       description: Header Information for each message
