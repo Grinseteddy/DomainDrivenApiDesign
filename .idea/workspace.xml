@@ -6,8 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="9f418031-fa2f-4dcf-9ad8-1bd8158fd7e4" name="Changes" comment="Pulpocon Task Management">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Pulpocon2024/AsyncSkeleton.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/Pulpocon2024/AsyncSkeleton.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Pulpocon2024/TaskManagement.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/Pulpocon2024/TaskManagement.yaml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -146,7 +144,7 @@
       <workItem from="1723792178020" duration="3041000" />
       <workItem from="1724311439793" duration="610000" />
       <workItem from="1724340992293" duration="37000" />
-      <workItem from="1726760553855" duration="4165000" />
+      <workItem from="1726760553855" duration="11647000" />
     </task>
     <task id="LOCAL-00001" summary="Initial creation">
       <option name="closed" value="true" />
@@ -340,7 +338,15 @@
       <option name="project" value="LOCAL" />
       <updated>1726762660148</updated>
     </task>
-    <option name="localTasksCounter" value="25" />
+    <task id="LOCAL-00025" summary="Pulpocon Task Management">
+      <option name="closed" value="true" />
+      <created>1726764972687</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1726764972687</updated>
+    </task>
+    <option name="localTasksCounter" value="26" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
