@@ -193,7 +193,7 @@ components:
 
   securitySchemes:
     user-password:
-      type: user
+      type: userPassword
       description: Security scheme for events
 
 
