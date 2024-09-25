@@ -98,7 +98,7 @@ components:
 
   securitySchemes:
     openIdConnect:
-      type: user-password
+      type: userPassword
       description: Security scheme for events
 
 
