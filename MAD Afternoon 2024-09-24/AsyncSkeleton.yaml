@@ -14,6 +14,8 @@ servers:
     host: "events.{your organization}.com:9092"
     protocol: "kafka"
     description: "Production broker"
+    security:
+      - $ref: '#/components/securitySchemes/openIdConnect'
 
 defaultContentType:
   application/json
