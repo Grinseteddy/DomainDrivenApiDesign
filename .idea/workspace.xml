@@ -4,8 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9f418031-fa2f-4dcf-9ad8-1bd8158fd7e4" name="Changes" comment="Pulpocon Task Management">
+    <list default="true" id="9f418031-fa2f-4dcf-9ad8-1bd8158fd7e4" name="Changes" comment="Bugfix MAD Afternoon">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MAD Afternoon 2024-09-24/AsyncSkeleton.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/MAD Afternoon 2024-09-24/AsyncSkeleton.yaml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/MAD Afternoon 2024-09-24/TaskManagement.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/MAD Afternoon 2024-09-24/TaskManagement.yaml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -148,7 +149,7 @@
       <workItem from="1726760553855" duration="11647000" />
       <workItem from="1727160342793" duration="3990000" />
       <workItem from="1727181581516" duration="1889000" />
-      <workItem from="1727254845976" duration="1095000" />
+      <workItem from="1727254845976" duration="2666000" />
     </task>
     <task id="LOCAL-00001" summary="Initial creation">
       <option name="closed" value="true" />
@@ -366,7 +367,15 @@
       <option name="project" value="LOCAL" />
       <updated>1727160519458</updated>
     </task>
-    <option name="localTasksCounter" value="28" />
+    <task id="LOCAL-00028" summary="Bugfix MAD Afternoon">
+      <option name="closed" value="true" />
+      <created>1727256043558</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1727256043558</updated>
+    </task>
+    <option name="localTasksCounter" value="29" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -400,6 +409,7 @@
     <MESSAGE value="Linting" />
     <MESSAGE value="Pulpocon" />
     <MESSAGE value="Pulpocon Task Management" />
-    <option name="LAST_COMMIT_MESSAGE" value="Pulpocon Task Management" />
+    <MESSAGE value="Bugfix MAD Afternoon" />
+    <option name="LAST_COMMIT_MESSAGE" value="Bugfix MAD Afternoon" />
   </component>
 </project>

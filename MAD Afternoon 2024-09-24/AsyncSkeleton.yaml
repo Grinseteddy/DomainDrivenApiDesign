@@ -15,7 +15,7 @@ servers:
     protocol: "kafka"
     description: "Production broker"
     security:
-      - $ref: '#/components/securitySchemes/openIdConnect'
+      - $ref: '#/components/securitySchemes/user-password'
 
 defaultContentType:
   application/json
@@ -98,12 +98,8 @@ components:
 
   securitySchemes:
     openIdConnect:
-      type: openIdConnect
+      type: user-password
       description: Security scheme for events
-      openIdConnectUrl: "https://idp.online-library.org/configuration"
-      scopes:
-        - librarian_write
-
 
 
 

@@ -18,7 +18,7 @@ servers:
     protocol: "kafka"
     description: "Production broker"
     security:
-      - $ref: '#/components/securitySchemes/openIdConnect'
+      - $ref: '#/components/securitySchemes/user-password'
 
 defaultContentType:
   application/json
@@ -192,12 +192,10 @@ components:
             - TaskManagement
 
   securitySchemes:
-    openIdConnect:
-      type: openIdConnect
+    user-password:
+      type: user
       description: Security scheme for events
-      openIdConnectUrl: "https://idp.task-management.org/configuration"
-      scopes:
-        - task_write
+
 
 
 
