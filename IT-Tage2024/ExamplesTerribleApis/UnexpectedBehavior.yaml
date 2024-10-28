@@ -1,0 +1,33 @@
+openapi: 3.1.0
+info:
+  title: Unexpected Behavior
+  description: Unexpected Behavior
+  version: 1.0.0
+servers:
+  - url: 'https'
+paths:
+  /customers:
+    get:
+      ...
+      200:
+        description: Successful operation
+        content:
+          application/json:
+            content:
+              type: array
+              items:
+                $ref: '#/components/schemas/Customer'
+
+components:
+  schemas:
+    Customer:
+      description: Customer of the company
+      properties:
+        name:
+          type: string
+        middleName:
+          description: Usual the middle name of a person, in Spanish speaking countries second family name
+          type: string
+        firstName:
+          type: string
+  

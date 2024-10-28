@@ -1,0 +1,35 @@
+openapi: 3.1.0
+info:
+  title: API directly out of the database
+  description: Example based on SAP Business Partners
+  version: 1.0.0
+servers:
+  - url: 'https'
+paths:
+
+components:
+  schemas:
+    BusinessPartner:
+      description: An existing business partner
+      properties:
+        CLIENT:
+          type: CLNT
+        PARTNER:
+          type: string
+          minLength: 10
+          maxLength: 10
+        TYPE:
+          type: string
+          minLength: 1
+          maxLength: 1
+        BPKIND:
+          type: string
+          minLength: 4
+          maxLength: 4
+        ...
+    CLNT:
+      description: Number of a tenant in a multi-tenancy environment
+      type: string
+      length: 3
+    ...
+  
