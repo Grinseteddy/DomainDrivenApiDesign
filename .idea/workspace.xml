@@ -4,9 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9f418031-fa2f-4dcf-9ad8-1bd8158fd7e4" name="Changes" comment="AsyncOnTour">
-      <change afterPath="$PROJECT_DIR$/AsyncOnTourParis-2024-10-30/ClaudeAnswer.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/AsyncOnTourParis-2024-10-30/claude-task-management-asyncapi.yaml" afterDir="false" />
+    <list default="true" id="9f418031-fa2f-4dcf-9ad8-1bd8158fd7e4" name="Changes" comment="Examples for IT-Tage">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -25,7 +23,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="AsyncOnTour" />
+        <entry key="$PROJECT_DIR$" value="main" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -36,22 +34,22 @@
     &quot;assignee&quot;: &quot;Grinseteddy&quot;
   }
 }</component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/Grinseteddy/DomainDrivenApiDesign",
-    "accountId": "28bb49a8-dc30-4772-a8ad-7a22eec84899"
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/Grinseteddy/DomainDrivenApiDesign&quot;,
+    &quot;accountId&quot;: &quot;28bb49a8-dc30-4772-a8ad-7a22eec84899&quot;
   },
-  "recentNewPullRequestHead": {
-    "server": {
-      "useHttp": false,
-      "host": "github.com",
-      "port": null,
-      "suffix": null
+  &quot;recentNewPullRequestHead&quot;: {
+    &quot;server&quot;: {
+      &quot;useHttp&quot;: false,
+      &quot;host&quot;: &quot;github.com&quot;,
+      &quot;port&quot;: null,
+      &quot;suffix&quot;: null
     },
-    "owner": "Grinseteddy",
-    "repository": "DomainDrivenApiDesign"
+    &quot;owner&quot;: &quot;Grinseteddy&quot;,
+    &quot;repository&quot;: &quot;DomainDrivenApiDesign&quot;
   }
-}]]></component>
+}</component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
@@ -71,7 +69,7 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "full.screen.before.presentation.mode": "false",
-    "git-widget-placeholder": "main",
+    "git-widget-placeholder": "AsyncOnTour",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "/Users/annegretjunkercodecentricag/IdeaProjects/DdApiD/AsyncOnTourParis-2024-10-30",
     "node.js.detected.package.eslint": "true",
@@ -169,6 +167,7 @@
       <workItem from="1727269895883" duration="2289000" />
       <workItem from="1727441538012" duration="1194000" />
       <workItem from="1727506201455" duration="1483000" />
+      <workItem from="1730184591862" duration="350000" />
     </task>
     <task id="LOCAL-00001" summary="Initial creation">
       <option name="closed" value="true" />
@@ -418,7 +417,23 @@
       <option name="project" value="LOCAL" />
       <updated>1727263132053</updated>
     </task>
-    <option name="localTasksCounter" value="32" />
+    <task id="LOCAL-00032" summary="ai">
+      <option name="closed" value="true" />
+      <created>1729696216735</created>
+      <option name="number" value="00032" />
+      <option name="presentableId" value="LOCAL-00032" />
+      <option name="project" value="LOCAL" />
+      <updated>1729696216735</updated>
+    </task>
+    <task id="LOCAL-00033" summary="Examples for IT-Tage">
+      <option name="closed" value="true" />
+      <created>1730101036434</created>
+      <option name="number" value="00033" />
+      <option name="presentableId" value="LOCAL-00033" />
+      <option name="project" value="LOCAL" />
+      <updated>1730101036434</updated>
+    </task>
+    <option name="localTasksCounter" value="34" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -454,6 +469,8 @@
     <MESSAGE value="Pulpocon Task Management" />
     <MESSAGE value="Bugfix MAD Afternoon" />
     <MESSAGE value="AsyncOnTour" />
-    <option name="LAST_COMMIT_MESSAGE" value="AsyncOnTour" />
+    <MESSAGE value="ai" />
+    <MESSAGE value="Examples for IT-Tage" />
+    <option name="LAST_COMMIT_MESSAGE" value="Examples for IT-Tage" />
   </component>
 </project>
