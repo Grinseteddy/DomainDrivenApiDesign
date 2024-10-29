@@ -1,0 +1,39 @@
+openapi: 3.1.0
+info:
+  title: Develope's Point of View
+  description: Title
+  version: 1.0.0
+servers:
+  - url: 'https'
+paths:
+
+components:
+  schemas:
+    BusinessPartner:
+      description: Business partner of the company
+      properties:
+        tenant:
+          description: Tenant number in a multi-tenancy environment
+          type: string
+          minLength: 3
+          maxLength: 3
+        partnerNumber:
+          description: Number of the business partner
+          type: string
+          minLength: 10
+          maxLength: 10
+
+        ...
+
+        name:
+          description: Name of the person
+          type: string
+          minLength: 2
+          maxLength: 40
+        firstName:
+          description: First name of the person
+          type: string
+          minLength: 2
+          maxLength: 40
+        ...
+  

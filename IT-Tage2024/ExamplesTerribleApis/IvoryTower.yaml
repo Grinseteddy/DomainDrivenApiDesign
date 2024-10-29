@@ -1,0 +1,23 @@
+openapi: 3.1.0
+info:
+  title: API out of the ivory tower
+  description: API out of the ivory tower
+  version: 1.0.0
+servers:
+  - url: 'https'
+paths:
+  /products:
+    description: Delivers back all products out of the catalog
+    responses:
+      200:
+        description: Successful operation
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/Product'
+
+components:
+  schemas:
+    Product:

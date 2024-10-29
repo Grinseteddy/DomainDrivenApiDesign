@@ -1,0 +1,23 @@
+openapi: 3.1.0
+info:
+  title: World Domination API
+  description: World Domination API
+  version: 1.0.0
+servers:
+  - url: 'https'
+paths:
+  /customers:
+    ...
+  /customers/{customer-id}:
+    ...
+  /customers/{customer-id}/addresses:
+    ...
+  /customers/{customer-id}/addresses/{address-id}:
+    ...
+  /customers/{customer-id}/accounts:
+    ...
+  /customers/{customer-id}/account/{account-id}:
+    ...
+  /customers/{customer-id}/account/{account-id}/transactions:
+    ...
+  
