@@ -1,0 +1,335 @@
+openapi: 3.1.0
+info:
+  title: Lending Service API
+  description: API for managing reading lists and lending operations in the library system
+  contact:
+    email: library.api@example.com
+    name: Library API Team
+  version: 1.0.0
+  x-api-id: d5a8b3c1-f7e6-4e21-aa41-826f8eaf4092
+  x-audience: external-public
+
+servers:
+  - url: 'https://api.library.example.com/lending'
+
+security:
+  - openIdConnect:
+      - reading-list:read
+      - reading-list:write
+      - librarian:read
+
+tags:
+  - name: Reading Lists
+    description: Operations for managing user reading lists
+  - name: Reading List Entries
+    description: Operations for managing entries within reading lists
+  - name: Lending Management
+    description: Operations for librarians to manage lending operations
+
+paths:
+  /reading-lists:
+    get:
+      description: Retrieve the authenticated user's reading list
+      operationId: getUserReadingList
+      tags:
+        - Reading Lists
+      security:
+        - openIdConnect:
+            - reading-list:read
+      parameters:
+        - $ref: '#/components/parameters/VersionParameter'
+      responses:
+        '200':
+          $ref: '#/components/responses/ReadingListResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '500':
+          $ref: '#/components/responses/ServiceNotAvailableResponse'
+
+  /reading-lists/entries:
+    post:
+      description: Add a new entry to the user's reading list
+      operationId: createReadingListEntry
+      tags:
+        - Reading List Entries
+      security:
+        - openIdConnect:
+            - reading-list:write
+      parameters:
+        - $ref: '#/components/parameters/VersionParameter'
+      requestBody:
+        $ref: '#/components/requestBodies/ReadingListEntryCreateRequest'
+      responses:
+        '201':
+          $ref: '#/components/responses/LinkToResourceResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '500':
+          $ref: '#/components/responses/ServiceNotAvailableResponse'
+
+  /reading-lists/entries/{entryId}:
+    get:
+      description: Retrieve a specific reading list entry
+      operationId: getReadingListEntry
+      tags:
+        - Reading List Entries
+      security:
+        - openIdConnect:
+            - reading-list:read
+      parameters:
+        - $ref: '#/components/parameters/EntryIdParameter'
+        - $ref: '#/components/parameters/VersionParameter'
+      responses:
+        '200':
+          $ref: '#/components/responses/ReadingListEntryResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '404':
+          $ref: '#/components/responses/NotFoundResponse'
+        '500':
+          $ref: '#/components/responses/ServiceNotAvailableResponse'
+
+    put:
+      description: Update a reading list entry's status or tags
+      operationId: updateReadingListEntry
+      tags:
+        - Reading List Entries
+      security:
+        - openIdConnect:
+            - reading-list:write
+      parameters:
+        - $ref: '#/components/parameters/EntryIdParameter'
+        - $ref: '#/components/parameters/VersionParameter'
+      requestBody:
+        $ref: '#/components/requestBodies/ReadingListEntryUpdateRequest'
+      responses:
+        '200':
+          $ref: '#/components/responses/LinkToResourceResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '404':
+          $ref: '#/components/responses/NotFoundResponse'
+        '500':
+          $ref: '#/components/responses/ServiceNotAvailableResponse'
+
+  /lending/books:
+    get:
+      description: Search for all lent books by date range (Librarian only)
+      operationId: searchLentBooks
+      tags:
+        - Lending Management
+      security:
+        - openIdConnect:
+            - librarian:read
+      parameters:
+        - $ref: '#/components/parameters/StartDateParameter'
+        - $ref: '#/components/parameters/EndDateParameter'
+        - $ref: '#/components/parameters/VersionParameter'
+      responses:
+        '200':
+          $ref: '#/components/responses/LentBooksResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '500':
+          $ref: '#/components/responses/ServiceNotAvailableResponse'
+
+components:
+  parameters:
+    EntryIdParameter:
+      name: entryId
+      description: Reading list entry identifier
+      required: true
+      in: path
+      schema:
+        type: string
+        format: uuid
+        example: 448b5bc-a9bc-4036-8899-c77f781a76d5
+
+    StartDateParameter:
+      name: startDate
+      description: Start date for lending period search
+      required: true
+      in: query
+      schema:
+        type: string
+        format: date
+        example: "2024-01-01"
+
+    EndDateParameter:
+      name: endDate
+      description: End date for lending period search
+      required: true
+      in: query
+      schema:
+        type: string
+        format: date
+        example: "2024-12-31"
+
+    VersionParameter:
+      name: x-version
+      description: API specification version
+      in: header
+      required: true
+      schema:
+        type: string
+        x-extensible-enum:
+          - 1.0.0
+        default: 1.0.0
+
+  schemas:
+    ReadingList:
+      type: object
+      required:
+        - id
+        - userId
+        - entries
+      properties:
+        id:
+          type: string
+          format: uuid
+        userId:
+          type: string
+          format: uuid
+        entries:
+          type: array
+          items:
+            $ref: '#/components/schemas/ReadingListEntry'
+
+    ReadingListEntry:
+      type: object
+      required:
+        - id
+        - bookId
+        - status
+        - createdAt
+      properties:
+        id:
+          type: string
+          format: uuid
+        bookId:
+          type: string
+          format: uuid
+        status:
+          type: string
+          enum: 
+            - TO_BE_READ
+            - READING
+            - FINISHED
+        tags:
+          type: array
+          items:
+            type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+
+    ReadingListEntryCreate:
+      type: object
+      required:
+        - bookId
+      properties:
+        bookId:
+          type: string
+          format: uuid
+        tags:
+          type: array
+          items:
+            type: string
+
+    ReadingListEntryUpdate:
+      type: object
+      properties:
+        status:
+          type: string
+          enum:
+            - TO_BE_READ
+            - READING
+            - FINISHED
+        tags:
+          type: array
+          items:
+            type: string
+
+    LentBook:
+      type: object
+      required:
+        - bookId
+        - userId
+        - lendingDate
+      properties:
+        bookId:
+          type: string
+          format: uuid
+        userId:
+          type: string
+          format: uuid
+        lendingDate:
+          type: string
+          format: date-time
+        dueDate:
+          type: string
+          format: date-time
+        status:
+          type: string
+          enum:
+            - ACTIVE
+            - OVERDUE
+            - RETURNED
+
+  responses:
+    ReadingListResponse:
+      description: User's reading list
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ReadingList'
+
+    ReadingListEntryResponse:
+      description: Single reading list entry
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ReadingListEntry'
+
+    LentBooksResponse:
+      description: List of lent books
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/LentBook'
+
+  requestBodies:
+    ReadingListEntryCreateRequest:
+      description: Create a new reading list entry
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ReadingListEntryCreate'
+
+    ReadingListEntryUpdateRequest:
+      description: Update an existing reading list entry
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ReadingListEntryUpdate'
+
+  securitySchemes:
+    openIdConnect:
+      type: openIdConnect
+      description: OpenID Connect authentication
+      openIdConnectUrl: "https://auth.library.example.com/.well-known/openid-configuration"

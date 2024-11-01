@@ -5,7 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9f418031-fa2f-4dcf-9ad8-1bd8158fd7e4" name="Changes" comment="Examples for IT-Tage">
+      <change afterPath="$PROJECT_DIR$/IT-Tage2024/ExampleAPI/lending-api_Claude.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/IT-Tage2024/ExampleAPI/lending-api_Edited.yaml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/IT-Tage2024/ExampleAPI/lending-api.yaml" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -20,10 +23,13 @@
       </list>
     </option>
   </component>
+  <component name="Git.Rebase.Settings">
+    <option name="NEW_BASE" value="origin/main" />
+  </component>
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="main" />
+        <entry key="$PROJECT_DIR$" value="AsyncOnTour" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -69,9 +75,9 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "full.screen.before.presentation.mode": "false",
-    "git-widget-placeholder": "AsyncOnTour",
+    "git-widget-placeholder": "main",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "/Users/annegretjunkercodecentricag/IdeaProjects/DdApiD/AsyncOnTourParis-2024-10-30",
+    "last_opened_file_path": "/Users/annegretjunkercodecentricag/IdeaProjects/DdApiD/IT-Tage2024/ExampleAPI",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -83,11 +89,11 @@
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/IT-Tage2024/ExampleAPI" />
       <recent name="$PROJECT_DIR$/AsyncOnTourParis-2024-10-30" />
       <recent name="$PROJECT_DIR$/MAD Afternoon 2024-09-24" />
       <recent name="$PROJECT_DIR$/Pulpocon2024" />
       <recent name="$PROJECT_DIR$/Lernreise 2024-08-09" />
-      <recent name="$PROJECT_DIR$/TestingAlongLifecycle" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/OnlineLibrary" />
@@ -168,6 +174,8 @@
       <workItem from="1727441538012" duration="1194000" />
       <workItem from="1727506201455" duration="1483000" />
       <workItem from="1730184591862" duration="350000" />
+      <workItem from="1730365526513" duration="1000" />
+      <workItem from="1730459878243" duration="2331000" />
     </task>
     <task id="LOCAL-00001" summary="Initial creation">
       <option name="closed" value="true" />
@@ -433,7 +441,15 @@
       <option name="project" value="LOCAL" />
       <updated>1730101036434</updated>
     </task>
-    <option name="localTasksCounter" value="34" />
+    <task id="LOCAL-00034" summary="Examples for IT-Tage">
+      <option name="closed" value="true" />
+      <created>1730198250516</created>
+      <option name="number" value="00034" />
+      <option name="presentableId" value="LOCAL-00034" />
+      <option name="project" value="LOCAL" />
+      <updated>1730198250516</updated>
+    </task>
+    <option name="localTasksCounter" value="35" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
