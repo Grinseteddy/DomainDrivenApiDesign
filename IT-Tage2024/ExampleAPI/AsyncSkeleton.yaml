@@ -1,0 +1,108 @@
+asyncapi: 3.0.0
+info:
+  title: Skeleton
+  version: 1.0.0
+  description: |
+    Skeleton for an AsyncAPI definition
+  contact:
+    name: whoever
+    url: https://sample.org/sample
+    email: who.ever@sample.org
+servers:
+  production:
+    # other messaging brokers needs to be defined - look in the documentation
+    host: "events.{your organization}.com:9092"
+    protocol: "kafka"
+    description: "Production broker"
+    security:
+      - $ref: '#/components/securitySchemes/user-password'
+
+defaultContentType:
+  application/json
+
+channels:
+
+  resourceEventIn:
+    address: "service/resourceIn"
+    messages:
+      resourceEventIn:
+        $ref: '#/components/messages/resourceEventIn'
+
+  resourceEventOut:
+    address: "service/resourceOut"
+    messages:
+      resourceEventOut:
+        $ref: '#/components/messages/resourceEventOut'
+
+operations:
+  resourceEventIn:
+    action: "receive"
+    channel:
+      $ref: "#/channels/resourceEventIn"
+
+  resourceEventOut:
+    action: "send"
+    channel:
+      $ref: '#/channels/resourceEventOut'
+
+
+components:
+  messages:
+    resourceEventIn:
+      headers:
+        $ref: '#/components/schemas/MessageHeader'
+      payload:
+        $ref: '#/components/schemas/ResourceIn'
+
+    resourceEventOut:
+      headers:
+        $ref: '#/components/schemas/MessageHeader'
+      payload:
+        $ref: '#/components/schemas/ResourceOut'
+
+
+  schemas:
+
+    ResourceOut:
+      # Define your resource
+
+    MessageHeader:
+      description: Header Information for each message
+      type: object
+      required:
+        - correlationId
+        - messageId
+      properties:
+        correlationId:
+          description: Identifier to be set by application to trace end-to-end-api-journey
+          type: string
+          format: uuid
+          examples:
+            - b3416449-5f69-4cd2-a6c4-1ff82da96bce
+        messageId:
+          description: Identifier for the particular message, is needed in case of cascading infrastructure
+          type: string
+          format: uuid
+          examples:
+            - 5a1d305b-19f3-46eb-ada1-9a9770e56fd1
+        source:
+          description: Application name creating the message
+          type: string
+          minLength: 2
+          maxLength: 20
+          examples:
+            - YourService
+
+    # ResourceIn:
+      # define your resource
+
+  securitySchemes:
+    user-password:
+      type: userPassword
+      description: Security scheme for events
+
+
+
+
+
+
