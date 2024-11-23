@@ -5,10 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9f418031-fa2f-4dcf-9ad8-1bd8158fd7e4" name="Changes" comment="Examples for IT-Tage">
-      <change afterPath="$PROJECT_DIR$/IT-Tage2024/ExampleAPI/AsyncSkeleton.yaml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/IT-Tage2024/ExampleAPI/ClaudeAsyncApiLending.yaml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/IT-Tage2024/ExampleAPI/ClaudeEventDesign.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Lernreise 2024-08-09/RestSkeleton.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/Lernreise 2024-08-09/RestSkeleton.yaml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -18,8 +16,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="AsyncAPI specification 3 (yaml)" />
         <option value="OpenAPI" />
+        <option value="AsyncAPI specification 3 (yaml)" />
       </list>
     </option>
   </component>
@@ -70,23 +68,23 @@
     <option name="openDirectoriesWithSingleClick" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "full.screen.before.presentation.mode": "false",
-    "git-widget-placeholder": "main",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "/Users/annegretjunkercodecentricag/IdeaProjects/DdApiD/IT-Tage2024/ExampleAPI",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "preferences.lookFeel",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;full.screen.before.presentation.mode&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/annegretjunkercodecentricag/IdeaProjects/DdApiD/IT-Tage2024/ExampleAPI&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/IT-Tage2024/ExampleAPI" />
@@ -175,7 +173,12 @@
       <workItem from="1727506201455" duration="1483000" />
       <workItem from="1730184591862" duration="350000" />
       <workItem from="1730365526513" duration="1000" />
-      <workItem from="1730459878243" duration="3274000" />
+      <workItem from="1730459878243" duration="3995000" />
+      <workItem from="1730543895189" duration="598000" />
+      <workItem from="1730644384881" duration="9000" />
+      <workItem from="1731241282535" duration="6330000" />
+      <workItem from="1731343010434" duration="7755000" />
+      <workItem from="1732368662470" duration="623000" />
     </task>
     <task id="LOCAL-00001" summary="Initial creation">
       <option name="closed" value="true" />
@@ -457,7 +460,15 @@
       <option name="project" value="LOCAL" />
       <updated>1730462234724</updated>
     </task>
-    <option name="localTasksCounter" value="36" />
+    <task id="LOCAL-00036" summary="Examples for IT-Tage">
+      <option name="closed" value="true" />
+      <created>1730463282541</created>
+      <option name="number" value="00036" />
+      <option name="presentableId" value="LOCAL-00036" />
+      <option name="project" value="LOCAL" />
+      <updated>1730463282541</updated>
+    </task>
+    <option name="localTasksCounter" value="37" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

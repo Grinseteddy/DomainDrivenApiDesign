@@ -340,7 +340,7 @@ components:
           type: string
           format: uri
           examples:
-            - https://api.aok.de/resource-management/resources/74d870fa-9e93-4ffd-907e-038c85e8bc20
+            - https://api.library.org/resource-management/resources/74d870fa-9e93-4ffd-907e-038c85e8bc20
 
     Resource:
       description: Description of the resource
