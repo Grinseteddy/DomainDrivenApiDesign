@@ -5,8 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9f418031-fa2f-4dcf-9ad8-1bd8158fd7e4" name="Changes" comment="Examples for IT-Tage">
+      <change afterPath="$PROJECT_DIR$/ApiDaysParis2025-12-05/AsyncSkeleton.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ApiDaysParis2025-12-05/CatalogManagement.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ApiDaysParis2025-12-05/Messages.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/MAD Summit Berlin 2024-11-27/TaskManagement.puml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/MadSummit2024-11-27/TaskManagementContextMap.mermaid" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Lernreise 2024-08-09/RestSkeleton.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/Lernreise 2024-08-09/RestSkeleton.yaml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -18,6 +22,7 @@
       <list>
         <option value="OpenAPI" />
         <option value="AsyncAPI specification 3 (yaml)" />
+        <option value="UML Sequence" />
       </list>
     </option>
   </component>
@@ -68,32 +73,35 @@
     <option name="openDirectoriesWithSingleClick" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;full.screen.before.presentation.mode&quot;: &quot;false&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/Users/annegretjunkercodecentricag/IdeaProjects/DdApiD/IT-Tage2024/ExampleAPI&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "DefaultPlantUmlFileTemplate": "UML Sequence",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "full.screen.before.presentation.mode": "false",
+    "git-widget-placeholder": "main",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "/Users/annegretjunkercodecentricag/IdeaProjects/DdApiD/ApiDaysParis2025-12-05",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "preferences.lookFeel",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/ApiDaysParis2025-12-05" />
+      <recent name="$PROJECT_DIR$/MadSummit2024-11-27" />
       <recent name="$PROJECT_DIR$/IT-Tage2024/ExampleAPI" />
       <recent name="$PROJECT_DIR$/AsyncOnTourParis-2024-10-30" />
       <recent name="$PROJECT_DIR$/MAD Afternoon 2024-09-24" />
-      <recent name="$PROJECT_DIR$/Pulpocon2024" />
-      <recent name="$PROJECT_DIR$/Lernreise 2024-08-09" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/MAD Summit Berlin 2024-11-27" />
+      <recent name="$PROJECT_DIR$/ApiDaysParis2025-12-05" />
       <recent name="$PROJECT_DIR$/OnlineLibrary" />
       <recent name="$PROJECT_DIR$/DDApiD-2024-03-13/Group1" />
     </key>
@@ -178,7 +186,12 @@
       <workItem from="1730644384881" duration="9000" />
       <workItem from="1731241282535" duration="6330000" />
       <workItem from="1731343010434" duration="7755000" />
-      <workItem from="1732368662470" duration="623000" />
+      <workItem from="1732368662470" duration="3852000" />
+      <workItem from="1732457181623" duration="1311000" />
+      <workItem from="1732518922910" duration="929000" />
+      <workItem from="1732521419662" duration="598000" />
+      <workItem from="1732525130187" duration="3376000" />
+      <workItem from="1732626911370" duration="8706000" />
     </task>
     <task id="LOCAL-00001" summary="Initial creation">
       <option name="closed" value="true" />
@@ -468,7 +481,15 @@
       <option name="project" value="LOCAL" />
       <updated>1730463282541</updated>
     </task>
-    <option name="localTasksCounter" value="37" />
+    <task id="LOCAL-00037" summary="Examples for IT-Tage">
+      <option name="closed" value="true" />
+      <created>1732369293108</created>
+      <option name="number" value="00037" />
+      <option name="presentableId" value="LOCAL-00037" />
+      <option name="project" value="LOCAL" />
+      <updated>1732369293108</updated>
+    </task>
+    <option name="localTasksCounter" value="38" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

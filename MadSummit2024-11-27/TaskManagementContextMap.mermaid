@@ -1,0 +1,53 @@
+graph TD
+    subgraph UM[User Management]
+        User[User Aggregate]
+    end
+
+    subgraph IB[Inbox]
+        InboxItem[Inbox Item Aggregate]
+    end
+
+    subgraph TM[Task Management]
+        Task[Task Aggregate]
+    end
+
+    subgraph TT[Time Tracking]
+        TimeEntry[Time Entry Aggregate]
+    end
+
+    subgraph IV[Invoicing]
+        Invoice[Invoice Aggregate]
+    end
+
+%% Async Events
+    InboxItem -.->|TaskCreatedEvent| Task
+    User -.->|UserAssignedEvent| Task
+    Task -.->|TaskCompletedEvent| TimeEntry
+    TimeEntry -.->|TimeTrackedEvent| Invoice
+
+%% Sync APIs
+    Task -->|/api/users/details| User
+    TimeEntry -->|/api/tasks/id| Task
+Invoice -->|/api/time-entries/taskId| TimeEntry
+Task -->|/api/inbox/id| InboxItem
+
+classDef contextStyle fill:#0066cc,stroke:#333,stroke-width:2px,color:white;
+class UM,IB,TM,TT,IV contextStyle
+
+classDef aggregateStyle fill:#ffffff,stroke:#333,stroke-width:1px,color:black;
+class User,InboxItem,Task,TimeEntry,Invoice aggregateStyle
+
+style InboxItem fill:#ffffff,stroke:#333,stroke-width:1px,color:black
+style User fill:#ffffff,stroke:#333,stroke-width:1px,color:black
+style Task fill:#ffffff,stroke:#333,stroke-width:1px,color:black
+style TimeEntry fill:#ffffff,stroke:#333,stroke-width:1px,color:black
+style Invoice fill:#ffffff,stroke:#333,stroke-width:1px,color:black
+
+%% Legend
+subgraph Legend
+Sync[Synchronous API]
+Async[Asynchronous Event]
+Sync --- Async
+style Sync stroke-width:2px
+style Async stroke-width:2px,stroke-dasharray: 5 5
+end

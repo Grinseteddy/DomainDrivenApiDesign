@@ -1,0 +1,566 @@
+asyncapi: 3.0.0
+info:
+  title: Catalog Managemnent
+  version: 1.0.0
+  description: |-
+    The catalog manages the books available to the member of the library. Books new arrived are entered as catalog entries. Changed catalog entries are published.
+defaultContentType: application/json
+
+servers:
+  event-broker-library:
+    host: broker.online-library.org:8092
+    protocol: kafka
+    description: Event broker of the online library
+    bindings:
+      kafka:
+        schemaRegistryUrl: 'https://online-library-schema-registry.com'
+        schemaRegistryVendor: 'confluent'
+        bindingVersion: '0.5.0'
+
+
+operations:
+  BookPurchasedEventReceive:
+    action: "receive"
+    channel:
+      $ref: "#/channels/BookPurchasedEventChannel"
+    bindings:
+      kafka:
+        bindingVersion: '0.5.0'
+        groupId:
+          type: string
+          enum: ['Catalog']
+        clientId:
+          type: string
+          enum: ['Catalog']
+
+  CatalogEntryCreatedEventSend:
+    action: "send"
+    channel:
+      $ref: '#/channels/CatalogEntryCreatedEventChannel'
+    bindings:
+      kafka:
+        bindingVersion: '0.5.0'
+        groupId:
+          type: string
+          enum: ['Catalog']
+        clientId:
+          type: string
+          enum: ['Catalog']
+
+  CatalogEntryUpdatedEventSend:
+    action: "send"
+    channel:
+      $ref: '#/channels/CatalogEntryCreatedEventChannel'
+    bindings:
+      kafka:
+        bindingVersion: '0.5.0'
+        groupId:
+          type: string
+          enum: ['Catalog']
+        clientId:
+          type: string
+          enum: ['Catalog']
+
+channels:
+  BookPurchasedEventChannel:
+    description: Channel where messages are stored when a book was purchased
+    address: book-purchased
+    messages:
+      BookPurchasedEvent:
+        $ref: '#/components/messages/BookPurchasedEvent'
+    bindings:
+      kafka:
+        topic: 'book-purchased-event-channel'
+        partitions: 3
+        replicas: 3
+        topicConfiguration:
+          cleanup.policy: ["delete", "compact"]
+          retention.ms: 604800000
+          retention.bytes: 1000000000
+          delete.retention.ms: 86400000
+          max.message.bytes: 1048588
+        bindingVersion: '0.5.0'
+
+  CatalogEntryCreatedEventChannel:
+    description: Channel were messages are stored when a catalog entry was created
+    address: catalog-entry-created
+    messages:
+      CatalogEntryCreatedEvent:
+        $ref: '#/components/messages/CatalogEntryCreatedEvent'
+    bindings:
+      kafka:
+        topic: 'catalog-entry-created-event-channel'
+        partitions: 3
+        replicas: 3
+        topicConfiguration:
+          cleanup.policy: ["delete", "compact"]
+          retention.ms: 604800000
+          retention.bytes: 1000000000
+          delete.retention.ms: 86400000
+          max.message.bytes: 1048588
+        bindingVersion: '0.5.0'
+
+  CatalogEntryUpdatedEventChannel:
+    description: Channel were messages are stored when a catalog entry was updated
+    address: catalog-entry-updated
+    messages:
+      CatalogEntryUpdatedEvent:
+        $ref: '#/components/messages/CatalogEntryUpdatedEvent'
+
+
+  CreateNotificationCommandChannel:
+    description: Channel were messages are stored when a notification should be created
+    address: create-notification
+    messages:
+      CreateNotificationCommand:
+        $ref: '#/components/messages/CreateNotificationCommand'
+
+
+  BookLentEventChannel:
+    description: Channel were messages are stored when a book was lent
+    address: book-lent
+    messages:
+      BookLentEvent:
+        $ref: '#/components/messages/BookLentEvent'
+
+  BookReturnedEventChannel:
+    description: Channel were messages are stored when a book was returned
+    address: book-returned
+    messages:
+      BookReturnedEvent:
+        $ref: '#/components/messages/BookReturnedEvent'
+
+  MemberCreatedEventChannel:
+    description: Channel were messages are stored when a member was created
+    address: member-created
+    messages:
+      MemberCreatedEvent:
+        $ref: '#/components/messages/MemberCreatedEvent'
+
+
+  AmountPaidEvent:
+    description: Channel for amount paid events
+    address: amount-paid
+    messages:
+      AmountPaidEvent:
+        $ref: '#/components/messages/AmountPaidEvent'
+
+  ReadingPositionMarkedEvent:
+    description: Channel for reading positions events
+    address: reading-position-marked
+    messages:
+      ReadingPositionMarkedEvent:
+        $ref: '#/components/messages/ReadingPositionMarkedEvent'
+
+components:
+  messages:
+    BookPurchasedEvent:
+      headers:
+        $ref: '#/components/schemas/MessageHeader'
+      payload:
+        $ref: '#/components/schemas/BookPurchased'
+      bindings:
+        kafka:
+          key:
+            type: string
+            enum: ['bookKey']
+          schemaIdLocation: 'payload'
+          schemaIdPayloadEncoding: '4'
+          bindingVersion: '0.5.0'
+
+    CatalogEntryCreatedEvent:
+      headers:
+        $ref: '#/components/schemas/MessageHeader'
+      payload:
+        $ref: '#/components/schemas/CatalogEntryChanged'
+
+    CatalogEntryUpdatedEvent:
+      headers:
+        $ref: '#/components/schemas/MessageHeader'
+      payload:
+        $ref: '#/components/schemas/CatalogEntryChanged'
+
+    CreateNotificationCommand:
+      headers:
+        $ref: '#/components/schemas/MessageHeader'
+      payload:
+        $ref: '#/components/schemas/NotificationToBeCreated'
+
+    BookLentEvent:
+      headers:
+        $ref: '#/components/schemas/MessageHeader'
+      payload:
+        $ref: '#/components/schemas/BookLentReturned'
+
+    BookReturnedEvent:
+      headers:
+        $ref: '#/components/schemas/MessageHeader'
+      payload:
+        $ref: '#/components/schemas/BookLentReturned'
+
+    MemberCreatedEvent:
+      headers:
+        $ref: '#/components/schemas/MessageHeader'
+      payload:
+        $ref: '#/components/schemas/MemberCreated'
+
+    AmountPaidEvent:
+      headers:
+        $ref: '#/components/schemas/MessageHeader'
+      payload:
+        $ref: '#/components/schemas/AmountPaid'
+
+    ReadingPositionMarkedEvent:
+      headers:
+        $ref: '#/components/schemas/MessageHeader'
+      payload:
+        $ref: '#/components/schemas/ReadingPositionMarked'
+
+
+  schemas:
+    BookPurchased:
+      description: Message which is sent when a new book was successfully purchased
+      type: object
+      required:
+        - authors
+        - title
+        - isbn-10
+      properties:
+        authors:
+          description: |
+            Authors of the book with family name and given name(s) divided by comma,
+            Anonymous published books get the author name Anonymous
+            Names originally not spelled with Latin characters follow the spelling given by the publisher
+          type: array
+          items:
+            type: string
+            minLength: 2
+            maxLength: 55
+            examples:
+              - Evans, Eric
+              - Tune, Nick
+              - Lazzaretti, Fabrizio
+        title:
+          description: Title of the book as given by the publisher, usually not capitalized
+          type: string
+          minLength: 2
+          maxLength: 255
+          examples:
+            - Domain-driven design
+            - Architecture modernization
+            - Domain-driven API design
+        subtitle:
+          description: Subtitle of the book as given by the publisher
+          type: string
+          minLength: 2
+          maxLength: 255
+          examples:
+            - Tackling complexity in the heart of software
+            - Socio-technical alignment of software, strategy, and structure
+            - Crafting great APIs using DDD
+        publisher:
+          description: Publisher of the book
+          type: string
+          minLength: 2
+          maxLength: 255
+          examples:
+            - Pearson International
+            - Manning
+            - APress
+        blurb:
+          description: Product description given by the publisher
+          type: string
+          minLength: 10
+          maxLength: 2048
+          examples:
+            - The software development community widely acknowledges that domain modeling is central to software design.
+        isbn-10:
+          description: International standard book number with 10 digits
+          type: string
+          pattern: ^[0-9]{10}$
+          examples:
+            - 0321125215
+        isbn-13:
+          description: International standard book number with 13 digits
+          type: string
+          pattern: ^[0-9]{3}-?[0-9]{10}$
+          examples:
+            - 978-0321125217
+        numberOfTextPositions:
+          description: Number of text positions overall in the book
+          type: integer
+          format: int64
+          examples:
+            - 327680
+        audience:
+          description: Audience for which the book is thought
+          type: string
+          enum:
+            - STUDENT
+            - TEACHER
+            - ADVANCED STUDENT
+            - BEGINNER
+
+    CatalogEntryChanged:
+      description: A catalog entry representing a book
+      type: object
+      required:
+        - authors
+        - title
+        - isbn-10
+      properties:
+        id:
+          description: Identifier of the catalog entry
+          type: string
+          format: uuid
+          examples:
+            - d608fe4d-132d-4112-9e65-1c4fcb6bb00c
+        authors:
+          description: |
+            Authors of the book with family name and given name(s) divided by comma,
+            Anonymous published books get the author name Anonymous
+            Names originally not spelled with Latin characters follow the spelling given by the publisher
+          type: array
+          items:
+            type: string
+            minLength: 2
+            maxLength: 55
+            examples:
+              - Evans, Eric
+              - Tune, Nick
+              - Lazzaretti, Fabrizio
+        title:
+          description: Title of the book as given by the publisher, usually not capitalized
+          type: string
+          minLength: 2
+          maxLength: 255
+          examples:
+            - Domain-driven design
+            - Architecture modernization
+            - Domain-driven API design
+        subtitle:
+          description: Subtitle of the book as given by the publisher
+          type: string
+          minLength: 2
+          maxLength: 255
+          examples:
+            - Tackling complexity in the heart of software
+            - Socio-technical alignment of software, strategy, and structure
+            - Crafting great APIs using DDD
+        publisher:
+          description: Publisher of the book
+          type: string
+          minLength: 2
+          maxLength: 255
+          examples:
+            - Pearson International
+            - Manning
+            - APress
+        blurb:
+          description: Product description given by the publisher
+          type: string
+          minLength: 10
+          maxLength: 2048
+          examples:
+            - The software development community widely acknowledges that domain modeling is central to software design.
+        isbn-10:
+          description: International standard book number with 10 digits
+          type: string
+          pattern: ^[0-9]{10}$
+          examples:
+            - 0321125215
+        isbn-13:
+          description: International standard book number with 13 digits
+          type: string
+          pattern: ^[0-9]{3}-?[0-9]{10}$
+          examples:
+            - 978-0321125217
+
+    MessageHeader:
+      description: Header Information for each message
+      type: object
+      required:
+        - correlationId
+        - messageId
+      properties:
+        correlationId:
+          description: Identifier to be set by application to trace end-to-end-api-journey
+          type: string
+          format: uuid
+          examples:
+            - b3416449-5f69-4cd2-a6c4-1ff82da96bce
+        messageId:
+          description: Identifier for the particular message, is needed in case of cascading infrastructure
+          type: string
+          format: uuid
+          examples:
+            - 5a1d305b-19f3-46eb-ada1-9a9770e56fd1
+        source:
+          description: Bounded context name creating the message
+          type: string
+          minLength: 2
+          maxLength: 20
+          examples:
+            - Catalog Management
+
+    NotificationChannel:
+      description: Channels over which notifications can be sent to receivers
+      type: string
+      enum:
+        - EMAIL
+        - DIRECT
+        - MESSAGING
+      default: EMAIL
+      examples:
+        - EMAIL
+
+    NotificationToBeCreated:
+      description: A notification needs to be created
+      type: object
+      required:
+        - text
+        - channels
+      properties:
+        text:
+          description: Text of the notification
+          type: string
+          minLength: 2
+          maxLength: 1024
+          examples:
+            - A book based on the search criteria title="Domain-driven API design" could not be found.
+        receivers:
+          description: |
+            Receivers of the notification by their employee identifier
+          type: array
+          minItems: 1
+          maxItems: 25
+          items:
+            type: string
+            format: uuid
+            examples:
+              - 85739270-5e89-428e-8fbc-378f93cd7211
+              - 60b198bc-a1c8-4853-9086-d70b5cc520bf
+        channels:
+          description: |
+            The notification can be sent via different channels.
+            The corresponding channels need to be selected.
+          type: array
+          minItems: 1
+          maxItems: 3
+          items:
+            $ref: '#/components/schemas/NotificationChannel'
+
+    BookLentReturned:
+      description: Book lent or returned by a member
+      type: object
+      required:
+        - catalogId
+        - memberId
+      properties:
+        catalogId:
+          description: Catalog identifier of the book lent or returned
+          type: string
+          format: uuid
+          examples:
+            - b7aa9669-6995-4793-ad2d-c9fd958bc082
+        memberId:
+          description: Member identifier of the member who lent or returned the book
+          type: string
+          format: uuid
+          examples:
+            - 30f5421b-9e0c-4c6a-9723-3d4da90c2c54
+
+    MemberCreated:
+      MemberToBeCreated:
+        description: Member to who was created, the member was created after the payment fee has been paid
+        type: object
+        required:
+          - id
+          - emailAddress
+        properties:
+          id:
+            description: Identifier of the member
+            type: string
+            format: uuid
+            examples:
+              - 0d654a12-2d2d-4489-89a9-d99868eed628
+          familyName:
+            description: Family name of the member
+            type: string
+            minLength: 2
+            maxLength: 55
+            examples:
+              - Doe-Smith
+          emailAddress:
+            description: Email address of the member
+            type: string
+            format: email
+            examples:
+              - john.doe@gmail.com
+
+    Amount:
+      description: Amount of a fee
+      type: object
+      required:
+        - number
+        - currency
+      properties:
+        number:
+          description: Number of the amount transferred
+          type: number
+          format: float
+          examples:
+            - 12.34
+        currency:
+          description: Three character acronym of the used currency according to ISO 4217
+          type: string
+          minLength: 3
+          maxLength: 3
+          examples:
+            - EUR
+            - INR
+
+    AmountPaid:
+      description: Event when an amount as an member fee has been paid
+      type: object
+      required:
+        - amount
+        - requestId
+      properties:
+        amount:
+          $ref: '#/components/schemas/Amount'
+        requestId:
+          description: |
+            Identifier of the request for the payment
+            The identifier is unique for one time payments and remains for scheduled payments
+          type: string
+          format: uuid
+          examples:
+            - 68818400-bdc3-409f-92c9-51398311fb8d
+
+    ReadingPositionMarked:
+      description: Marking of a reading position, e.g., to create notes
+      type: object
+      required:
+        - textPositionStart
+        - textPositionEnd
+      properties:
+        bookIdentifier:
+          description: Identifier of the catalog entry to which the book read referenced
+          type: string
+          format: uuid
+          examples:
+            - e4667e38-0dd2-481a-b755-69d0ad136fa0
+        textPositionStart:
+          description: Start of the marking
+          type: integer
+          format: int64
+          examples:
+            - 1024
+        textPositionEnd:
+          description: End of the marking - needs to be higher or equal to the start position
+          type: integer
+          format: int64
+          examples:
+            - 2048
+

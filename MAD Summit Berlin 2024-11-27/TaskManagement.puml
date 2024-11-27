@@ -1,0 +1,20 @@
+@startuml
+@startuml
+'https://plantuml.com/sequence-diagram
+!include https://raw.githubusercontent.com/johthor/DomainStory-PlantUML/main/domainStory.puml
+
+Person(Freelancer)
+Document(Task_To_Do)
+Document(Task_In_Progress)
+Document(Task_Done)
+Document(Invoice)
+
+activity(1, Freelancer, creates, Task_To_Do, in, Inbox)
+activity(2, Freelancer, starts_work_on, Task_To_Do, transforming_to, Task_In_Progress)
+activity(3, Freelancer, completes, Task_In_Progress, transforming_to, Task_Done)
+activity(4, Freelancer, generates, Invoice, for, Task_Done)
+
+@enduml
+
+
+@enduml
