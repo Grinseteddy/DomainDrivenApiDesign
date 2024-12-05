@@ -1,0 +1,93 @@
+openapi: 3.1.0
+info:
+...
+paths:
+  /books:
+    get:
+...
+      parameters:
+        - $ref: '#/components/parameters/SearchCriteriaParameter'
+      responses:
+        200:
+          $ref: '#/components/responses/BookListResponse'
+...
+    post:
+...
+      requestBody:
+        $ref: '#/components/requestBodies/BookToBeCreatedRequest'
+      responses:
+        200:
+          $ref: '#/components/responses/LinkToBookResponse'
+...
+  /books/{bookIdentifier}:
+    get:
+...
+      parameters:
+        - $ref: '#/components/parameters/BookIdentifierParameter'
+      responses:
+        200:
+          $ref: '#/components/responses/BookResponse'
+...
+    put:
+...
+      parameters:
+        - $ref: '#/components/parameters/BookIdentifierParameter'
+      requestBody:
+        $ref: '#/components/requestBodies/BookToBeUpdatedRequest'
+      responses:
+        200:
+          $ref: '#/components/responses/LinkToBookResponse'
+...
+
+  /books/{bookIdentifier}/abstract:
+    post:
+...
+      parameters:
+        - $ref: '#/components/parameters/BookIdentifierParameter'
+      requestBody:
+        $ref: '#/components/requestBodies/AbstractRequest'
+      responses:
+        200:
+          $ref: '#/components/responses/LinkToBookResponse'
+...
+    delete:
+...
+      parameters:
+        - $ref: '#/components/parameters/BookIdentifierParameter'
+      responses:
+        200:
+          $ref: '#/components/responses/SuccessfulOperation'
+...
+
+
+  requestBodies:
+    AbstractRequest:
+      description: Abstract to be updated in a book
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Abstract'
+
+    BookToBeCreatedRequest:
+      description: Book to be created in the catalog
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/BookToBeCreatedUpdated'
+
+    BookToBeUpdatedRequest:
+      description: Book to be updated in the catalog
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/BookToBeCreatedUpdated'
+
+
+
+
+
+
+
+
+
+  

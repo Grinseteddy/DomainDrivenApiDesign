@@ -1,0 +1,291 @@
+openapi: 3.1.0
+info:
+  title: Task Management API
+  description: API for managing tasks between freelancers and assignees
+  version: 1.0.0
+  x-api-id: 8f3d9b2e-7c5f-4e21-aa41-826f8eaf4092
+  x-audience: external-public
+
+servers:
+  - url: 'https://api.taskmanagement.com/v1'
+
+security:
+  - openIdConnect:
+      - tasks:read
+      - tasks:write
+      - tasks:admin
+
+tags:
+  - name: Tasks
+    description: Task management operations
+  - name: Invoices
+    description: Invoice management operations
+  - name: Users
+    description: User management operations
+
+paths:
+  /tasks:
+    get:
+      operationId: getTasksByFilter
+      tags:
+        - Tasks
+      security:
+        - openIdConnect:
+            - tasks:read
+      parameters:
+        - $ref: '#/components/parameters/StatusParameter'
+        - $ref: '#/components/parameters/AssigneeParameter'
+        - $ref: '#/components/parameters/CreatorParameter'
+        - $ref: '#/components/parameters/VersionParameter'
+      responses:
+        '200':
+          $ref: '#/components/responses/TaskListResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '500':
+          $ref: '#/components/responses/ServiceNotAvailableResponse'
+
+    post:
+      operationId: createTask
+      tags:
+        - Tasks
+      security:
+        - openIdConnect:
+            - tasks:write
+      requestBody:
+        $ref: '#/components/requestBodies/TaskCreateRequest'
+      responses:
+        '201':
+          $ref: '#/components/responses/TaskCreatedResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '500':
+          $ref: '#/components/responses/ServiceNotAvailableResponse'
+
+  /tasks/{taskId}:
+    get:
+      operationId: getTaskById
+      tags:
+        - Tasks
+      parameters:
+        - $ref: '#/components/parameters/TaskIdParameter'
+      responses:
+        '200':
+          $ref: '#/components/responses/TaskResponse'
+        '404':
+          $ref: '#/components/responses/NotFoundResponse'
+
+    put:
+      operationId: updateTaskStatus
+      tags:
+        - Tasks
+      parameters:
+        - $ref: '#/components/parameters/TaskIdParameter'
+      requestBody:
+        $ref: '#/components/requestBodies/TaskUpdateRequest'
+      responses:
+        '200':
+          $ref: '#/components/responses/TaskResponse'
+        '404':
+          $ref: '#/components/responses/NotFoundResponse'
+
+components:
+  parameters:
+    TaskIdParameter:
+      name: taskId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+
+    StatusParameter:
+      name: status
+      in: query
+      schema:
+        $ref: '#/components/schemas/TaskStatus'
+
+    AssigneeParameter:
+      name: assigneeId
+      in: query
+      schema:
+        type: string
+        format: uuid
+
+    CreatorParameter:
+      name: creatorId
+      in: query
+      schema:
+        type: string
+        format: uuid
+
+    VersionParameter:
+      name: x-version
+      in: header
+      required: true
+      schema:
+        type: string
+        default: "1.0.0"
+        enum: ["1.0.0"]
+
+  schemas:
+    Task:
+      type: object
+      required:
+        - id
+        - title
+        - status
+        - creatorId
+      properties:
+        id:
+          type: string
+          format: uuid
+        title:
+          type: string
+          minLength: 1
+          maxLength: 200
+        description:
+          type: string
+          maxLength: 2000
+        status:
+          $ref: '#/components/schemas/TaskStatus'
+        creatorId:
+          type: string
+          format: uuid
+        assigneeId:
+          type: string
+          format: uuid
+        invoiceId:
+          type: string
+          format: uuid
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+
+    TaskStatus:
+      type: string
+      enum:
+        - NEW
+        - IN_PROGRESS
+        - DONE
+
+    TaskCreate:
+      type: object
+      required:
+        - title
+        - assigneeId
+      properties:
+        title:
+          type: string
+          minLength: 1
+          maxLength: 200
+        description:
+          type: string
+          maxLength: 2000
+        assigneeId:
+          type: string
+          format: uuid
+
+    TaskUpdate:
+      type: object
+      required:
+        - status
+      properties:
+        status:
+          $ref: '#/components/schemas/TaskStatus'
+        description:
+          type: string
+          maxLength: 2000
+
+    Error:
+      type: object
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        details:
+          type: object
+
+  responses:
+    TaskResponse:
+      description: Single task response
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Task'
+
+    TaskListResponse:
+      description: List of tasks
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/Task'
+
+    TaskCreatedResponse:
+      description: Task created successfully
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Task'
+
+    BadRequestResponse:
+      description: Invalid request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+
+    NotFoundResponse:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+
+    ForbiddenResponse:
+      description: Access forbidden
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+
+    ServiceNotAvailableResponse:
+      description: Service unavailable
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+
+  requestBodies:
+    TaskCreateRequest:
+      description: Task creation request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/TaskCreate'
+
+    TaskUpdateRequest:
+      description: Task update request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/TaskUpdate'
+
+  securitySchemes:
+    openIdConnect:
+      type: openIdConnect
+      openIdConnectUrl: https://auth.taskmanagement.com/.well-known/openid-configuration
+  

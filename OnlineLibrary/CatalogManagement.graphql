@@ -1,0 +1,48 @@
+"A book as entry in the catalog."
+type Book {
+    # Identifier of the catalog entry
+    identifier: ID
+    # The 13-digit ISBN"
+    isbn13: String!
+    # Title
+    title: String
+    # List of authors of the book - the list cannot be empty
+    authors: [String!]!
+    # Number of text positions in the book
+    numberOfTextPositions: Int
+    # Category
+    category: Catagory
+    # Top twenty of individual tags give to the particular book
+    tags: [String]
+    # Rating of the book between 1 and 5
+    rating: Float
+    # Date of publishing
+    publishingDate: String!
+    # Abstract written by a librarian
+    abstract: String
+}
+
+enum Catagory {
+    NON_FICTION,
+    FICTION
+}
+
+type Query {
+    # Delivers all books fulfilling the searchCriteria
+    getCatalogEntries(searchCriteria: String!): [Book!]
+    # Delivers a book based on its ID
+    getCatalogEntry(id: ID!): Book!
+    # Delivers the abstract of a book based on the identifier of the book
+    getAbstractById(id: ID!): String
+
+}
+
+type Mutation {
+    # Creates a new entry of a book in the catalog
+    createNewEntry(book: Book!): ID!
+    # Updates a catalog entry
+    updateCatalogEntry(book: Book!): ID!
+    # Creates and updates an abstract of a book - deleting means an empty abstract
+    createUpdateAbstract(id: ID!, abstract: String): ID!
+}
+

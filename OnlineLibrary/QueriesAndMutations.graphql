@@ -1,0 +1,36 @@
+query {
+    queryBook(where: {title: {_eq: "Mastering DDD"}}),
+    {
+        authors,
+        title,
+        isbn
+    }
+}
+
+query {
+    queryBook(filter: {identifier: 7d29152d-b334-4152-838e-8094b71d9af9}),
+    {
+        identifier,
+        isbn13,
+        title,
+        authors,
+        numberOfTextPositions,
+        tags,
+        rating,
+        publishingDate
+    }
+}
+
+query {
+    queryBook(filter: {identifier: 7d29152d-b334-4152-838e-8094b71d9af9}),
+    {
+        abstract
+    }
+}
+
+mutation createUpdateAbstract {
+    createUpdateAbstract(id: 7d29152d-b334-4152-838e-8094b71d9af9,
+    abstract: DDD is important for everyone){
+        id
+    }
+}

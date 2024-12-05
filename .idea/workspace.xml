@@ -5,12 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9f418031-fa2f-4dcf-9ad8-1bd8158fd7e4" name="Changes" comment="Examples for IT-Tage">
-      <change afterPath="$PROJECT_DIR$/ApiDaysParis2025-12-05/AsyncSkeleton.yaml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ApiDaysParis2025-12-05/CatalogManagement.yaml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ApiDaysParis2025-12-05/Messages.yaml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/MAD Summit Berlin 2024-11-27/TaskManagement.puml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/MadSummit2024-11-27/TaskManagementContextMap.mermaid" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/MadSummit2024-11-27/TaskManagement.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/OnlineLibrary/CatalogManagement.graphql" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/OnlineLibrary/CatalogSearch.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/OnlineLibrary/CatalogSearchShort.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/OnlineLibrary/QueriesAndMutations.graphql" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/OnlineLibrary/book.proto" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MAD Summit Berlin 2024-11-27/TaskManagement.puml" beforeDir="false" afterPath="$PROJECT_DIR$/MadSummit2024-11-27/TaskManagement.puml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -20,9 +22,9 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
+        <option value="UML Sequence" />
         <option value="OpenAPI" />
         <option value="AsyncAPI specification 3 (yaml)" />
-        <option value="UML Sequence" />
       </list>
     </option>
   </component>
@@ -81,7 +83,7 @@
     "full.screen.before.presentation.mode": "false",
     "git-widget-placeholder": "main",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "/Users/annegretjunkercodecentricag/IdeaProjects/DdApiD/ApiDaysParis2025-12-05",
+    "last_opened_file_path": "/Users/annegretjunkercodecentricag/IdeaProjects/DdApiD/OnlineLibrary",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -93,13 +95,14 @@
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/OnlineLibrary" />
       <recent name="$PROJECT_DIR$/ApiDaysParis2025-12-05" />
       <recent name="$PROJECT_DIR$/MadSummit2024-11-27" />
       <recent name="$PROJECT_DIR$/IT-Tage2024/ExampleAPI" />
       <recent name="$PROJECT_DIR$/AsyncOnTourParis-2024-10-30" />
-      <recent name="$PROJECT_DIR$/MAD Afternoon 2024-09-24" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/MadSummit2024-11-27" />
       <recent name="$PROJECT_DIR$/MAD Summit Berlin 2024-11-27" />
       <recent name="$PROJECT_DIR$/ApiDaysParis2025-12-05" />
       <recent name="$PROJECT_DIR$/OnlineLibrary" />
@@ -191,7 +194,9 @@
       <workItem from="1732518922910" duration="929000" />
       <workItem from="1732521419662" duration="598000" />
       <workItem from="1732525130187" duration="3376000" />
-      <workItem from="1732626911370" duration="8706000" />
+      <workItem from="1732626911370" duration="15600000" />
+      <workItem from="1732886591078" duration="2624000" />
+      <workItem from="1732956767899" duration="8334000" />
     </task>
     <task id="LOCAL-00001" summary="Initial creation">
       <option name="closed" value="true" />
@@ -489,7 +494,15 @@
       <option name="project" value="LOCAL" />
       <updated>1732369293108</updated>
     </task>
-    <option name="localTasksCounter" value="38" />
+    <task id="LOCAL-00038" summary="Examples for IT-Tage">
+      <option name="closed" value="true" />
+      <created>1732707050004</created>
+      <option name="number" value="00038" />
+      <option name="presentableId" value="LOCAL-00038" />
+      <option name="project" value="LOCAL" />
+      <updated>1732707050004</updated>
+    </task>
+    <option name="localTasksCounter" value="39" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

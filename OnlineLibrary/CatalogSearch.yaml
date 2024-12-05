@@ -1,0 +1,472 @@
+openapi: 3.1.0
+info:
+  title: Catalog Management
+  description: |
+    Catalog Management Interface to search and update catalog entries
+    - Get search criteria: delivers all books fulfilling the search criteria
+    - Post creates a new catalog entry
+    - Put updates a catalog entry
+    - Post abstract adds a new abstract to a book
+    - Delete abstract deletes an abstract
+  version: 1.0.0
+servers:
+  - url: 'https://catalog-online.org/catalog-management'
+security:
+  - openIdConnect:
+      - book:read
+      - book:write
+      - book:admin
+tags:
+  - name: Book
+    description: All endpoints related to books in the library
+paths:
+  /books:
+    get:
+      description: |
+        Delivers books one searches by a search criteria
+        Search criteria can contain titles, authors, or even tags
+      operationId: getBooksBySearchCriteria
+      security:
+        - openIdConnect:
+          - book:read
+      parameters:
+        - $ref: '#/components/parameters/SearchCriteriaParameter'
+      responses:
+        200:
+          $ref: '#/components/responses/BookListResponse'
+        400:
+          $ref: '#/components/responses/BadRequestResponse'
+        403:
+          $ref: '#/components/responses/ForbiddenResponse'
+        500:
+          $ref: '#/components/responses/ServiceNotAvailableResponse'
+        default:
+          $ref: '#/components/responses/DefaultResponse'
+    post:
+      description: Creates a new catalog entry
+      operationId: createNewCatalogEntry
+      security:
+        - openIdConnect:
+            - book:write
+      requestBody:
+        $ref: '#/components/requestBodies/BookToBeCreatedRequest'
+      responses:
+        200:
+          $ref: '#/components/responses/LinkToBookResponse'
+        400:
+          $ref: '#/components/responses/BadRequestResponse'
+        403:
+          $ref: '#/components/responses/ForbiddenResponse'
+        500:
+          $ref: '#/components/responses/ServiceNotAvailableResponse'
+        default:
+          $ref: '#/components/responses/DefaultResponse'
+
+  /books/{bookIdentifier}:
+    get:
+      description: Delivers back a single book by its identifier
+      operationId: getBookById
+      security:
+        - openIdConnect:
+            - book:read
+      parameters:
+        - $ref: '#/components/parameters/BookIdentifierParameter'
+      responses:
+        200:
+          $ref: '#/components/responses/BookResponse'
+        400:
+          $ref: '#/components/responses/BadRequestResponse'
+        403:
+          $ref: '#/components/responses/ForbiddenResponse'
+        404:
+          $ref: '#/components/responses/NotFoundResponse'
+        500:
+          $ref: '#/components/responses/ServiceNotAvailableResponse'
+        default:
+          $ref: '#/components/responses/DefaultResponse'
+    put:
+      description: Updates a book entry
+      operationId: updateBookById
+      security:
+        - openIdConnect:
+            - book:read
+      parameters:
+        - $ref: '#/components/parameters/BookIdentifierParameter'
+      requestBody:
+        $ref: '#/components/requestBodies/BookToBeUpdatedRequest'
+      responses:
+        200:
+          $ref: '#/components/responses/LinkToBookResponse'
+        400:
+          $ref: '#/components/responses/BadRequestResponse'
+        403:
+          $ref: '#/components/responses/ForbiddenResponse'
+        404:
+          $ref: '#/components/responses/NotFoundResponse'
+        500:
+          $ref: '#/components/responses/ServiceNotAvailableResponse'
+        default:
+          $ref: '#/components/responses/DefaultResponse'
+
+  /books/{bookIdentifier}/abstract:
+    post:
+      description: |
+        Creates a new abstract of the book, only allowed if the abstract of the abstract is empty and for librarians
+      operationId: addAbstractToBookById
+      security:
+        - openIdConnect:
+            - book:admin
+      parameters:
+        - $ref: '#/components/parameters/BookIdentifierParameter'
+      requestBody:
+        $ref: '#/components/requestBodies/AbstractRequest'
+      responses:
+        200:
+          $ref: '#/components/responses/LinkToBookResponse'
+        400:
+          $ref: '#/components/responses/BadRequestResponse'
+        403:
+          $ref: '#/components/responses/ForbiddenResponse'
+        404:
+          $ref: '#/components/responses/NotFoundResponse'
+        500:
+          $ref: '#/components/responses/ServiceNotAvailableResponse'
+        default:
+          $ref: '#/components/responses/DefaultResponse'
+    delete:
+      description: Deletes an abstract of a book, only allowed for librarians
+      operationId: deleteAbstractOfBookById
+      security:
+        - openIdConnect:
+            - book:admin
+      parameters:
+        - $ref: '#/components/parameters/BookIdentifierParameter'
+      responses:
+        200:
+          $ref: '#/components/responses/LinkToBookResponse'
+        400:
+          $ref: '#/components/responses/BadRequestResponse'
+        403:
+          $ref: '#/components/responses/ForbiddenResponse'
+        404:
+          $ref: '#/components/responses/NotFoundResponse'
+        500:
+          $ref: '#/components/responses/ServiceNotAvailableResponse'
+        default:
+          $ref: '#/components/responses/DefaultResponse'
+
+components:
+  parameters:
+    BookIdentifierParameter:
+      name: bookId
+      description: Book identifier
+      required: true
+      in: path
+      schema:
+        type: string
+        format: uuid
+        examples:
+          - 193ad3f6-0c0d-4e57-a4e4-b50766e64f14
+
+    SearchCriteriaParameter:
+      name: searchCriteria
+      in: query
+      required: true
+      schema:
+        type: string
+        minLength: 2
+        maxLength: 200
+        examples:
+          - Evans
+
+  requestBodies:
+    AbstractRequest:
+      description: Abstract to be updated in a book
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Abstract'
+
+    BookToBeCreatedRequest:
+      description: Book to be created in the catalog
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/BookToBeCreatedUpdated'
+
+    BookToBeUpdatedRequest:
+      description: Book to be updated in the catalog
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/BookToBeCreatedUpdated'
+
+  responses:
+    BadRequestResponse:
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+
+    ForbiddenResponse:
+      description: Forbidden
+
+    LinkToBookResponse:
+      description: Successful operation - Catalog entry created
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Link"
+
+    NotFoundResponse:
+      description: Not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+
+
+    BookListResponse:
+      description: List of books in the library
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/BookList'
+
+    BookResponse:
+      description: Delivers back the book
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/BookDetail'
+
+    ServiceNotAvailableResponse:
+      description: Service not available
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+
+    DefaultResponse:
+      description: Unexpected error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  schemas:
+    Abstract:
+      description: Abstract of the book
+      type: string
+      minLength: 20
+      maxLength: 2048
+      examples:
+        - Software design thought leader and founder of Domain Language, Eric Evans, provides a systematic approach to domain-driven design, presenting an extensive set of design best practices, experience-based techniques, and fundamental principles that facilitate the development of software projects facing complex domains. Intertwining system design and development practice, this book incorporates numerous examples based on actual projects to illustrate the application of domain-driven design to real-world software modeling and development.
+
+    Author:
+      description: Author of a book with surname and name
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          description: Name of the author
+          minLength: 2
+          maxLength: 40
+          examples:
+            - Eric Evans
+        portraitThumbnailWebP:
+          description: Thumbnail of the author portrait
+          type: string
+
+    Book:
+      description: Entry of a book in the catalog
+      type: object
+      required:
+         - identifier
+      allOf:
+        - $ref: '#/components/schemas/BookToBeCreatedUpdated'
+      properties:
+        identifier:
+          description: Unique identifier of the catalog entry
+          type: string
+          format: uuid
+          example: 193ad3f6-0c0d-4e57-a4e4-b50766e64f14
+        tags:
+          description: List of tags associated with the book (top 20)
+          type: array
+          minItems: 0
+          maxItems: 20
+          uniqueItems: true
+          items:
+            description: Tag assigned to the book
+            type: string
+            minLength: 1
+            maxLength: 50
+            examples:
+              Domain-driven Design
+
+    BookList:
+      description: List of books in the library
+      type: object
+      required:
+        - count
+      properties:
+        count:
+          description: Number of items in the book list to support lazy loadings in the client
+          type: integer
+          format: int 32
+          examples:
+            - 10
+        books:
+          description: List of books
+          type: array
+          minItems: 0
+          maxItems: 1000
+          items:
+            $ref: '#/components/schemas/Book'
+
+    BookToBeCreatedUpdated:
+      description: Entry of the catalog to be created
+      type: object
+      required:
+        - title
+        - authors
+        - numberOfTextPositions
+        - category
+        - hasValidLicense
+        - publishingDate
+      properties:
+        title:
+          description: The title of the book
+          type: string
+          minLength: 2
+          maxLength: 250
+          examples:
+            - Domain-Driven Design Tackling Complexity in the Heart of Software
+        coverThumbnailWebP:
+          description: Base64 encoded WebP image of the book cover thumbnail
+          type: string
+        authors:
+          description: Authors of the book
+          type: array
+          minItem: 1
+          maxItem: 10
+          items:
+            $ref: '#/components/schemas/Author'
+        numberOfTextPositions:
+          description: Number of text positions in the book
+          type: integer
+          format: int64
+          minimum: 1
+          examples:
+            - 136592
+        category:
+          description: The main category of the book
+          type: string
+          enum:
+            - NON_FICTION
+            - FICTION
+          default: FICTION
+          examples:
+            - NON_FICTION
+        hasValidLicense:
+          description: Indicates whether the library has a valid license for the book at the moment.
+          type: boolean
+          default: true
+          examples:
+            - true
+        publishingDate:
+          description: The date when the book was published
+          type: string
+          format: date
+          examples:
+            - 2003-08-20
+
+    BookDetail:
+      description: A book complete with abstract
+      type: object
+      allOf:
+        - Book
+      properties:
+        abstract:
+          $ref: '#/components/schemas/Abstract'
+
+    Error:
+      description: An error object used for error responses
+      type: object
+      required:
+        - title
+        - status
+        - timestamp
+      properties:
+        title:
+          description: A short description of the problem using kebab-cases
+          type: string
+          minLength: 2
+          maxLength: 255
+          examples:
+            - out-of-stock
+        detail:
+          description: |
+            A human-readable description of the problem which can be used by technicians to solve the problem.
+          type: string
+          examples:
+            - The item is currently out of stock.
+        timestamp:
+          description: Point in time when the error occurred
+          type: string
+          format: date-time
+          examples:
+            - 2024-07-01T23:32:54T+01:00
+        traceparent:
+          description: Tracking ID of the API journey
+          type: string
+          pattern: ^[0-9]{2}-[0-9a-z]{16}-[0-9a-z]{8}-[0-9a-z]{1}[0-9a-z]{1}$
+          examples:
+            - 00-0af7651916cd43dd8448eb211c80319c-b7ad6b7169203331-01
+        severity:
+          description: Severity of the according error
+          type: string
+          enum:
+            - FATAL
+            - ERROR
+            - WARNING
+            - INFO
+          examples:
+            - ERROR
+
+    Link:
+      description: Link to an entity
+      type: object
+      required:
+        - type
+        - link
+      properties:
+        type:
+          description: Not fully qualified type name of the object
+          type: string
+          minLength: 2
+          maxLength: 155
+          examples:
+            - BookWithAbstract
+        link:
+          description: URL to the according entity
+          type: string
+          format: uri
+          examples:
+            - https://online-library.org/books/193ad3f6-0c0d-4e57-a4e4-b50766e64f14
+
+  securitySchemes:
+    openIdConnect:
+      type: openIdConnect
+      description: Security scheme for events
+      openIdConnectUrl: "https://idp.online-library.org/configuration"
+
+
+
+
+
+
+
+  

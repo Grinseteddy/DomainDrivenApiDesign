@@ -1,0 +1,121 @@
+syntax = "proto3";
+
+import "google/protobuf/empty.proto";
+package Example.Library;
+
+option csharp_namespace = "Example.Library.Book.Dto.Proto";
+
+service CatalogManagement {
+
+  //Creates a new catalog entry
+  rpc CreateNewEntry (Book) returns (Identifier) {}
+
+  //Search for catalog entries
+  rpc SearchBooksInCatalog(SearchCriteria) returns (CatalogEntries) {}
+
+  //Delivers a catalog entry by its identifier
+  rpc GetEntryByIdentifier(Identifier) returns (CatalogEntry) {}
+
+  //Updates a catalog entry by its identifier
+  rpc UpdateEntryByIdentifier(CatalogEntry) returns (Identifier) {}
+
+  //Deletes a catalog entry by its identifier
+  rpc DeleteEntryByIdentifier(Identifier) returns(google.protobuf.Empty) {}
+
+  //Returns the abstract of a catalog entry by its identifier
+  rpc GetAbstractByEntryIdentifier(Identifier) returns (Abstract) {}
+
+  //Add abstract to a catalog entry by a librarian
+  rpc AddAbstract(Abstract) returns (Identifier) {}
+
+  //Deletes an abstract of a catalog entry
+  rpc DeleteAbstract(Identifier) returns (google.protobuf.Empty) {}
+
+}
+
+
+// Book represents a book and its metadata for the library, e.g., for search results
+message Book {
+
+  // The 13-digit ISBN
+  string isbn13 = 1;
+
+  // The title of the book (1-200 characters)
+  string title = 2;
+
+  // WebP image of the book cover thumbnail
+  optional bytes cover_thumbnail_webp = 3;
+
+  // List of authors of the book (at least one author)
+  repeated Author authors = 4;
+
+  // The number of text positions in the book (non-negative integer)
+  uint32 number_of_text_position = 5;
+
+  // The main category of the book
+  Category category = 6;
+
+  // List of tags associated with the book (up to 20 unique tags, 1-50 characters each)
+  repeated string tags = 7;
+
+  // The average rating of the book (0 to 5 stars, with one decimal place)
+  optional float rating = 8;
+
+  // Indicates whether the library has a valid license for the book at the moment
+  bool has_valid_licence = 9;
+
+  // The date when the book was published, in ISO 8601 format (YYYY-MM-DD)
+  // This format allows for representation of dates before the Unix epoch
+  // Examples: "2000-01-01", "1850-12-25", "0001-01-01"
+  string publishing_date = 10;
+
+  // Author represents an author of a book
+  message Author {
+    // The full name of the author with titles (1-100 characters)
+    // Examples: "Eric Evans", "Dr. John Smith"
+    string name = 1;
+
+    // WebP image of the author's portrait thumbnail
+    optional bytes portrait_thumbnail_webp = 2;
+  }
+
+  // Category represents the main category of a book
+  enum Category {
+    CATEGORY_NON_FICTION = 0;
+    CATEGORY_FICTION = 1;
+  }
+}
+
+// UUID representing a book
+message Identifier {
+  // UUID to identify a new catalog entry
+  string id = 1;
+}
+
+//Search criteria as one string given by a member
+message SearchCriteria {
+  //Search criteria for a book e.g. author
+  string searchCriteria = 1;
+}
+
+//Catalog entry as one entry of a book created in the catalog
+message CatalogEntry {
+  //Identifier of the book in the catalog
+  string id = 1;
+  //Book entry
+  Book book = 2;
+}
+
+//Catalog entries as result set of a search
+message CatalogEntries {
+  //Array of catalog entries
+  repeated CatalogEntry catalogEntries = 1;
+}
+
+//Abstract belonging to a catalog entry
+message Abstract {
+  //Identifier of the book in the catalog
+  string id = 1;
+  //Abstract text of the book created by librarians
+  string abstract = 2;
+}
