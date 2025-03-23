@@ -5,14 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9f418031-fa2f-4dcf-9ad8-1bd8158fd7e4" name="Changes" comment="Examples for IT-Tage">
-      <change afterPath="$PROJECT_DIR$/MadSummit2024-11-27/TaskManagement.yaml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/OnlineLibrary/CatalogManagement.graphql" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/OnlineLibrary/CatalogSearch.yaml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/OnlineLibrary/CatalogSearchShort.yaml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/OnlineLibrary/QueriesAndMutations.graphql" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/OnlineLibrary/book.proto" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/SasSpring2025Munich/AsyncSkeleton.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/SasSpring2025Munich/CatalogManagement.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/SasSpring2025Munich/asyncapi.yaml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MAD Summit Berlin 2024-11-27/TaskManagement.puml" beforeDir="false" afterPath="$PROJECT_DIR$/MadSummit2024-11-27/TaskManagement.puml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ApiDaysParis2025-12-05/Messages.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/ApiDaysParis2025-12-05/Messages.yaml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -83,7 +80,7 @@
     "full.screen.before.presentation.mode": "false",
     "git-widget-placeholder": "main",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "/Users/annegretjunkercodecentricag/IdeaProjects/DdApiD/OnlineLibrary",
+    "last_opened_file_path": "/Users/annegretjunkercodecentricag/IdeaProjects/DdApiD/SasSpring2025Munich",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -197,6 +194,14 @@
       <workItem from="1732626911370" duration="15600000" />
       <workItem from="1732886591078" duration="2624000" />
       <workItem from="1732956767899" duration="8334000" />
+      <workItem from="1733404077573" duration="1597000" />
+      <workItem from="1733475979100" duration="4000" />
+      <workItem from="1733846740968" duration="2588000" />
+      <workItem from="1733922554588" duration="599000" />
+      <workItem from="1733923634924" duration="599000" />
+      <workItem from="1734094981833" duration="723000" />
+      <workItem from="1734180124336" duration="59000" />
+      <workItem from="1742736453345" duration="325000" />
     </task>
     <task id="LOCAL-00001" summary="Initial creation">
       <option name="closed" value="true" />
@@ -502,7 +507,15 @@
       <option name="project" value="LOCAL" />
       <updated>1732707050004</updated>
     </task>
-    <option name="localTasksCounter" value="39" />
+    <task id="LOCAL-00039" summary="Examples for IT-Tage">
+      <option name="closed" value="true" />
+      <created>1733404351150</created>
+      <option name="number" value="00039" />
+      <option name="presentableId" value="LOCAL-00039" />
+      <option name="project" value="LOCAL" />
+      <updated>1733404351150</updated>
+    </task>
+    <option name="localTasksCounter" value="40" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

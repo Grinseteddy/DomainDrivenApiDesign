@@ -1,0 +1,61 @@
+asyncapi: 3.0.0
+info:
+  title: Book Purchesed API
+  version: 1.0.0
+  description: The API notifies when a book get purchesed.
+servers:
+  event-broker-library:
+    host: broker.online-library.org:8092
+    protocol: kafka
+    description: Event broker of the online library
+    bindings:
+      kafka:
+        schemaRegistryUrl: 'https://online-library-schema-registry.com'
+        schemaRegistryVendor: 'confluent'
+        bindingVersion: '0.5.0'
+channels:
+  BookPurchasedEventChannel:
+    description: Channel where messages are stored when a book was purchased
+    address: book-purchased
+    messages:
+      BookPurchasedEvent:
+        $ref: '#/components/messages/BookPurchasedEvent'
+    bindings:
+      kafka:
+        topic: 'book-purchased-event-channel'
+        bindingVersion: '0.5.0'
+operations:
+  BookPurchasedEventReceive:
+    action: "receive"
+    channel:
+      $ref: "#/channels/BookPurchasedEventChannel"
+    bindings:
+      kafka:
+        bindingVersion: '0.5.0'
+        groupId:
+          type: string
+          pattern: ^cg-book-purchased-.*$
+components:
+  messages:
+    BookPurchasedEvent:
+      headers:
+        $ref: '#/components/schemas/MessageHeader'
+      payload:
+        $ref: '#/components/schemas/BookPurchased'
+      bindings:
+        kafka:
+          bindingVersion: '0.5.0'
+          key:
+            type: string
+            format: uuid
+  schemas:
+    MessageHeader: {}
+    BookPurchased:
+      description: Book was purchased by a librarian
+      type: object
+      required: [author, title]
+      properties:
+        authors:
+          description: Authors of the book with ...
+          type: array
+          items: {}

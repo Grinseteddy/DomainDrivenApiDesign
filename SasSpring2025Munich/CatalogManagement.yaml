@@ -1,15 +1,65 @@
 asyncapi: 3.0.0
 info:
-  title: Messages necessary for the Online Library
+  title: Catalog Managemnent
   version: 1.0.0
-  description: |
-    Message definition of the online library
-  contact:
-    name: Annegret Junker
-    email: annegret.junker@gmx.de
+  description: |-
+    The catalog manages the books available to the member of the library. Books new arrived are entered as catalog entries. Changed catalog entries are published.
+defaultContentType: application/json
 
-defaultContentType:
-  application/json
+servers:
+  event-broker-library:
+    host: broker.online-library.org:8092
+    protocol: kafka
+    description: Event broker of the online library
+    bindings:
+      kafka:
+        schemaRegistryUrl: 'https://online-library-schema-registry.com'
+        schemaRegistryVendor: 'confluent'
+        bindingVersion: '0.5.0'
+
+
+operations:
+  BookPurchasedEventReceive:
+    action: "receive"
+    channel:
+      $ref: "#/channels/BookPurchasedEventChannel"
+    bindings:
+      kafka:
+        bindingVersion: '0.5.0'
+        groupId:
+          type: string
+          enum: ['Catalog']
+        clientId:
+          type: string
+          enum: ['Catalog']
+
+  CatalogEntryCreatedEventSend:
+    action: "send"
+    channel:
+      $ref: '#/channels/CatalogEntryCreatedEventChannel'
+    bindings:
+      kafka:
+        bindingVersion: '0.5.0'
+        groupId:
+          type: string
+          enum: ['Catalog']
+        clientId:
+          type: string
+          enum: ['Catalog']
+
+  CatalogEntryUpdatedEventSend:
+    action: "send"
+    channel:
+      $ref: '#/channels/CatalogEntryCreatedEventChannel'
+    bindings:
+      kafka:
+        bindingVersion: '0.5.0'
+        groupId:
+          type: string
+          enum: ['Catalog']
+        clientId:
+          type: string
+          enum: ['Catalog']
 
 channels:
   BookPurchasedEventChannel:
@@ -18,6 +68,18 @@ channels:
     messages:
       BookPurchasedEvent:
         $ref: '#/components/messages/BookPurchasedEvent'
+    bindings:
+      kafka:
+        topic: 'book-purchased-event-channel'
+        partitions: 3
+        replicas: 3
+        topicConfiguration:
+          cleanup.policy: ["delete", "compact"]
+          retention.ms: 604800000
+          retention.bytes: 1000000000
+          delete.retention.ms: 86400000
+          max.message.bytes: 1048588
+        bindingVersion: '0.5.0'
 
   CatalogEntryCreatedEventChannel:
     description: Channel were messages are stored when a catalog entry was created
@@ -25,6 +87,18 @@ channels:
     messages:
       CatalogEntryCreatedEvent:
         $ref: '#/components/messages/CatalogEntryCreatedEvent'
+    bindings:
+      kafka:
+        topic: 'catalog-entry-created-event-channel'
+        partitions: 3
+        replicas: 3
+        topicConfiguration:
+          cleanup.policy: ["delete", "compact"]
+          retention.ms: 604800000
+          retention.bytes: 1000000000
+          delete.retention.ms: 86400000
+          max.message.bytes: 1048588
+        bindingVersion: '0.5.0'
 
   CatalogEntryUpdatedEventChannel:
     description: Channel were messages are stored when a catalog entry was updated
@@ -32,6 +106,7 @@ channels:
     messages:
       CatalogEntryUpdatedEvent:
         $ref: '#/components/messages/CatalogEntryUpdatedEvent'
+
 
   CreateNotificationCommandChannel:
     description: Channel were messages are stored when a notification should be created
@@ -46,36 +121,36 @@ channels:
     address: book-lent
     messages:
       BookLentEvent:
-        $ref: '#/components/schemas/BookLentEvent'
+        $ref: '#/components/messages/BookLentEvent'
 
   BookReturnedEventChannel:
     description: Channel were messages are stored when a book was returned
     address: book-returned
     messages:
       BookReturnedEvent:
-        $ref: '#/components/schemas/BookReturnedEvent'
+        $ref: '#/components/messages/BookReturnedEvent'
 
   MemberCreatedEventChannel:
     description: Channel were messages are stored when a member was created
     address: member-created
     messages:
       MemberCreatedEvent:
-        $ref: '#/components/schemas/MemberCreatedEvent'
+        $ref: '#/components/messages/MemberCreatedEvent'
+
 
   AmountPaidEvent:
     description: Channel for amount paid events
     address: amount-paid
     messages:
       AmountPaidEvent:
-        $ref: '#/components/schemas/AmountPaidEvent'
+        $ref: '#/components/messages/AmountPaidEvent'
 
   ReadingPositionMarkedEvent:
     description: Channel for reading positions events
     address: reading-position-marked
     messages:
       ReadingPositionMarkedEvent:
-        $ref: '#/components/schemas/ReadingPositionMarkedEvent'
-
+        $ref: '#/components/messages/ReadingPositionMarkedEvent'
 
 components:
   messages:
@@ -84,6 +159,14 @@ components:
         $ref: '#/components/schemas/MessageHeader'
       payload:
         $ref: '#/components/schemas/BookPurchased'
+      bindings:
+        kafka:
+          key:
+            type: string
+            enum: ['bookKey']
+          schemaIdLocation: 'payload'
+          schemaIdPayloadEncoding: '4'
+          bindingVersion: '0.5.0'
 
     CatalogEntryCreatedEvent:
       headers:
@@ -335,8 +418,8 @@ components:
       description: A notification needs to be created
       type: object
       required:
-         - text
-         - channels
+        - text
+        - channels
       properties:
         text:
           description: Text of the notification
@@ -445,9 +528,9 @@ components:
         - requestId
       properties:
         amount:
-          $ref: '#/components/schema/Amount'
+          $ref: '#/components/schemas/Amount'
         requestId:
-          description: | 
+          description: |
             Identifier of the request for the payment
             The identifier is unique for one time payments and remains for scheduled payments
           type: string
@@ -480,29 +563,4 @@ components:
           format: int64
           examples:
             - 2048
-
-
-
-
-
-      schema:
-        type: record
-        name: Book
-        namespace: com.example
-        doc: A schema representing a book and its metadata for the library for, e.g., search results
-        fields:
-          - name: isbn13
-            type: string
-            doc: The 13-digit ISBN, e.g., 9781234567890
-          - name: title
-            type: string
-            doc: The title of the book
-
-
-
-
-
-
-
-
 
