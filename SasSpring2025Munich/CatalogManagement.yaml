@@ -11,11 +11,11 @@ servers:
     host: broker.online-library.org:8092
     protocol: kafka
     description: Event broker of the online library
-    bindings:
-      kafka:
-        schemaRegistryUrl: 'https://online-library-schema-registry.com'
-        schemaRegistryVendor: 'confluent'
-        bindingVersion: '0.5.0'
+    #bindings:
+      #kafka:
+        #schemaRegistryUrl: 'https://online-library-schema-registry.com'
+        #schemaRegistryVendor: 'confluent'
+        #bindingVersion: '0.5.0'
 
 
 operations:
@@ -23,43 +23,43 @@ operations:
     action: "receive"
     channel:
       $ref: "#/channels/BookPurchasedEventChannel"
-    bindings:
-      kafka:
-        bindingVersion: '0.5.0'
-        groupId:
-          type: string
-          enum: ['Catalog']
-        clientId:
-          type: string
-          enum: ['Catalog']
+    #bindings:
+      #kafka:
+        #bindingVersion: '0.5.0'
+        #groupId:
+          #type: string
+          #enum: ['Catalog']
+        #clientId:
+          #type: string
+          #enum: ['Catalog']
 
   CatalogEntryCreatedEventSend:
     action: "send"
     channel:
       $ref: '#/channels/CatalogEntryCreatedEventChannel'
-    bindings:
-      kafka:
-        bindingVersion: '0.5.0'
-        groupId:
-          type: string
-          enum: ['Catalog']
-        clientId:
-          type: string
-          enum: ['Catalog']
+    #bindings:
+      #kafka:
+        #bindingVersion: '0.5.0'
+        #groupId:
+          #type: string
+          #enum: ['Catalog']
+        #clientId:
+          #type: string
+          #enum: ['Catalog']
 
   CatalogEntryUpdatedEventSend:
     action: "send"
     channel:
       $ref: '#/channels/CatalogEntryCreatedEventChannel'
-    bindings:
-      kafka:
-        bindingVersion: '0.5.0'
-        groupId:
-          type: string
-          enum: ['Catalog']
-        clientId:
-          type: string
-          enum: ['Catalog']
+    #bindings:
+      #kafka:
+        #bindingVersion: '0.5.0'
+        #groupId:
+          #type: string
+          #enum: ['Catalog']
+        #clientId:
+          #type: string
+          #enum: ['Catalog']
 
 channels:
   BookPurchasedEventChannel:
