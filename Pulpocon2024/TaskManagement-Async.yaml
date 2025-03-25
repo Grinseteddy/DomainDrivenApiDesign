@@ -1,0 +1,472 @@
+asyncapi: 3.0.0
+info:
+  title: Task Management System
+  version: 1.0.0
+  description: |
+    This specification describes the event-driven API for a Task Management system 
+    that integrates with User Management and Document Management services.
+  contact:
+    name: Task Management Team
+    url: https://taskmanagement.org
+    email: support@taskmanagement.org
+
+servers:
+  production:
+    host: "events.taskmanagement.com:9092"
+    protocol: "kafka"
+    description: "Production broker"
+    security:
+      - $ref: '#/components/securitySchemes/user-password'
+
+defaultContentType: application/json
+
+channels:
+
+  # Task Management events
+  taskCreated:
+    address: "task/created"
+    messages:
+      taskCreated:
+        $ref: '#/components/messages/taskCreated'
+
+  taskAssigned:
+    address: "task/assigned"
+    messages:
+      taskAssigned:
+        $ref: '#/components/messages/taskAssigned'
+
+  taskDeclined:
+    address: "task/declined"
+    messages:
+      taskDeclined:
+        $ref: '#/components/messages/taskDeclined'
+
+  taskInProgress:
+    address: "task/inprogress"
+    messages:
+      taskInProgress:
+        $ref: '#/components/messages/taskInProgress'
+
+  taskDone:
+    address: "task/done"
+    messages:
+      taskDone:
+        $ref: '#/components/messages/taskDone'
+
+  noteAdded:
+    address: "task/note"
+    messages:
+      noteAdded:
+        $ref: '#/components/messages/noteAdded'
+
+  attachmentAdded:
+    address: "task/attachment"
+    messages:
+      attachmentAdded:
+        $ref: '#/components/messages/attachmentAdded'
+
+  documentChanged:
+    address: "document/changed"
+    messages:
+      documentChanged:
+        $ref: '#/components/messages/documentChanged'
+
+operations:
+
+  # Task Management operations
+  sendTaskCreated:
+    action: "send"
+    channel:
+      $ref: "#/channels/taskCreated"
+
+  sendTaskAssigned:
+    action: "send"
+    channel:
+      $ref: "#/channels/taskAssigned"
+
+  sendTaskDeclined:
+    action: "send"
+    channel:
+      $ref: "#/channels/taskDeclined"
+
+  sendTaskInProgress:
+    action: "send"
+    channel:
+      $ref: "#/channels/taskInProgress"
+
+  sendTaskDone:
+    action: "send"
+    channel:
+      $ref: "#/channels/taskDone"
+
+  sendNoteAdded:
+    action: "send"
+    channel:
+      $ref: "#/channels/noteAdded"
+
+  sendAttachmentAdded:
+    action: "send"
+    channel:
+      $ref: "#/channels/attachmentAdded"
+
+  # Document Management operations
+  receiveDocumentChanged:
+    action: "receive"
+    channel:
+      $ref: "#/channels/documentChanged"
+
+
+components:
+  messages:
+
+    # Task Management messages
+    taskCreated:
+      headers:
+        $ref: '#/components/schemas/MessageHeader'
+      payload:
+        $ref: '#/components/schemas/Task'
+
+    taskAssigned:
+      headers:
+        $ref: '#/components/schemas/MessageHeader'
+      payload:
+        $ref: '#/components/schemas/TaskAssignment'
+
+    taskDeclined:
+      headers:
+        $ref: '#/components/schemas/MessageHeader'
+      payload:
+        $ref: '#/components/schemas/TaskAssignment'
+
+    taskInProgress:
+      headers:
+        $ref: '#/components/schemas/MessageHeader'
+      payload:
+        $ref: '#/components/schemas/TaskStatus'
+
+    taskDone:
+      headers:
+        $ref: '#/components/schemas/MessageHeader'
+      payload:
+        $ref: '#/components/schemas/TaskStatus'
+
+    noteAdded:
+      headers:
+        $ref: '#/components/schemas/MessageHeader'
+      payload:
+        $ref: '#/components/schemas/Note'
+
+    attachmentAdded:
+      headers:
+        $ref: '#/components/schemas/MessageHeader'
+      payload:
+        $ref: '#/components/schemas/Attachment'
+
+    # Document Management messages
+    documentChanged:
+      headers:
+        $ref: '#/components/schemas/MessageHeader'
+      payload:
+        $ref: '#/components/schemas/Document'
+
+  schemas:
+    MessageHeader:
+      description: Header Information for each message
+      type: object
+      required:
+        - correlationId
+        - messageId
+      properties:
+        correlationId:
+          description: Identifier to be set by application to trace end-to-end-api-journey
+          type: string
+          format: uuid
+          examples:
+            - b3416449-5f69-4cd2-a6c4-1ff82da96bce
+        messageId:
+          description: Identifier for the particular message, is needed in case of cascading infrastructure
+          type: string
+          format: uuid
+          examples:
+            - 5a1d305b-19f3-46eb-ada1-9a9770e56fd1
+        source:
+          description: Application name creating the message
+          type: string
+          minLength: 2
+          maxLength: 20
+          examples:
+            - TaskManagementService
+        timestamp:
+          description: Time the message was created
+          type: string
+          format: date-time
+          examples:
+            - "2023-01-01T12:00:00Z"
+
+    Task:
+      type: object
+      required:
+        - taskId
+        - title
+        - createdBy
+        - status
+      properties:
+        taskId:
+          type: string
+          format: uuid
+          description: Unique identifier for the task
+          examples:
+            - 9450630d-ada7-4aee-903b-1933918e3a75
+        title:
+          type: string
+          minLength: 5
+          maxLength: 70
+          description: Title of the task
+          examples:
+            - Make it so
+        description:
+          type: string
+          minLength: 5
+          maxLength: 2048
+          description: Detailed description of the task
+          examples:
+            - Captain Jean-Luc Picard said it so.
+        createdBy:
+          type: string
+          format: uuid
+          description: User ID of the task creator
+          examples:
+            - 63674c57-43de-47a6-9af8-0a1f51020a36
+        createdAt:
+          type: string
+          format: date-time
+          description: Timestamp when the task was created
+          examples:
+            - 2025-03-25T12:36:56+01:00
+        dueDate:
+          type: string
+          format: date
+          description: Deadline for the task
+          examples:
+            - 2025-03-25
+        priority:
+          type: string
+          enum: [LOW, MEDIUM, HIGH]
+          description: Priority level of the task
+          default: HIGH
+          examples:
+            - HIGH
+        status:
+          type: string
+          enum: [CREATED, ASSIGNED, DECLINED, IN_PROGRESS, DONE]
+          description: Current status of the task
+          default: CREATED
+          examples:
+            - CREATED
+        assignedTo:
+          type: string
+          format: uuid
+          description: User ID of the assignee (if assigned)
+          examples:
+            - 4a6c4fd9-6f6b-453c-b147-e77277bfdfb9
+        inboxId:
+          type: string
+          format: uuid
+          description: ID of the inbox the task belongs to
+          examples:
+            - 133bc170-9f96-414d-834f-fde936aae052
+
+    TaskAssignment:
+      type: object
+      required:
+        - taskId
+        - assignedBy
+        - assignedTo
+      properties:
+        taskId:
+          type: string
+          format: uuid
+          description: ID of the task being assigned
+        assignedTo:
+          type: string
+          format: uuid
+          description: User ID of the person the task is assigned to
+          examples:
+            - 945679bf-e690-4894-9468-3e32f8a6aa6c
+        assignedAt:
+          type: string
+          format: date-time
+          description: Timestamp when the task was assigned
+          examples:
+            - 2025-03-25T12:37:45+01:00
+        message:
+          type: string
+          minLength: 5
+          maxLength: 2048
+          description: Optional message from the assigner
+          examples:
+            - Make it so
+
+    TaskStatus:
+      type: object
+      required:
+        - taskId
+        - status
+        - updatedBy
+      properties:
+        taskId:
+          type: string
+          format: uuid
+          description: ID of the task being updated
+          examples:
+            - 70de16ee-336a-481d-9dca-25ad8a9d99f7
+        status:
+          type: string
+          enum: [ CREATED, ASSIGNED, DECLINED, IN_PROGRESS, DONE ]
+          description: Current status of the task
+          default: CREATED
+          examples:
+            - CREATED
+        updatedBy:
+          type: string
+          format: uuid
+          description: User ID of the person who updated the status
+          examples:
+            - 2bd81470-943f-4c64-8312-9b717525f04b
+        updatedAt:
+          type: string
+          format: date-time
+          description: Timestamp when the status was updated
+          examples:
+            - 2025-03-25T13:45:45+01:00
+        comment:
+          type: string
+          minLength: 5
+          maxLength: 2048
+          description: Optional comment about the status change
+          examples:
+            - It must be done.
+
+    Note:
+      type: object
+      required:
+        - noteId
+        - taskId
+        - content
+        - createdBy
+      properties:
+        noteId:
+          type: string
+          format: uuid
+          description: Unique identifier for the note
+          examples:
+            - 37667357-2bbd-408b-92ed-a1c4a960c48e
+        taskId:
+          type: string
+          format: uuid
+          description: ID of the task the note is attached to
+        content:
+          type: string
+          minLength: 5
+          maxLength: 2048
+          description: Content of the note
+          examples:
+            - It can only be done by Ferrengies.
+        createdBy:
+          type: string
+          format: uuid
+          description: User ID of the note creator
+          examples:
+            - b2b4a6d3-2ddf-44ff-af54-2e2889ee031a
+        createdAt:
+          type: string
+          format: date-time
+          description: Timestamp when the note was created
+          examples:
+            - 2025-03-25T13:45:45+01:00
+
+    Attachment:
+      type: object
+      required:
+        - attachmentId
+        - taskId
+        - filename
+        - fileType
+        - createdBy
+      properties:
+        attachmentId:
+          type: string
+          format: uuid
+          description: Unique identifier for the attachment
+          examples:
+            - 9dc593b1-0387-4f21-9ae6-f035983b3d2b
+        taskId:
+          type: string
+          format: uuid
+          description: ID of the task the attachment belongs to
+          examples:
+            - cebfd68f-07a4-4ae4-866e-d7e15270d5e1
+        documentUrl:
+          type: string
+          format: uri
+          description: URL to access the file
+          examples:
+            - https://apis.myorganization.org/document-management/9dc593b1-0387-4f21-9ae6-f035983b3d2b
+        createdBy:
+          type: string
+          format: uuid
+          description: User ID of the person who added the attachment
+          examples:
+            - d1337b30-d269-44f3-a462-d7f19fbeaa10
+        createdAt:
+          type: string
+          format: date-time
+          description: Timestamp when the attachment was added
+          examples:
+            - 2025-03-25T13:45:45+01:00
+
+    Document:
+      type: object
+      required:
+        - documentId
+        - title
+        - createdBy
+      properties:
+        documentId:
+          type: string
+          format: uuid
+          description: Unique identifier for the document
+          examples:
+            - c48c17fc-5591-4ff2-a0ce-122b5e9135a4
+        title:
+          type: string
+          minLength: 5
+          maxLength: 70
+          description: Title of the document
+          examples:
+            - See the future in blue
+        lastModifiedBy:
+          type: string
+          format: uuid
+          description: User ID of the person who last modified the document
+          examples:
+            - 2dc110cb-efad-4d1e-9534-f7e5c2074cf8
+        lastModifiedAt:
+          type: string
+          format: date-time
+          description: Timestamp when the document was last modified
+          examples:
+            - 6cec2431-81da-4ade-96a4-86769f4d7c96
+        relatedTaskIds:
+          type: array
+          items:
+            type: string
+            format: uuid
+            examples:
+              - 6f230609-100a-4c11-aa5f-8fe2486ecfb2
+          description: IDs of tasks related to this document
+
+  securitySchemes:
+    user-password:
+      type: userPassword
+      description: Security scheme for events
