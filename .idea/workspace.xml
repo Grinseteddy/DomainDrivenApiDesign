@@ -4,9 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9f418031-fa2f-4dcf-9ad8-1bd8158fd7e4" name="Changes" comment="Examples SAS">
-      <change afterPath="$PROJECT_DIR$/Pulpocon2024/TaskManagement-Async.yaml" afterDir="false" />
+    <list default="true" id="9f418031-fa2f-4dcf-9ad8-1bd8158fd7e4" name="Changes" comment="Example">
+      <change afterPath="$PROJECT_DIR$/SasSpring2025Munich/README.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SasSpring2025Munich/Prompt" beforeDir="false" afterPath="$PROJECT_DIR$/SasSpring2025Munich/Prompt.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -97,11 +98,11 @@
       <recent name="$PROJECT_DIR$/MadSummit2024-11-27" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/SasSpring2025Munich" />
       <recent name="$PROJECT_DIR$/MadSummit2024-11-27" />
       <recent name="$PROJECT_DIR$/MAD Summit Berlin 2024-11-27" />
       <recent name="$PROJECT_DIR$/ApiDaysParis2025-12-05" />
       <recent name="$PROJECT_DIR$/OnlineLibrary" />
-      <recent name="$PROJECT_DIR$/DDApiD-2024-03-13/Group1" />
     </key>
   </component>
   <component name="SharedIndexes">
@@ -200,7 +201,7 @@
       <workItem from="1734094981833" duration="723000" />
       <workItem from="1734180124336" duration="59000" />
       <workItem from="1742736453345" duration="9075000" />
-      <workItem from="1742901411739" duration="1128000" />
+      <workItem from="1742901411739" duration="1847000" />
     </task>
     <task id="LOCAL-00001" summary="Initial creation">
       <option name="closed" value="true" />
@@ -530,7 +531,23 @@
       <option name="project" value="LOCAL" />
       <updated>1742737047900</updated>
     </task>
-    <option name="localTasksCounter" value="42" />
+    <task id="LOCAL-00042" summary="Example">
+      <option name="closed" value="true" />
+      <created>1742902554695</created>
+      <option name="number" value="00042" />
+      <option name="presentableId" value="LOCAL-00042" />
+      <option name="project" value="LOCAL" />
+      <updated>1742902554695</updated>
+    </task>
+    <task id="LOCAL-00043" summary="Example">
+      <option name="closed" value="true" />
+      <created>1742902945708</created>
+      <option name="number" value="00043" />
+      <option name="presentableId" value="LOCAL-00043" />
+      <option name="project" value="LOCAL" />
+      <updated>1742902945708</updated>
+    </task>
+    <option name="localTasksCounter" value="44" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -569,6 +586,7 @@
     <MESSAGE value="ai" />
     <MESSAGE value="Examples for IT-Tage" />
     <MESSAGE value="Examples SAS" />
-    <option name="LAST_COMMIT_MESSAGE" value="Examples SAS" />
+    <MESSAGE value="Example" />
+    <option name="LAST_COMMIT_MESSAGE" value="Example" />
   </component>
 </project>
