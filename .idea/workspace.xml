@@ -4,10 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9f418031-fa2f-4dcf-9ad8-1bd8158fd7e4" name="Changes" comment="Example">
-      <change afterPath="$PROJECT_DIR$/SasSpring2025Munich/README.md" afterDir="false" />
+    <list default="true" id="9f418031-fa2f-4dcf-9ad8-1bd8158fd7e4" name="Changes" comment="Readme">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SasSpring2025Munich/Prompt" beforeDir="false" afterPath="$PROJECT_DIR$/SasSpring2025Munich/Prompt.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -201,7 +199,7 @@
       <workItem from="1734094981833" duration="723000" />
       <workItem from="1734180124336" duration="59000" />
       <workItem from="1742736453345" duration="9075000" />
-      <workItem from="1742901411739" duration="1847000" />
+      <workItem from="1742901411739" duration="11964000" />
     </task>
     <task id="LOCAL-00001" summary="Initial creation">
       <option name="closed" value="true" />
@@ -547,7 +545,15 @@
       <option name="project" value="LOCAL" />
       <updated>1742902945708</updated>
     </task>
-    <option name="localTasksCounter" value="44" />
+    <task id="LOCAL-00044" summary="Readme">
+      <option name="closed" value="true" />
+      <created>1742903275932</created>
+      <option name="number" value="00044" />
+      <option name="presentableId" value="LOCAL-00044" />
+      <option name="project" value="LOCAL" />
+      <updated>1742903275932</updated>
+    </task>
+    <option name="localTasksCounter" value="45" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -587,6 +593,7 @@
     <MESSAGE value="Examples for IT-Tage" />
     <MESSAGE value="Examples SAS" />
     <MESSAGE value="Example" />
-    <option name="LAST_COMMIT_MESSAGE" value="Example" />
+    <MESSAGE value="Readme" />
+    <option name="LAST_COMMIT_MESSAGE" value="Readme" />
   </component>
 </project>
