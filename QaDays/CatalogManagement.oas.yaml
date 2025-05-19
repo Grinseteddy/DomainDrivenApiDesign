@@ -1,0 +1,670 @@
+openapi: 3.1.0
+info:
+  title: Catalog Management
+  description: |
+    Catalog Management to be used by librarians
+    Librarians can create new entries.
+    They can created tags and substracts for a certain entry.
+  contact:
+    email: annegret.junker@online-library.org
+    name: Annegret Junker
+    url: https://api.online-library.org
+  version: 1.0.0
+  x-api-id: c004ebd2-f9c6-4e21-aa41-826f8eaf4092
+  x-audience: external-public
+servers:
+  - url: 'https://api.online-library.org/catalog-management/'
+security:
+  - openIdConnect:
+      - catalog:read
+      - catalog:write
+      - catalog:admin
+tags:
+  - name: Catalog
+    description: All endpoints to manipulate the catalog by the librarian
+  - name: Tags
+    description: All endpoints to manipulate tag lists of a catalog entry
+  - name: Abstract
+    description: All endpoints to manipulate abstracts of a catalog entry
+paths:
+  /catalog-entries:
+    post:
+      description: Creates a new catalog entry
+      operationId: createNewCatalogEntry
+      tags:
+        - Catalog
+      security:
+        - openIdConnect:
+            - catalog:write
+      parameters:
+        - $ref: '#/components/parameters/VersionParameter'
+      requestBody:
+        $ref: '#/components/requestBodies/CatalogEntryToBeCreatedRequest'
+      responses:
+        '201':
+          $ref: '#/components/responses/LinkToCatalogEntryResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '500':
+          $ref: '#/components/responses/ServiceNotAvailableResponse'
+        default:
+          $ref: '#/components/responses/DefaultResponse'
+
+  /catalog-entries/{catalogEntryId}:
+    get:
+      description: Delivers back a single catalog entry based on its identifier
+      operationId: getCatalogEntryById
+      tags:
+        - Catalog
+      security:
+        - openIdConnect:
+            - catalog:read
+      parameters:
+        - $ref: '#/components/parameters/CatalogEntryIdentifierParameter'
+        - $ref: '#/components/parameters/VersionParameter'
+      responses:
+        '200':
+          $ref: '#/components/responses/CatalogEntryResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '404':
+          $ref: '#/components/responses/NotFoundResponse'
+        '500':
+          $ref: '#/components/responses/ServiceNotAvailableResponse'
+        default:
+          $ref: '#/components/responses/DefaultResponse'
+
+    put:
+      description: Changes a catalog entry with all possible entries
+      operationId: updateCatalogEntryById
+      tags:
+        - Catalog
+      security:
+        - openIdConnect:
+            - catalog:write
+      parameters:
+        - $ref: '#/components/parameters/CatalogEntryIdentifierParameter'
+        - $ref: '#/components/parameters/VersionParameter'
+      requestBody:
+        $ref: '#/components/requestBodies/CatalogEntryToBeChangedRequest'
+      responses:
+        '200':
+          $ref: '#/components/responses/LinkToCatalogEntryResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '404':
+          $ref: '#/components/responses/NotFoundResponse'
+        '500':
+          $ref: '#/components/responses/ServiceNotAvailableResponse'
+        default:
+          $ref: '#/components/responses/DefaultResponse'
+
+    delete:
+      description: Deletes a catalog entry
+      operationId: deleteCatalogEntryById
+      tags:
+        - Catalog
+      security:
+        - openIdConnect:
+            - catalog:admin
+      parameters:
+        - $ref: '#/components/parameters/CatalogEntryIdentifierParameter'
+        - $ref: '#/components/parameters/VersionParameter'
+      responses:
+        '200':
+          $ref: '#/components/responses/SuccessfulOperationResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '404':
+          $ref: '#/components/responses/NotFoundResponse'
+        '500':
+          $ref: '#/components/responses/ServiceNotAvailableResponse'
+        default:
+          $ref: '#/components/responses/DefaultResponse'
+
+  /catalog-entries/{catalogEntryId}/abstract:
+    put:
+      description: Adds or changes an abstract of a catalog entry
+      operationId: updateAbstractOnCatalogEntryById
+      security:
+        - openIdConnect:
+            - catalog:write
+      tags:
+        - Catalog
+        - Abstract
+      parameters:
+        - $ref: '#/components/parameters/CatalogEntryIdentifierParameter'
+        - $ref: '#/components/parameters/VersionParameter'
+      requestBody:
+        $ref: '#/components/requestBodies/AbstractUpdateRequest'
+      responses:
+        '200':
+          $ref: '#/components/responses/LinkToCatalogEntryResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '404':
+          $ref: '#/components/responses/NotFoundResponse'
+        '500':
+          $ref: '#/components/responses/ServiceNotAvailableResponse'
+        default:
+          $ref: '#/components/responses/DefaultResponse'
+
+    delete:
+      description: Deletes a abstract from a catalog entry
+      operationId: deleteAbstractOnCatalogEntryById
+      security:
+        - openIdConnect:
+            - catalog:write
+      tags:
+        - Catalog
+        - Abstract
+      parameters:
+        - $ref: '#/components/parameters/CatalogEntryIdentifierParameter'
+        - $ref: '#/components/parameters/VersionParameter'
+      responses:
+        '200':
+          $ref: '#/components/responses/SuccessfulOperationResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '404':
+          $ref: '#/components/responses/NotFoundResponse'
+        '500':
+          $ref: '#/components/responses/ServiceNotAvailableResponse'
+        default:
+          $ref: '#/components/responses/DefaultResponse'
+
+  /catalog-entries/{catalogEntryId}/tags:
+    put:
+      description: Adds or updates a set of tags to a catalog entry
+      operationId: updateTagsOnCatalogEntryById
+      security:
+        - openIdConnect:
+            - catalog:write
+      tags:
+        - Catalog
+        - Tags
+      parameters:
+        - $ref: '#/components/parameters/CatalogEntryIdentifierParameter'
+        - $ref: '#/components/parameters/VersionParameter'
+      requestBody:
+        $ref: '#/components/requestBodies/TagsUpdateRequest'
+      responses:
+        '200':
+          $ref: '#/components/responses/LinkToCatalogEntryResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '404':
+          $ref: '#/components/responses/NotFoundResponse'
+        '500':
+          $ref: '#/components/responses/ServiceNotAvailableResponse'
+        default:
+          $ref: '#/components/responses/DefaultResponse'
+
+    delete:
+      description: Deletes the entire tag list from a catalog entry
+      operationId: deleteTagsOnCatalogEntryById
+      security:
+        - openIdConnect:
+            - catalog:write
+      tags:
+        - Catalog
+        - Tags
+      parameters:
+        - $ref: '#/components/parameters/CatalogEntryIdentifierParameter'
+        - $ref: '#/components/parameters/VersionParameter'
+      responses:
+        '200':
+          $ref: '#/components/responses/SuccessfulOperationResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '404':
+          $ref: '#/components/responses/NotFoundResponse'
+        '500':
+          $ref: '#/components/responses/ServiceNotAvailableResponse'
+        default:
+          $ref: '#/components/responses/DefaultResponse'
+
+components:
+  parameters:
+    CatalogEntryIdentifierParameter:
+      name: catalogEntryId
+      description: Catalog entry identifier
+      required: true
+      in: path
+      schema:
+        type: string
+        format: uuid
+        examples:
+          - 5dda405a-d28e-490a-8508-1ea3453e91ae
+
+    VersionParameter:
+      name: x-version
+      description: Version of the API specification used delivered in header
+      in: header
+      required: true
+      schema:
+        type: string
+        x-extensible-enum:
+          - 1.0.0
+        default: 1.0.0
+        examples:
+          - 1.0.0
+
+
+  responses:
+    BadRequestResponse:
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+
+    ForbiddenResponse:
+      description: Forbidden
+
+    LinkToCatalogEntryResponse:
+      description: Successful operation - Catalog entry created
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Link"
+
+    NotFoundResponse:
+      description: Not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+
+    CatalogEntryResponse:
+      description: Delivers back the resource to be exposed
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CatalogEntryFull'
+
+    ServiceNotAvailableResponse:
+      description: Service not available
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+
+    DefaultResponse:
+      description: Unexpected error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+
+    SuccessfulOperationResponse:
+      description: Successful operation
+
+
+  requestBodies:
+    CatalogEntryToBeCreatedRequest:
+      description: Creates a new resource
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CatalogEntryToBeCreated'
+
+    CatalogEntryToBeChangedRequest:
+      description: Updates the resource provided
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CatalogEntryFull'
+
+    AbstractUpdateRequest:
+      description: Request to update a abstract of a catalog entry
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Abstract'
+
+    TagsUpdateRequest:
+      description: Request to update the tag lists of a catalog entry
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - tags
+            properties:
+              tags:
+                type: array
+                minItems: 1
+                maxItems: 25
+                items:
+                  $ref: '#/components/schemas/Tag'
+  schemas:
+    Error:
+      description: An error object used for error responses
+      type: object
+      required:
+        - title
+        - status
+        - timestamp
+      properties:
+        title:
+          description: A short description of the problem using kebab-cases
+          type: string
+          minLength: 2
+          maxLength: 255
+          examples:
+            - out-of-stock
+        detail:
+          description: |
+            A human-readable description of the problem which can be used by technicians to solve the problem.
+          type: string
+          examples:
+            - The item is currently out of stock.
+        timestamp:
+          description: Point in time when the error occurred
+          type: string
+          format: date-time
+          examples:
+            - 2024-07-01T23:32:54T+01:00
+        traceparent:
+          description: Tracking ID of the API journey
+          type: string
+          pattern: ^[0-9]{2}-[0-9a-z]{16}-[0-9a-z]{8}-[0-9a-z]{1}[0-9a-z]{1}$
+          examples:
+            - 00-0af7651916cd43dd8448eb211c80319c-b7ad6b7169203331-01
+        severity:
+          description: Severity of the according error
+          type: string
+          enum:
+            - FATAL
+            - ERROR
+            - WARNING
+            - INFO
+          examples:
+            - ERROR
+
+    Link:
+      description: Link to an entity
+      type: object
+      required:
+        - type
+        - link
+      properties:
+        type:
+          description: Not fully qualified type name of the object
+          type: string
+          minLength: 2
+          maxLength: 155
+          # adapt the examples with your exposed resource
+          examples:
+            - Resource
+        link:
+          description: URL to the according entity
+          type: string
+          format: uri
+          examples:
+            - https://api.online-library.de/catalog-management/catalog-entries/74d870fa-9e93-4ffd-907e-038c85e8bc20
+
+    AuthorShort:
+      description: Author of a book
+      type: object
+      required:
+        - authorId
+        - givenName
+        - familyName
+      properties:
+        authorId:
+          description: Identifier of the author
+          type: string
+          format: uuid
+          examples:
+            - 08a13654-05f3-4664-8c8d-fdd9114ec3be
+        givenName:
+          description: Given name of the author
+          type: string
+          minLength: 2
+          maxLength: 55
+          examples:
+            - Kent
+        familyName:
+          description: Family name of the author
+          type: string
+          minLength: 2
+          maxLength: 55
+          examples:
+            - Beck
+
+    AuthorFull:
+      description: Full description of an author
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/AuthorShort'
+      properties:
+        authorPortraitWebP:
+          description: Portrait of the author as WebP
+          type: string
+          format: binary
+        authorBiography:
+          description: Short bio of the author
+          type: string
+          minLength: 10
+          maxLength: 2048
+
+    CatalogEntryToBeCreated:
+      description: A new catalog entry, which can be created by the librarian
+      type: object
+      required:
+        - isbn13
+        - authors
+        - editor
+        - title
+        - subtitle
+      properties:
+        bookId:
+          description: Identifier of a book out of inventory management
+          type: string
+          format: uuid
+          examples:
+            - 5dda405a-d28e-490a-8508-1ea3453e91ae
+        isbn13:
+          description: ISBN (international standard book number) with 13 characters
+          type: string
+          pattern: ^(?:ISBN(?:-13)?:?\ )?(?=[0-9]{13}$|(?=(?:[0-9]+[-\ ]){4})[-\ 0-9]{17}$)97[89][-\ ]?[0-9]{1,5}[-\ ]?[0-9]+[-\ ]?[0-9]+[-\ ]?[0-9]$
+          examples:
+            - 9780321146530
+            - ISBN 978-0321-14653-0
+        authors:
+          description: Authors of the book
+          minItems: 1
+          maxItems: 10
+          items:
+            $ref: '#/components/schemas/AuthorShort'
+        areEditors:
+          description: Flag to set to true if the book is published by editors
+          type: boolean
+          default: false
+          examples:
+            - true
+        editor:
+          $ref: '#/components/schemas/Editor'
+        title:
+          description: Title of the book
+          type: string
+          minLength: 2
+          maxLength: 255
+          examples:
+            - Test-Driven Development
+        subtitle:
+          description: Subtitle of the book
+          type: string
+          minLength: 2
+          maxLength: 255
+          examples:
+            - By Example
+        coverImageWebP:
+          description: Cover image of the book
+          type: string
+          format: binary
+        abstract:
+          $ref: '#/components/schemas/Abstract'
+        tags:
+          description: Tags to the entry to create recommendation lists
+          type: array
+          minItems: 0
+          maxItems: 25
+          items:
+            $ref: '#/components/schemas/Tag'
+
+    CatalogEntryShort:
+      description: Catalog entry created to represent a book
+      type: object
+      required:
+        - isbn13
+      properties:
+        catalogEntryIdentifier:
+          description: Identifier of a book
+          type: string
+          format: uuid
+          examples:
+            - 5dda405a-d28e-490a-8508-1ea3453e91ae
+        isbn13:
+          description: ISBN (international standard book number) with 13 characters
+          type: string
+          pattern: ^(?:ISBN(?:-13)?:?\ )?(?=[0-9]{13}$|(?=(?:[0-9]+[-\ ]){4})[-\ 0-9]{17}$)97[89][-\ ]?[0-9]{1,5}[-\ ]?[0-9]+[-\ ]?[0-9]+[-\ ]?[0-9]$
+          examples:
+            - 9780321146530
+            - ISBN 978-0321-14653-0
+        authors:
+          description: Authors of the book
+          minItems: 1
+          maxItems: 10
+          items:
+            $ref: '#/components/schemas/AuthorShort'
+        areEditors:
+          description: Flag to set to true if the book is published by editors
+          type: boolean
+          default: false
+          examples:
+            - true
+        editor:
+          $ref: '#/components/schemas/Editor'
+        Title:
+          description: Title of the book
+          type: string
+          minLength: 2
+          maxLength: 255
+          examples:
+            - Test-Driven Development
+        Subtitle:
+          description: Subtitle of the book
+          type: string
+          minLength: 2
+          maxLength: 255
+          examples:
+            - By Example
+
+    CatalogEntryFull:
+      description: A full entry in the library including cover image
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/CatalogEntryShort'
+      properties:
+        coverImageWebP:
+          description: Cover image of the book
+          type: string
+          format: binary
+        abstract:
+          $ref: '#/components/schemas/Abstract'
+        tags:
+          description: Tags to the entry to create recommendation lists
+          type: array
+          minItems: 0
+          maxItems: 25
+          items:
+            $ref: '#/components/schemas/Tag'
+        media:
+          description: Link to the media which contains the book
+          type: string
+          format: url
+          example:
+            - 'https://online-library/storage/2024/test-driven-development.epub'
+        format:
+          description: Format of the according media
+          type: string
+          x-exensible-enum:
+            - EPUB
+            - KINDLE
+            - PDF
+            - BBEB
+            - MOBI
+          default:
+            - EPUB
+          examples:
+            - EPUB
+
+
+    Abstract:
+      description: A abstract of a book contained in a catalog entry
+      type: object
+      required:
+        - abstract
+      properties:
+        abstract:
+          type: string
+          minLength: 10
+          maxLength: 2048
+
+    Tag:
+      description: A short tag to create recommendation for members
+      type: string
+      minLength: 5
+      maxLength: 107
+
+    Editor:
+      description: Editor of a book
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          description: Name of the editor
+          type: string
+          minLength: 2
+          maxLength: 55
+          examples:
+            - Springer Nature
+            - Addison-Weasley
+        city:
+          description: Location of the editor
+          type: string
+          minLength: 2
+          maxLength: 55
+          examples:
+            - Cham, Switzerland
+            - Boston
+
+
+
+
+
+  securitySchemes:
+    openIdConnect:
+      type: openIdConnect
+      description: Security scheme for events
+      openIdConnectUrl: "https://idp.codecentric.de/configuration"
