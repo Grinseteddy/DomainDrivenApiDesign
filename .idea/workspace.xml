@@ -9,9 +9,11 @@
     </option>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9f418031-fa2f-4dcf-9ad8-1bd8158fd7e4" name="Changes" comment="MAd Afternoon">
-      <change afterPath="$PROJECT_DIR$/QaDays/CatalogManagement.oas.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    <list default="true" id="9f418031-fa2f-4dcf-9ad8-1bd8158fd7e4" name="Changes" comment="Catalog  Management Changes">
+      <change afterPath="$PROJECT_DIR$/QaDays/ApiProductCanvas.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/QaDays/CatalogManagementChanged.oas.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/QaDays/Visual Glossary.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/QaDays/CatalogManagement.oas.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/QaDays/CatalogManagement.oas.yaml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -208,7 +210,7 @@
       <workItem from="1742901411739" duration="11964000" />
       <workItem from="1743962748969" duration="10567000" />
       <workItem from="1744450905292" duration="5000" />
-      <workItem from="1746610180817" duration="18585000" />
+      <workItem from="1746610180817" duration="18951000" />
     </task>
     <task id="LOCAL-00001" summary="Initial creation">
       <option name="closed" value="true" />
@@ -570,7 +572,15 @@
       <option name="project" value="LOCAL" />
       <updated>1743962806337</updated>
     </task>
-    <option name="localTasksCounter" value="46" />
+    <task id="LOCAL-00046" summary="Catalog  Management Changes">
+      <option name="closed" value="true" />
+      <created>1747674921187</created>
+      <option name="number" value="00046" />
+      <option name="presentableId" value="LOCAL-00046" />
+      <option name="project" value="LOCAL" />
+      <updated>1747674921187</updated>
+    </task>
+    <option name="localTasksCounter" value="47" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -612,6 +622,7 @@
     <MESSAGE value="Example" />
     <MESSAGE value="Readme" />
     <MESSAGE value="MAd Afternoon" />
-    <option name="LAST_COMMIT_MESSAGE" value="MAd Afternoon" />
+    <MESSAGE value="Catalog  Management Changes" />
+    <option name="LAST_COMMIT_MESSAGE" value="Catalog  Management Changes" />
   </component>
 </project>

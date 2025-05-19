@@ -130,10 +130,36 @@ paths:
         default:
           $ref: '#/components/responses/DefaultResponse'
 
-  /catalog-entries/{catalogEntryId}/abstract:
-    put:
-      description: Adds or changes an abstract of a catalog entry
-      operationId: updateAbstractOnCatalogEntryById
+  /catalog-entries/{catalogEntryId}/abstracts:
+    get:
+      description: Delivers all abstracts of a catalog entry
+      operationId: getAllAbstractsOfACatalogEntryById
+      security:
+        - openIdConnect:
+            - catalog:read
+      tags:
+        - Catalog
+        - Abstract
+      parameters:
+        - $ref: '#/components/parameters/CatalogEntryIdentifierParameter'
+        - $ref: '#/components/parameters/VersionParameter'
+      responses:
+        '200':
+          $ref: '#/components/responses/AbstractsResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '404':
+          $ref: '#/components/responses/NotFoundResponse'
+        '500':
+          $ref: '#/components/responses/ServiceNotAvailableResponse'
+        default:
+          $ref: '#/components/responses/DefaultResponse'
+
+    post:
+      description: Adds an abstract to a catalog entry
+      operationId: createAbstract
       security:
         - openIdConnect:
             - catalog:write
@@ -146,7 +172,7 @@ paths:
       requestBody:
         $ref: '#/components/requestBodies/AbstractUpdateRequest'
       responses:
-        '200':
+        '201':
           $ref: '#/components/responses/LinkToCatalogEntryResponse'
         '400':
           $ref: '#/components/responses/BadRequestResponse'
@@ -159,9 +185,33 @@ paths:
         default:
           $ref: '#/components/responses/DefaultResponse'
 
-    delete:
-      description: Deletes a abstract from a catalog entry
-      operationId: deleteAbstractOnCatalogEntryById
+  /catalog-entries/abstracts/{abstractId}:
+    get:
+      description: Read a single abstract
+      operationId: readAbstractById
+      security:
+        - openIdConnect:
+            - catalog:read
+      parameters:
+        - $ref: '#/components/parameters/AbstractIdentifierParameter'
+        - $ref: '#/components/parameters/VersionParameter'
+      responses:
+        '200':
+          $ref: '#/components/responses/AbstractResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '404':
+          $ref: '#/components/responses/NotFoundResponse'
+        '500':
+          $ref: '#/components/responses/ServiceNotAvailableResponse'
+        default:
+          $ref: '#/components/responses/DefaultResponse'
+
+    put:
+      description: Changes an abstract of a catalog entry
+      operationId: updateAbstractById
       security:
         - openIdConnect:
             - catalog:write
@@ -169,7 +219,35 @@ paths:
         - Catalog
         - Abstract
       parameters:
-        - $ref: '#/components/parameters/CatalogEntryIdentifierParameter'
+        - $ref: '#/components/parameters/AbstractIdentifierParameter'
+        - $ref: '#/components/parameters/VersionParameter'
+      requestBody:
+        $ref: '#/components/requestBodies/AbstractUpdateRequest'
+      responses:
+        '200':
+          $ref: '#/components/responses/LinkToAbstractResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '404':
+          $ref: '#/components/responses/NotFoundResponse'
+        '500':
+          $ref: '#/components/responses/ServiceNotAvailableResponse'
+        default:
+          $ref: '#/components/responses/DefaultResponse'
+
+    delete:
+      description: Deletes an abstract from a catalog entry
+      operationId: deleteAbstractById
+      security:
+        - openIdConnect:
+            - catalog:write
+      tags:
+        - Catalog
+        - Abstract
+      parameters:
+        - $ref: '#/components/parameters/AbstractIdentifierParameter'
         - $ref: '#/components/parameters/VersionParameter'
       responses:
         '200':
@@ -253,6 +331,17 @@ components:
         examples:
           - 5dda405a-d28e-490a-8508-1ea3453e91ae
 
+    AbstractIdentifierParameter:
+      name: abstractId
+      description: Abstract identifier
+      required: true
+      in: path
+      schema:
+        type: string
+        format: uuid
+        examples:
+          - de283296-0059-47d0-b967-ce71f471405e
+
     VersionParameter:
       name: x-version
       description: Version of the API specification used delivered in header
@@ -285,6 +374,14 @@ components:
           schema:
             $ref: "#/components/schemas/Link"
 
+    LinkToAbstractResponse:
+      description: Successful operation - abstract created or updated
+      content:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Link"
+
     NotFoundResponse:
       description: Not found
       content:
@@ -298,6 +395,20 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/CatalogEntryFull'
+
+    AbstractsResponse:
+      description: Delivers back all abstracts of a catalog entry
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Abstracts'
+
+    AbstractResponse:
+      description: Delivers back an abstract
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Abstract'
 
     ServiceNotAvailableResponse:
       description: Service not available
@@ -331,6 +442,13 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/CatalogEntryFull'
+
+    AbstractCreationRequest:
+      description: Request to create a abstract of a catalog entry
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AbstractToBeCreated'
 
     AbstractUpdateRequest:
       description: Request to update a abstract of a catalog entry
@@ -619,7 +737,7 @@ components:
             - EPUB
 
 
-    Abstract:
+    AbstractToBeCreated:
       description: A abstract of a book contained in a catalog entry
       type: object
       required:
@@ -629,6 +747,39 @@ components:
           type: string
           minLength: 10
           maxLength: 2048
+        author:
+          description: Author of the abstract - might be a librarian or a member
+          type: string
+          format: uuid
+          examples:
+            - 2ebfd56f-c15b-4fc8-a0d6-f11d7ff2f54d
+
+    Abstract:
+      description: Single abstract of a book
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/AbstractToBeCreated'
+      required:
+        - abstractIdentifier
+      properties:
+        abstractIdentifier:
+          description: Identifier of the abstract
+          type: string
+          format: uuid
+          examples:
+            - e9be784f-9070-4275-ac93-76ecc32fa7df
+
+    Abstracts:
+      description: Abstracts written for a book
+      type: object
+      properties:
+        abstracts:
+          type: array
+          minItems: 0
+          maxItems: 10
+          items:
+            - $ref: '#/components/schemas/Abstract'
+
 
     Tag:
       description: A short tag to create recommendation for members
