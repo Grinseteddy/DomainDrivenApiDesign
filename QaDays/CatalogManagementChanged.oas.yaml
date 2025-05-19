@@ -682,14 +682,14 @@ components:
             - true
         editor:
           $ref: '#/components/schemas/Editor'
-        Title:
+        title:
           description: Title of the book
           type: string
           minLength: 2
           maxLength: 255
           examples:
             - Test-Driven Development
-        Subtitle:
+        subtitle:
           description: Subtitle of the book
           type: string
           minLength: 2
