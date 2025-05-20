@@ -377,10 +377,9 @@ components:
     LinkToAbstractResponse:
       description: Successful operation - abstract created or updated
       content:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/Link"
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Link"
 
     NotFoundResponse:
       description: Not found
