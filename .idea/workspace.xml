@@ -11,7 +11,6 @@
   <component name="ChangeListManager">
     <list default="true" id="9f418031-fa2f-4dcf-9ad8-1bd8158fd7e4" name="Changes" comment="Catalog  Management Changes">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/QaDays/CatalogManagementChanged.oas.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/QaDays/CatalogManagementChanged.oas.yaml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -90,6 +89,7 @@
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
     &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;,
+    &quot;two.files.diff.last.used.file&quot;: &quot;/Users/annegretjunkercodecentricag/IdeaProjects/DdApiD/QaDays/CatalogManagementChanged.oas.yaml&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
@@ -209,15 +209,9 @@
       <workItem from="1743962748969" duration="10567000" />
       <workItem from="1744450905292" duration="5000" />
       <workItem from="1746610180817" duration="22195000" />
-      <workItem from="1747724240680" duration="2351000" />
-    </task>
-    <task id="LOCAL-00001" summary="Initial creation">
-      <option name="closed" value="true" />
-      <created>1709986424743</created>
-      <option name="number" value="00001" />
-      <option name="presentableId" value="LOCAL-00001" />
-      <option name="project" value="LOCAL" />
-      <updated>1709986424743</updated>
+      <workItem from="1747724240680" duration="13800000" />
+      <workItem from="1748595207882" duration="2000" />
+      <workItem from="1748595216513" duration="3138000" />
     </task>
     <task id="LOCAL-00002" summary="PUrchased book">
       <option name="closed" value="true" />
@@ -603,7 +597,15 @@
       <option name="project" value="LOCAL" />
       <updated>1747680630943</updated>
     </task>
-    <option name="localTasksCounter" value="50" />
+    <task id="LOCAL-00050" summary="Catalog  Management Changes">
+      <option name="closed" value="true" />
+      <created>1747761532386</created>
+      <option name="number" value="00050" />
+      <option name="presentableId" value="LOCAL-00050" />
+      <option name="project" value="LOCAL" />
+      <updated>1747761532386</updated>
+    </task>
+    <option name="localTasksCounter" value="51" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
