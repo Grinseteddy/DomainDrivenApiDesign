@@ -1,0 +1,391 @@
+asyncapi: 3.0.0
+info:
+  title: Catalog Management
+  version: 1.0.0
+  description: |
+    Events produced by the search part of catalog management
+    The service produced the following domain events:
+      - Book selected
+    The service consumes the following events:
+      - Catalog Entry created
+      - Catalog Entry changed
+      - Catalog Entry deleted
+  contact:
+    name: Annegret Junker
+    url: https://online-library.org/sample
+    email: annegret.junker@online-library.org
+  x-api-id:
+    c9150589-1d6a-4b57-8ff6-cb2a25a57e45
+servers:
+  event-broker-library:
+    host: broker.online-library.org:8092
+    protocol: kafka
+    description: Event broker of the online library
+    security:
+      - $ref: '#/components/securitySchemes/user-password'
+    bindings:
+      kafka:
+        schemaRegistryUrl: 'https://online-library-schema-registry.com'
+        schemaRegistryVendor: 'confluent'
+        bindingVersion: '0.5.0'
+channels:
+  EntryCreatedChannel:
+    description: Channel where messages are stored when a new catalog entry was created
+    address: catalog-entry-created
+    messages:
+      EntryCreated:
+        $ref: '#/components/messages/CatalogEntryCreated'
+    bindings:
+      kafka:
+        topic: 'catalog-entry-created-event-channel'
+        bindingVersion: '0.5.0'
+  EntryUpdatedChannel:
+    description: Channel where messages are stored when a catalog entry was changed
+    address: catalog-entry-changed
+    messages:
+      EntryChanged:
+        $ref: '#/components/messages/CatalogEntryChanged'
+    bindings:
+      kafka:
+        topic: 'catalog-entry-changed-event-channel'
+        bindingVersion: '0.5.0'
+  EntryDeletedChannel:
+    description: Channel where messages are stored when a catalog entry was deleted
+    address: catalog-entry-deleted
+    messages:
+      EntryDeleted:
+        $ref: '#/components/messages/CatalogEntryDeleted'
+    bindings:
+      kafka:
+        topic: 'catalog-entry-deleted-event-channel'
+        bindingVersion: '0.5.0'
+  BookSelectedChannel:
+    description: Channel where messages are stored when a book was selected by a member
+    address: book-selected
+    messages:
+      BookSelectedEvent:
+        $ref: '#/components/messages/BookSelected'
+    bindings:
+      kafka:
+        topic: 'book-selected-event-channel'
+        bindingVersion: '0.5.0'
+
+operations:
+  EntryCreatedReceiveOperation:
+    action: "receive"
+    channel:
+      $ref: "#/channels/EntryCreatedChannel"
+    bindings:
+      kafka:
+        bindingVersion: '0.5.0'
+        groupId:
+          type: string
+          pattern: ^cg-catalog-entry-created-.*$
+  EntryChangedReceiveOperation:
+    action: "receive"
+    channel:
+      $ref: "#/channels/EntryUpdatedChannel"
+    bindings:
+      kafka:
+        bindingVersion: '0.5.0'
+        groupId:
+          type: string
+          pattern: ^cg-catalog-entry-created-.*$
+  EntryDeletedSendOperation:
+    action: "receive"
+    channel:
+      $ref: "#/channels/EntryDeletedChannel"
+    bindings:
+      kafka:
+        bindingVersion: '0.5.0'
+        groupId:
+          type: string
+          pattern: ^cg-catalog-entry-delted-.*$
+  BookSelectedSendOperation:
+    action: "send"
+    channel:
+      $ref: "#/channels/BookSelectedChannel"
+    bindings:
+      kafka:
+        bindingVersion: '0.5.0'
+        groupId:
+          type: string
+          pattern: ^cg-catalog-entry-delted-.*$
+
+
+components:
+  messages:
+    CatalogEntryCreated:
+      headers:
+        $ref: '#/components/schemas/MessageHeader'
+      payload:
+        $ref: '#/components/schemas/CatalogEntryShort'
+    CatalogEntryChanged:
+      headers:
+        $ref: '#/components/schemas/MessageHeader'
+      payload:
+        $ref: '#/components/schemas/CatalogEntryFull'
+    CatalogEntryDeleted:
+      headers:
+        $ref: '#/components/schemas/MessageHeader'
+      payload:
+        $ref: '#/components/schemas/CatalogEntryIdentifier'
+    BookSelected:
+      headers:
+        $ref: '#/components/schemas/MessageHeader'
+      payload:
+        $ref: '#/components/schemas/Book'
+
+  schemas:
+
+    Book:
+      description: Book which was borrowed by a member
+      type: object
+      required:
+        - catalogId
+      properties:
+        catalogId:
+          description: Identifier of the book in the catalog
+          type: string
+          format: uuid
+          examples:
+            - 5dda405a-d28e-490a-8508-1ea3453e91ae
+        authors:
+          description: Authors of the book by their family names only
+          type: array
+          minItems: 0
+          maxItems: 10
+          items:
+            $ref: '#/components/schemas/AuthorVeryShort'
+        title:
+          description: Title of the book
+          type: string
+          minLength: 5
+          maxLength: 255
+          examples:
+            - Test-driven development
+
+    AuthorVeryShort:
+      description: Author of a book
+      type: object
+      required:
+        - authorId
+      properties:
+        authorId:
+          description: Identifier of the author
+          type: string
+          format: uuid
+          examples:
+            - 08a13654-05f3-4664-8c8d-fdd9114ec3be
+        familyName:
+          description: Family name of the author
+          type: string
+          minLength: 2
+          maxLength: 55
+          examples:
+            - Beck
+
+    AuthorShort:
+      description: Author of a book
+      type: object
+      required:
+        - authorId
+        - givenName
+        - familyName
+      properties:
+        authorId:
+          description: Identifier of the author
+          type: string
+          format: uuid
+          examples:
+            - 08a13654-05f3-4664-8c8d-fdd9114ec3be
+        givenName:
+          description: Given name of the author
+          type: string
+          minLength: 2
+          maxLength: 55
+          examples:
+            - Kent
+        familyName:
+          description: Family name of the author
+          type: string
+          minLength: 2
+          maxLength: 55
+          examples:
+            - Beck
+
+    Editor:
+      description: Editor of a book
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          description: Name of the editor
+          type: string
+          minLength: 2
+          maxLength: 55
+          examples:
+            - Springer Nature
+            - Addison-Weasley
+        city:
+          description: Location of the editor
+          type: string
+          minLength: 2
+          maxLength: 55
+          examples:
+            - Cham, Switzerland
+            - Boston
+
+    CatalogEntryIdentifier:
+      description: Identifier of a catalog entry
+      type: string
+      format: uuid
+      examples:
+        - 5dda405a-d28e-490a-8508-1ea3453e91ae
+
+    CatalogEntryShort:
+      description: Catalog entry created to represent a book
+      type: object
+      required:
+        - isbn13
+      properties:
+        catalogEntryIdentifier:
+          description: Identifier of a book
+          type: string
+          format: uuid
+          examples:
+            - 5dda405a-d28e-490a-8508-1ea3453e91ae
+        isbn13:
+          description: ISBN (international standard book number) with 13 characters
+          type: string
+          pattern: ^(?:ISBN(?:-13)?:?\ )?(?=[0-9]{13}$|(?=(?:[0-9]+[-\ ]){4})[-\ 0-9]{17}$)97[89][-\ ]?[0-9]{1,5}[-\ ]?[0-9]+[-\ ]?[0-9]+[-\ ]?[0-9]$
+          examples:
+            - 9780321146530
+            - ISBN 978-0321-14653-0
+        authors:
+          description: Authors of the book
+          minItems: 1
+          maxItems: 10
+          items:
+            $ref: '#/components/schemas/AuthorShort'
+        areEditors:
+          description: Flag to set to true if the book is published by editors
+          type: boolean
+          default: false
+          examples:
+            - true
+        editor:
+          $ref: '#/components/schemas/Editor'
+        title:
+          description: Title of the book
+          type: string
+          minLength: 2
+          maxLength: 255
+          examples:
+            - Test-Driven Development
+        subtitle:
+          description: Subtitle of the book
+          type: string
+          minLength: 2
+          maxLength: 255
+          examples:
+            - By Example
+        media:
+          description: Link to the media which contains the book
+          type: string
+          format: url
+          example:
+            - 'https://online-library/storage/2024/test-driven-development.epub'
+        format:
+          description: Format of the according media
+          type: string
+          x-exensible-enum:
+            - EPUB
+            - KINDLE
+            - PDF
+            - BBEB
+            - MOBI
+          default:
+            - EPUB
+          examples:
+            - EPUB
+
+    CatalogEntryFull:
+      description: A full entry in the library including cover image
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/CatalogEntryShort'
+      properties:
+        # Cover image needs to be read synchronously
+        subtract:
+          $ref: '#/components/schemas/Subtract'
+        tags:
+          description: Tags to the entry to create recommendation lists
+          type: array
+          minItems: 0
+          maxItems: 25
+          items:
+            $ref: '#/components/schemas/Tag'
+
+    Subtract:
+      description: A subtract of a book contained in a catalog entry
+      type: string
+      minLength: 10
+      maxLength: 2048
+
+    Tag:
+      description: A short tag to create recommendation for members
+      type: string
+      minLength: 5
+      maxLength: 107
+
+
+    MessageHeader:
+      description: Header Information for each message
+      type: object
+      required:
+        - correlationId
+        - messageId
+        - x-api-identifier
+        - x-api-version
+      properties:
+        correlationId:
+          description: Identifier to be set by application to trace end-to-end-api-journey
+          type: string
+          format: uuid
+          examples:
+            - b3416449-5f69-4cd2-a6c4-1ff82da96bce
+        messageId:
+          description: Identifier for the particular message, is needed in case of cascading infrastructure
+          type: string
+          format: uuid
+          examples:
+            - 5a1d305b-19f3-46eb-ada1-9a9770e56fd1
+        x-api-identifier:
+          description: Identifier of the API used to create the message
+          type: string
+          format: uuid
+          default: 71352c4f-16f4-4fae-abaf-331fcb28e354
+          examples:
+            - 71352c4f-16f4-4fae-abaf-331fcb28e354
+        x-api-version:
+          description: Version of the API
+          type: string
+          x-extensible-enum:
+            - 1.0.0
+          default: 1.0.0
+          examples:
+            - 1.0.0
+        source:
+          description: Application name creating the message
+          type: string
+          minLength: 2
+          maxLength: 20
+          examples:
+            - Purchase
+
+  securitySchemes:
+    user-password:
+      type: userPassword
+      description: Security scheme for events

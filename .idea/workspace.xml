@@ -9,7 +9,7 @@
     </option>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9f418031-fa2f-4dcf-9ad8-1bd8158fd7e4" name="Changes" comment="Catalog  Management Changes">
+    <list default="true" id="9f418031-fa2f-4dcf-9ad8-1bd8158fd7e4" name="Changes" comment="Pictures">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -212,14 +212,9 @@
       <workItem from="1747724240680" duration="13800000" />
       <workItem from="1748595207882" duration="2000" />
       <workItem from="1748595216513" duration="3138000" />
-    </task>
-    <task id="LOCAL-00002" summary="PUrchased book">
-      <option name="closed" value="true" />
-      <created>1709997940453</created>
-      <option name="number" value="00002" />
-      <option name="presentableId" value="LOCAL-00002" />
-      <option name="project" value="LOCAL" />
-      <updated>1709997940453</updated>
+      <workItem from="1749047571326" duration="2312000" />
+      <workItem from="1749553843675" duration="2716000" />
+      <workItem from="1750174855049" duration="10698000" />
     </task>
     <task id="LOCAL-00003" summary="Catalog Maintenance">
       <option name="closed" value="true" />
@@ -605,7 +600,15 @@
       <option name="project" value="LOCAL" />
       <updated>1747761532386</updated>
     </task>
-    <option name="localTasksCounter" value="51" />
+    <task id="LOCAL-00051" summary="Pictures">
+      <option name="closed" value="true" />
+      <created>1749047625454</created>
+      <option name="number" value="00051" />
+      <option name="presentableId" value="LOCAL-00051" />
+      <option name="project" value="LOCAL" />
+      <updated>1749047625454</updated>
+    </task>
+    <option name="localTasksCounter" value="52" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -623,7 +626,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Initial creation" />
     <MESSAGE value="PUrchased book" />
     <MESSAGE value="Catalog Maintenance" />
     <MESSAGE value="Member Management" />
@@ -648,6 +650,7 @@
     <MESSAGE value="Readme" />
     <MESSAGE value="MAd Afternoon" />
     <MESSAGE value="Catalog  Management Changes" />
-    <option name="LAST_COMMIT_MESSAGE" value="Catalog  Management Changes" />
+    <MESSAGE value="Pictures" />
+    <option name="LAST_COMMIT_MESSAGE" value="Pictures" />
   </component>
 </project>
