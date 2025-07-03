@@ -1,0 +1,1076 @@
+openapi: 3.1.0
+info:
+  title: Lending
+  description: |
+    Lending makes the combination between members and books found in the catalog
+  contact:
+    email: annegret.junker@online-library.org
+    name: Annegret Junker
+    url: https://api.online-library.org
+  version: 1.0.0
+  x-api-id: c004ebd2-f9c6-4e21-aa41-826f8eaf4092
+  x-audience: external-public
+servers:
+  - url: 'https://api.online-library.org/lending/'
+security:
+  - openIdConnect:
+      - lending:read
+      - lending:write
+      - lending:admin
+tags:
+  - name: Lending
+    description: All endpoints to add, update, delete lending entries
+  - name: Reading list
+    description: |
+      All endpoints to manipulate reading lists. General reading lists are reading lists of members without tags
+paths:
+  /lending-entries:
+
+    post:
+      description: Creates a new lending entry
+      operationId: createNewLendingEntry
+      tags:
+        - Lending
+      security:
+        - openIdConnect:
+            - Lending:write
+      parameters:
+        - $ref: '#/components/parameters/VersionParameter'
+      requestBody:
+        $ref: '#/components/requestBodies/LendingEntryToBeCreatedRequest'
+      responses:
+        '201':
+          $ref: '#/components/responses/LinkToLendingEntryResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '500':
+          $ref: '#/components/responses/ServiceNotAvailableResponse'
+        default:
+          $ref: '#/components/responses/DefaultResponse'
+
+    get:
+      description: |
+        Searches for a lending entry by by book or member.
+        Members can be given by their names or identifiers.
+        A book can be given by authors, titles, or by its identifier.
+      operationId: getLendingEntriesbyBookOrMember
+      parameters:
+        - $ref: '#/components/parameters/SearchParameter'
+        - $ref: '#/components/parameters/VersionParameter'
+      responses:
+        '200':
+          $ref: '#/components/responses/LendingEntriesResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '500':
+          $ref: '#/components/responses/ServiceNotAvailableResponse'
+        default:
+          $ref: '#/components/responses/DefaultResponse'
+
+
+  /lending-entries/{lendingEntryId}:
+    get:
+      description: Delivers back a single catalog entry based on its identifier
+      operationId: getLendingEntryById
+      tags:
+        - Lending
+      security:
+        - openIdConnect:
+            - Lending:read
+      parameters:
+        - $ref: '#/components/parameters/LendingEntryIdentifierParameter'
+        - $ref: '#/components/parameters/VersionParameter'
+      responses:
+        '200':
+          $ref: '#/components/responses/LendingEntryResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '404':
+          $ref: '#/components/responses/NotFoundResponse'
+        '500':
+          $ref: '#/components/responses/ServiceNotAvailableResponse'
+        default:
+          $ref: '#/components/responses/DefaultResponse'
+
+    put:
+      description: Changes a lending entry
+      operationId: updateLendingEntryById
+      tags:
+        - Lending
+      security:
+        - openIdConnect:
+            - lending:write
+      parameters:
+        - $ref: '#/components/parameters/LendingEntryIdentifierParameter'
+        - $ref: '#/components/parameters/VersionParameter'
+      requestBody:
+        $ref: '#/components/requestBodies/LendingEntryToBeChangedRequest'
+      responses:
+        '200':
+          $ref: '#/components/responses/LinkToLendingEntryResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '404':
+          $ref: '#/components/responses/NotFoundResponse'
+        '500':
+          $ref: '#/components/responses/ServiceNotAvailableResponse'
+        default:
+          $ref: '#/components/responses/DefaultResponse'
+
+    delete:
+      description: Marks a lending entry as returned - the entry itself remains
+      operationId: deleteLendingEntryById
+      tags:
+        - Lending
+      security:
+        - openIdConnect:
+            - lending:admin
+      parameters:
+        - $ref: '#/components/parameters/LendingEntryIdentifierParameter'
+        - $ref: '#/components/parameters/VersionParameter'
+      responses:
+        '200':
+          $ref: '#/components/responses/SuccessfulOperationResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '404':
+          $ref: '#/components/responses/NotFoundResponse'
+        '500':
+          $ref: '#/components/responses/ServiceNotAvailableResponse'
+        default:
+          $ref: '#/components/responses/DefaultResponse'
+
+  /lending-entries/{lendingEntryId}/review:
+    put:
+      description: Endpoint to add or update a review of a lending entry by the owner
+      operationId: updateReviewLendingEntryById
+      parameters:
+        - $ref: '#/components/parameters/LendingEntryIdentifierParameter'
+        - $ref: '#/components/parameters/VersionParameter'
+      requestBody:
+        $ref: '#/components/requestBodies/ReviewUpdateRequest'
+      responses:
+        '200':
+          $ref: '#/components/responses/LinkToLendingEntryResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '404':
+          $ref: '#/components/responses/NotFoundResponse'
+        '500':
+          $ref: '#/components/responses/ServiceNotAvailableResponse'
+        default:
+          $ref: '#/components/responses/DefaultResponse'
+
+    delete:
+      description: Deletes a review of a lending entry by the member of the entry
+      operationId: deleteReviewLendingEntryById
+      parameters:
+        - $ref: '#/components/parameters/LendingEntryIdentifierParameter'
+        - $ref: '#/components/parameters/VersionParameter'
+      responses:
+        '200':
+          $ref: '#/components/responses/SuccessfulOperationResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '404':
+          $ref: '#/components/responses/NotFoundResponse'
+        '500':
+          $ref: '#/components/responses/ServiceNotAvailableResponse'
+        default:
+          $ref: '#/components/responses/DefaultResponse'
+
+  /lending-entries/{lendingEntryId}/shares:
+    post:
+      description: |
+        Add a new member to the shares of the lending entry.
+        The share can only be added by the member of the entry.
+        A member cannot add themselves to the sharing list.
+      operationId: addShareToLendingEntryById
+      security:
+        - openIdConnect:
+            - lending:write
+      parameters:
+        - $ref: '#/components/parameters/LendingEntryIdentifierParameter'
+        - $ref: '#/components/parameters/VersionParameter'
+      requestBody:
+        $ref: '#/components/requestBodies/NewShareRequest'
+      responses:
+        '201':
+          $ref: '#/components/responses/LinkToLendingEntryResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '500':
+          $ref: '#/components/responses/ServiceNotAvailableResponse'
+        default:
+          $ref: '#/components/responses/DefaultResponse'
+
+    delete:
+      description: |
+        Cancels the invitation list to a lending entry
+        The share can only be deleted by the member of the entry.
+      operationId: deleteShareLendingEntryById
+      security:
+        - openIdConnect:
+            - lending:write
+      parameters:
+        - $ref: '#/components/parameters/LendingEntryIdentifierParameter'
+        - $ref: '#/components/parameters/VersionParameter'
+      responses:
+        '200':
+          $ref: '#/components/responses/SuccessfulOperationResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '404':
+          $ref: '#/components/responses/NotFoundResponse'
+        '500':
+          $ref: '#/components/responses/ServiceNotAvailableResponse'
+        default:
+          $ref: '#/components/responses/DefaultResponse'
+
+
+  /reading-lists:
+    get:
+      description: |
+        Delivers back the reading lists of a member or shared with them identified by their identifier.
+        Only the member themselves has access to their reading list.
+        The reading lists can be filtered by their tags.
+        Attention, a tag can appear several times in a reading list-
+      operationId: getReadingListsByMemberId
+      tags:
+        - Reading list
+      security:
+        - openIdConnect:
+            - lending:read
+      parameters:
+        - $ref: '#/components/parameters/MemberIdentifierParameter'
+        - $ref: '#/components/parameters/TagsParameter'
+        - $ref: '#/components/parameters/VersionParameter'
+      responses:
+        '200':
+          $ref: '#/components/responses/ReadingListsResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '500':
+          $ref: '#/components/responses/ServiceNotAvailableResponse'
+        default:
+          $ref: '#/components/responses/DefaultResponse'
+
+    post:
+      description: Creates a new reading list of a user
+      operationId: createReadingListByMemberId
+      tags:
+        - Reading list
+      security:
+        - openIdConnect:
+            - lending:write
+      parameters:
+        - $ref: '#/components/parameters/MemberIdentifierParameter'
+        - $ref: '#/components/parameters/VersionParameter'
+      requestBody:
+        $ref: '#/components/requestBodies/ReadingListToBeCreatedRequest'
+      responses:
+        '201':
+          $ref: '#/components/responses/LinkToReadingListResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '500':
+          $ref: '#/components/responses/ServiceNotAvailableResponse'
+        default:
+          $ref: '#/components/responses/DefaultResponse'
+
+  /reading-lists/{readingListId}:
+    get:
+      description: Delivers back the reading list of a member
+      operationId: getReadingListByMemberAndReadingListId
+      tags:
+        - Reading list
+      security:
+        - openIdConnect:
+            - lending:read
+      parameters:
+        - $ref: '#/components/parameters/ReadingListIdentifierParameter'
+        - $ref: '#/components/parameters/VersionParameter'
+      responses:
+        '200':
+          $ref: '#/components/responses/SingleReadingListResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '404':
+          $ref: '#/components/responses/NotFoundResponse'
+        '500':
+          $ref: '#/components/responses/ServiceNotAvailableResponse'
+        default:
+          $ref: '#/components/responses/DefaultResponse'
+
+    put:
+      description: Changes a reading list of a member
+      operationId: updateReadingListByMemberAndReadingListId
+      tags:
+        - Reading list
+      security:
+        - openIdConnect:
+            - lending:write
+      parameters:
+        - $ref: '#/components/parameters/ReadingListIdentifierParameter'
+        - $ref: '#/components/parameters/VersionParameter'
+      requestBody:
+        $ref: '#/components/requestBodies/ReadingListToBeChangedRequest'
+      responses:
+        '200':
+          $ref: '#/components/responses/LinkToReadingListResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '404':
+          $ref: '#/components/responses/NotFoundResponse'
+        '500':
+          $ref: '#/components/responses/ServiceNotAvailableResponse'
+        default:
+          $ref: '#/components/responses/DefaultResponse'
+
+    delete:
+      description: |
+        A member can delete their reading list.
+        The member needs to be the owner of the reading list.
+        To so the reading list must not be shared with other members.
+      parameters:
+        - $ref: '#/components/parameters/ReadingListIdentifierParameter'
+        - $ref: '#/components/parameters/VersionParameter'
+      responses:
+        '200':
+          $ref: '#/components/responses/SuccessfulOperationResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '404':
+          $ref: '#/components/responses/NotFoundResponse'
+        '500':
+          $ref: '#/components/responses/ServiceNotAvailableResponse'
+        default:
+          $ref: '#/components/responses/DefaultResponse'
+
+  /reading-lists/{readingListId}/tags:
+    put:
+      description: Endpoint to change a list of tags of a certain reading list, changes are only allowed by the owner
+      operationId: updateTagsResultListById
+      security:
+        - openIdConnect:
+            - lending:write
+      parameters:
+        - $ref: '#/components/parameters/ReadingListIdentifierParameter'
+        - $ref: '#/components/parameters/VersionParameter'
+      requestBody:
+        $ref: '#/components/requestBodies/TagsUpdateRequest'
+      responses:
+        '200':
+          $ref: '#/components/responses/LinkToReadingListResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '404':
+          $ref: '#/components/responses/NotFoundResponse'
+        '500':
+          $ref: '#/components/responses/ServiceNotAvailableResponse'
+        default:
+          $ref: '#/components/responses/DefaultResponse'
+
+  /reading-lists/{readingListId}/shares:
+    post:
+      description: |
+        Add a new member to the shares of the reading list.
+        The share can only be added by the owner of the list.
+        A member cannot add themselves to the sharing list.
+      operationId: addShareToReadingListById
+      security:
+        - openIdConnect:
+            - lending:write
+      parameters:
+        - $ref: '#/components/parameters/ReadingListIdentifierParameter'
+        - $ref: '#/components/parameters/VersionParameter'
+      requestBody:
+        $ref: '#/components/requestBodies/NewShareRequest'
+      responses:
+        '201':
+          $ref: '#/components/responses/LinkToLendingEntryResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '500':
+          $ref: '#/components/responses/ServiceNotAvailableResponse'
+        default:
+          $ref: '#/components/responses/DefaultResponse'
+
+    delete:
+      description: |
+        Cancels the invitation list to a reading list
+        The reading list can only be deleted by the member of the entry.
+      operationId:
+        deleteShareOfReadingListById
+      security:
+        - openIdConnect:
+            - lending:write
+      parameters:
+        - $ref: '#/components/parameters/LendingEntryIdentifierParameter'
+        - $ref: '#/components/parameters/VersionParameter'
+      responses:
+        '200':
+          $ref: '#/components/responses/SuccessfulOperationResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '404':
+          $ref: '#/components/responses/NotFoundResponse'
+        '500':
+          $ref: '#/components/responses/ServiceNotAvailableResponse'
+        default:
+          $ref: '#/components/responses/DefaultResponse'
+
+  /shares/{memberId}:
+    get:
+      description: Delivers back all shares of a member
+      operationId: getSharesByMember
+      parameters:
+        - $ref: '#/components/parameters/MemberIdentifierParameter'
+        - $ref: '#/components/parameters/VersionParameter'
+      responses:
+        '200':
+          $ref: '#/components/responses/SharesResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '404':
+          $ref: '#/components/responses/NotFoundResponse'
+        '500':
+          $ref: '#/components/responses/ServiceNotAvailableResponse'
+        default:
+          $ref: '#/components/responses/DefaultResponse'
+
+components:
+  parameters:
+    LendingEntryIdentifierParameter:
+      name: lendingEntryId
+      description: Catalog entry identifier
+      required: true
+      in: path
+      schema:
+        type: string
+        format: uuid
+        examples:
+          - b22fd36b-5226-4602-805b-6bcee1605885
+
+    SearchParameter:
+      name: search
+      description: Search parameter to find a particular lending entry or a reading list
+      required: false
+      in: query
+      schema:
+        type: string
+        minLength: 3
+        maxLength: 1050
+        examples:
+          - Beck
+          - DDD
+          - b22fd36b-5226-4602-805b-6bcee1605885
+
+    MemberIdentifierParameter:
+      description: Parameter to identify a member
+      name: memberId
+      required: true
+      in: header
+      schema:
+        type: string
+        format: uuid
+        examples:
+          - e42c3677-6381-4cb8-ac8e-ea3082c707e0
+
+    ReadingListIdentifierParameter:
+      description: Parameter to identify a reading list
+      name: readingListId
+      required: true
+      in: path
+      schema:
+        type: string
+        format: uuid
+        examples:
+          - 0feae713-c216-4c08-a328-e9d1b031558b
+
+    TagsParameter:
+      description: Parameter to find reading lists that contain particular tags, separated by comma
+      name: tags
+      required: false
+      in: query
+      schema:
+        type: string
+        minLength: 2
+        maxLength: 1050
+        examples:
+          - DDD, Architecture
+          - Mystery, causy
+
+    VersionParameter:
+      name: x-version
+      description: Version of the API specification used delivered in header
+      in: header
+      required: true
+      schema:
+        type: string
+        x-extensible-enum:
+          - 1.0.0
+        default: 1.0.0
+        examples:
+          - 1.0.0
+
+
+  responses:
+    BadRequestResponse:
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+
+    ForbiddenResponse:
+      description: Forbidden
+
+    LinkToLendingEntryResponse:
+      description: Successful operation - Catalog entry created
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Link"
+
+    LinkToReadingListResponse:
+      description: Successful operation - Catalog entry created
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Link"
+
+    NotFoundResponse:
+      description: Not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+
+    LendingEntriesResponse:
+      description: Lending entries found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/LendingEntries'
+
+    LendingEntryResponse:
+      description: Delivers back the resource to be exposed
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/LendingEntry'
+
+    ServiceNotAvailableResponse:
+      description: Service not available
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+
+    DefaultResponse:
+      description: Unexpected error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+
+    ReadingListsResponse:
+      description: Response of reading lists by member and/or tags
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ReadingLists'
+
+    SingleReadingListResponse:
+      description: Delivers back a single reading list
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ReadingList'
+
+    SuccessfulOperationResponse:
+      description: Successful operation
+
+    SharesResponse:
+      description: Delivers back all shares of a member has access to
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/SharesOfAMember'
+
+  requestBodies:
+    LendingEntryToBeCreatedRequest:
+      description: Creates a new resource
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/LendingEntryToBeCreated'
+
+    LendingEntryToBeChangedRequest:
+      description: Updates the resource provided
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/LendingEntry'
+
+    ReviewUpdateRequest:
+      description: Request to update a abstract of a catalog entry
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Review'
+
+    TagsUpdateRequest:
+      description: Request to update the tag lists of a catalog entry
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - tags
+            properties:
+              tags:
+                type: array
+                minItems: 1
+                maxItems: 25
+                items:
+                  $ref: '#/components/schemas/Tag'
+
+    ReadingListToBeCreatedRequest:
+      description: Request to create a new reading list of a member
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ReadingListToBeCreated'
+
+    ReadingListToBeChangedRequest:
+      description: Request to change a reading list
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ReadingList'
+
+    NewShareRequest:
+      description: Adds a share to a sharing item
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Member'
+
+  schemas:
+    Error:
+      description: An error object used for error responses
+      type: object
+      required:
+        - title
+        - status
+        - timestamp
+      properties:
+        title:
+          description: A short description of the problem using kebab-cases
+          type: string
+          minLength: 2
+          maxLength: 255
+          examples:
+            - out-of-stock
+        detail:
+          description: |
+            A human-readable description of the problem which can be used by technicians to solve the problem.
+          type: string
+          examples:
+            - The item is currently out of stock.
+        timestamp:
+          description: Point in time when the error occurred
+          type: string
+          format: date-time
+          examples:
+            - 2024-07-01T23:32:54T+01:00
+        traceparent:
+          description: Tracking ID of the API journey
+          type: string
+          pattern: ^[0-9]{2}-[0-9a-z]{16}-[0-9a-z]{8}-[0-9a-z]{1}[0-9a-z]{1}$
+          examples:
+            - 00-0af7651916cd43dd8448eb211c80319c-b7ad6b7169203331-01
+        severity:
+          description: Severity of the according error
+          type: string
+          enum:
+            - FATAL
+            - ERROR
+            - WARNING
+            - INFO
+          examples:
+            - ERROR
+
+    Link:
+      description: Link to an entity
+      type: object
+      required:
+        - type
+        - link
+      properties:
+        type:
+          description: Not fully qualified type name of the object
+          type: string
+          minLength: 2
+          maxLength: 155
+          # adapt the examples with your exposed resource
+          examples:
+            - Resource
+        link:
+          description: URL to the according entity
+          type: string
+          format: uri
+          examples:
+            - https://api.online-library.de/catalog-management/catalog-entries/74d870fa-9e93-4ffd-907e-038c85e8bc20
+
+    AuthorVeryShort:
+      description: Author of a book
+      type: object
+      required:
+        - authorId
+      properties:
+        authorId:
+          description: Identifier of the author
+          type: string
+          format: uuid
+          examples:
+            - 08a13654-05f3-4664-8c8d-fdd9114ec3be
+        familyName:
+          description: Family name of the author
+          type: string
+          minLength: 2
+          maxLength: 55
+          examples:
+            - Beck
+
+    Book:
+      description: Book which was borrowed by a member
+      type: object
+      required:
+        - catalogId
+      properties:
+        catalogId:
+          description: Identifier of the book in the catalog
+          type: string
+          format: uuid
+          examples:
+            - 5dda405a-d28e-490a-8508-1ea3453e91ae
+        authors:
+          description: Authors of the book by their family names only
+          type: array
+          minItems: 0
+          maxItems: 10
+          items:
+            $ref: '#/components/schemas/AuthorVeryShort'
+        title:
+          description: Title of the book
+          type: string
+          minLength: 5
+          maxLength: 255
+          examples:
+            - Test-driven development
+
+    Member:
+      description: Member who lent a book
+      type: object
+      required:
+        - memberId
+      properties:
+        memberId:
+          description: Identifier of a member
+          type: string
+          format: uuid
+          examples:
+            - e42c3677-6381-4cb8-ac8e-ea3082c707e0
+        memberName:
+          description: Family name of the member
+          type: string
+          minLength: 2
+          maxLength: 55
+          examples:
+            - Junker
+
+    LendingEntryToBeCreated:
+      description: A lending entry of a borrowed book by a member
+      type: object
+      required:
+        - member
+        - book
+      properties:
+        member:
+          $ref: '#/components/schemas/Member'
+        book:
+          $ref: '#/components/schemas/Book'
+
+    LendingEntries:
+      description: List of lending entries
+      type: object
+      required:
+        - lendingEntries
+      properties:
+        lendingEntries:
+          description: Lending entries in an array
+          type: array
+          minItems: 0
+          maxItems: 1000
+          items:
+            $ref: '#/components/schemas/LendingEntry'
+
+    LendingEntry:
+      description: A lending entry of a borrowed book by a member
+      type: object
+      required:
+        - lendingEntryId
+        - status
+        - isReturned
+      allOf:
+        - $ref: '#/components/schemas/LendingEntryToBeCreated'
+      properties:
+        lendingEntryId:
+          description: Lending entry identifier
+          type: string
+          format: uuid
+          examples:
+            - b22fd36b-5226-4602-805b-6bcee1605885
+        shares:
+          $ref: '#/components/schemas/Shares'
+        rate:
+          description: Rate of the book done be the member who owned the lending entry
+          type: integer
+          format: int32
+          minimum: 1
+          maximum: 5
+          examples:
+            - 5
+        status:
+          description: Status of the lending entry in the point of the view of the member
+          type: string
+          x-extensible-enum:
+            - TO_BE_READ
+            - READING
+            - FINISHED
+          default:
+            - TO_BE_READ
+          examples:
+            - TO_BE_READ
+        isReturned:
+          description: If the flag is set to true, the user needs to select the book again out of search
+          type: boolean
+          default: false
+          examples:
+            - false
+        tags:
+          description: List of tags assigned to the book by the member
+          type: array
+          minItems: 1
+          maxItems: 25
+          items:
+            $ref: '#/components/schemas/Tag'
+        review:
+          $ref: '#/components/schemas/Review'
+        media:
+          description: Link to the media which contains the book
+          type: string
+          format: url
+          example:
+            - 'https://online-library/storage/2024/test-driven-development.epub'
+        format:
+          description: Format of the according media
+          type: string
+          x-exensible-enum:
+            - EPUB
+            - KINDLE
+            - PDF
+            - BBEB
+            - MOBI
+          default:
+            - EPUB
+          examples:
+            - EPUB
+
+    ReadingListToBeCreated:
+      description: List of books which are collected to a tagged list by a member
+      type: object
+      required:
+        - owner
+        - tags
+        - books
+      properties:
+        owner:
+          $ref: '#/components/schemas/Member'
+        tags:
+          description: List of tags assigned to the list
+          type: array
+          minItems: 1
+          maxItems: 25
+          items:
+            $ref: '#/components/schemas/Tag'
+        books:
+          description:
+            List of books which belong to the reading list of the owner.
+            Books which are added manually to a reading list get the tags of the reading list automatically.
+            Books containing a sub collection of the tags of the reading list are added automatically to the list.
+          type: array
+          minItems: 1
+          maxItems: 256
+          items:
+            $ref: '#/components/schemas/Book'
+
+    ReadingList:
+      description: Reading list of a member
+      type: object
+      required:
+        - readingListIdentifier
+      properties:
+        readingListIdentifier:
+          description: Identifier of a reading list
+          type: string
+          format: uuid
+          examples:
+            - 0feae713-c216-4c08-a328-e9d1b031558b
+
+    ReadingLists:
+      description: Multiple reading lists
+      type: object
+      required:
+        - readingLists
+      properties:
+        readingLists:
+          description: Array of reading found e.g. by member and tags
+          type: array
+          minItems: 0
+          maxItems: 1000
+          items:
+            $ref: "#/components/schemas/ReadingList"
+
+    Review:
+      description:
+        The member as owner of the lending entry can give his review to book.
+        If the review is published, all member of the library can read the review.
+        Is the entry is shared with other members, and not published, they can read it anyhow.
+      type: object
+      required:
+        - text
+        - isPublished
+      properties:
+        text:
+          description: Text of the review
+          type: string
+          minLength: 55
+          maxLength: 1050
+          examples:
+            - The book is a wonderful combination of theory and praxis.
+        isPublished:
+          description: Flag if the review is published
+          type: boolean
+          default: true
+          examples:
+            - true
+
+    Shares:
+      description: Shares to a list of members
+      type: object
+      properties:
+        members:
+          description: Member list to whom the item is shared
+          type: array
+          minItems: 0
+          maxItems: 100
+          items:
+            $ref: '#/components/schemas/Member'
+
+
+    SharesOfAMember:
+      description: All shares a member has access to
+      type: object
+      required:
+        - member
+        - shares
+      properties:
+        member:
+          $ref: '#/components/schemas/Member'
+        shares:
+          description: All shares the member has access to
+          type: array
+          minItems: 0
+          maxItems: 1000
+          items:
+            $ref: '#/components/schemas/ShareOfAMember'
+
+    ShareOfAMember:
+      description: Item which is shared with a member
+      type: object
+      required:
+        - isOwner
+        - item
+      properties:
+        isOwner:
+          description: Flag is set to true if the member is owner of the according item
+          type: boolean
+          default: true
+          examples:
+            - true
+        item:
+          description: Item which is shared of with the member
+          oneOf:
+            - $ref: '#/components/schemas/LendingEntry'
+            - $ref: '#/components/schemas/ReadingList'
+
+    Tag:
+      description: Tag to a book given by member
+      type: string
+      minLength: 5
+      maxLength: 256
+      examples:
+        - Mystery
+        - DDD
+        - API
+
+
+
+
+
+
+  securitySchemes:
+    openIdConnect:
+      type: openIdConnect
+      description: Security scheme for events
+      openIdConnectUrl: "https://idp.codecentric.de/configuration"
