@@ -9,24 +9,20 @@
     </option>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9f418031-fa2f-4dcf-9ad8-1bd8158fd7e4" name="Changes" comment="Pictures">
-      <change afterPath="$PROJECT_DIR$/.idea/copilot.data.migration.ask2agent.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/swagger-settings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ApiDaysAmsterdam2026/AsyncApiSkill/SKILL.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ApiDaysAmsterdam2026/AsyncApiSkill/assets/example-task-management.yaml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ApiDaysAmsterdam2026/AsyncApiSkill/assets/house-style.spectral.yaml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ApiDaysAmsterdam2026/AsyncApiSkill/assets/skeleton.yaml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ApiDaysAmsterdam2026/AsyncApiSkill/references/conventions.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ApiDaysAmsterdam2026/AsyncApiSkill/references/validations.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ApiDaysAmsterdam2026/CatalogManagement.yaml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ApiDaysAmsterdam2026/OpenApiSkill/SKILL.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ApiDaysAmsterdam2026/OpenApiSkill/assets/example-catalog-management.yaml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ApiDaysAmsterdam2026/OpenApiSkill/assets/house-style.spectral.yaml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ApiDaysAmsterdam2026/OpenApiSkill/assets/skeleton.yaml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ApiDaysAmsterdam2026/OpenApiSkill/references/conventions.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ApiDaysAmsterdam2026/OpenApiSkill/references/validation.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ApiDaysAmsterdam2026/claude-task-management-asyncapi.yaml" afterDir="false" />
+    <list default="true" id="9f418031-fa2f-4dcf-9ad8-1bd8158fd7e4" name="Changes" comment="Amsterdam">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ApiDaysAmsterdam2026/AsyncApiSkill/SKILL.md" beforeDir="false" afterPath="$PROJECT_DIR$/ApiDaysAmsterdam2026/asyncapi-spec-author/SKILL.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ApiDaysAmsterdam2026/AsyncApiSkill/assets/example-task-management.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/ApiDaysAmsterdam2026/asyncapi-spec-author/assets/example-task-management.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ApiDaysAmsterdam2026/AsyncApiSkill/assets/house-style.spectral.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/ApiDaysAmsterdam2026/asyncapi-spec-author/assets/house-style.spectral.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ApiDaysAmsterdam2026/AsyncApiSkill/assets/skeleton.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/ApiDaysAmsterdam2026/asyncapi-spec-author/assets/skeleton.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ApiDaysAmsterdam2026/AsyncApiSkill/references/conventions.md" beforeDir="false" afterPath="$PROJECT_DIR$/ApiDaysAmsterdam2026/asyncapi-spec-author/references/conventions.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ApiDaysAmsterdam2026/AsyncApiSkill/references/validations.md" beforeDir="false" afterPath="$PROJECT_DIR$/ApiDaysAmsterdam2026/asyncapi-spec-author/references/validations.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ApiDaysAmsterdam2026/OpenApiSkill/SKILL.md" beforeDir="false" afterPath="$PROJECT_DIR$/ApiDaysAmsterdam2026/openapi-spec-author/SKILL.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ApiDaysAmsterdam2026/OpenApiSkill/assets/example-catalog-management.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/ApiDaysAmsterdam2026/openapi-spec-author/assets/example-catalog-management.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ApiDaysAmsterdam2026/OpenApiSkill/assets/house-style.spectral.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/ApiDaysAmsterdam2026/openapi-spec-author/assets/house-style.spectral.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ApiDaysAmsterdam2026/OpenApiSkill/assets/skeleton.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/ApiDaysAmsterdam2026/openapi-spec-author/assets/skeleton.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ApiDaysAmsterdam2026/OpenApiSkill/references/conventions.md" beforeDir="false" afterPath="$PROJECT_DIR$/ApiDaysAmsterdam2026/openapi-spec-author/references/conventions.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ApiDaysAmsterdam2026/OpenApiSkill/references/validation.md" beforeDir="false" afterPath="$PROJECT_DIR$/ApiDaysAmsterdam2026/openapi-spec-author/references/validation.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -110,7 +106,7 @@
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "preferences.lookFeel",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
     "two.files.diff.last.used.file": "/Users/annegretjunkercodecentricag/IdeaProjects/DdApiD/QaDays/CatalogManagementChanged.oas.yaml",
     "vue.rearranger.settings.migration": "true"
   }
@@ -239,15 +235,8 @@
       <workItem from="1750174855049" duration="10698000" />
       <workItem from="1751193829630" duration="12249000" />
       <workItem from="1758109290463" duration="2089000" />
-      <workItem from="1780999388178" duration="4443000" />
-    </task>
-    <task id="LOCAL-00006" summary="Catalog Search">
-      <option name="closed" value="true" />
-      <created>1710075609706</created>
-      <option name="number" value="00006" />
-      <option name="presentableId" value="LOCAL-00006" />
-      <option name="project" value="LOCAL" />
-      <updated>1710075609706</updated>
+      <workItem from="1780999388178" duration="5064000" />
+      <workItem from="1781010496990" duration="960000" />
     </task>
     <task id="LOCAL-00007" summary="Messaging">
       <option name="closed" value="true" />
@@ -633,7 +622,15 @@
       <option name="project" value="LOCAL" />
       <updated>1751537828045</updated>
     </task>
-    <option name="localTasksCounter" value="55" />
+    <task id="LOCAL-00055" summary="Amsterdam">
+      <option name="closed" value="true" />
+      <created>1781009887525</created>
+      <option name="number" value="00055" />
+      <option name="presentableId" value="LOCAL-00055" />
+      <option name="project" value="LOCAL" />
+      <updated>1781009887525</updated>
+    </task>
+    <option name="localTasksCounter" value="56" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -651,7 +648,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="PUrchased book" />
     <MESSAGE value="Catalog Maintenance" />
     <MESSAGE value="Member Management" />
     <MESSAGE value="Catalog Search" />
@@ -676,7 +672,8 @@
     <MESSAGE value="MAd Afternoon" />
     <MESSAGE value="Catalog  Management Changes" />
     <MESSAGE value="Pictures" />
-    <option name="LAST_COMMIT_MESSAGE" value="Pictures" />
+    <MESSAGE value="Amsterdam" />
+    <option name="LAST_COMMIT_MESSAGE" value="Amsterdam" />
   </component>
   <component name="github-copilot-workspace">
     <instructionFileLocations>
