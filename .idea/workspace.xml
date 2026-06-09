@@ -10,13 +10,33 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9f418031-fa2f-4dcf-9ad8-1bd8158fd7e4" name="Changes" comment="Pictures">
-      <change afterPath="$PROJECT_DIR$/ApiDaysMunich2025/Lending.aas.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/copilot.data.migration.ask2agent.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/swagger-settings.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ApiDaysAmsterdam2026/AsyncApiSkill/SKILL.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ApiDaysAmsterdam2026/AsyncApiSkill/assets/example-task-management.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ApiDaysAmsterdam2026/AsyncApiSkill/assets/house-style.spectral.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ApiDaysAmsterdam2026/AsyncApiSkill/assets/skeleton.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ApiDaysAmsterdam2026/AsyncApiSkill/references/conventions.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ApiDaysAmsterdam2026/AsyncApiSkill/references/validations.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ApiDaysAmsterdam2026/CatalogManagement.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ApiDaysAmsterdam2026/OpenApiSkill/SKILL.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ApiDaysAmsterdam2026/OpenApiSkill/assets/example-catalog-management.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ApiDaysAmsterdam2026/OpenApiSkill/assets/house-style.spectral.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ApiDaysAmsterdam2026/OpenApiSkill/assets/skeleton.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ApiDaysAmsterdam2026/OpenApiSkill/references/conventions.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ApiDaysAmsterdam2026/OpenApiSkill/references/validation.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ApiDaysAmsterdam2026/claude-task-management-asyncapi.yaml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="CopilotPersistence">
+    <persistenceIdMap>
+      <entry key="_/Users/annegretjunkercodecentricag/IdeaProjects/DdApiD" value="2dS0VQraYYaANTUnrM0jSRhNago" />
+    </persistenceIdMap>
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -80,10 +100,11 @@
     "DefaultPlantUmlFileTemplate": "UML Sequence",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "full.screen.before.presentation.mode": "false",
     "git-widget-placeholder": "main",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "/Users/annegretjunkercodecentricag/IdeaProjects/DdApiD/ApiDaysMunich2025",
+    "last_opened_file_path": "/Users/annegretjunkercodecentricag/IdeaProjects/DdApiD/ApiDaysAmsterdam2026",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -96,11 +117,11 @@
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/ApiDaysAmsterdam2026" />
       <recent name="$PROJECT_DIR$/ApiDaysMunich2025" />
       <recent name="$PROJECT_DIR$/QaDays" />
       <recent name="$PROJECT_DIR$/MAD Afternoon 2025-04-07" />
       <recent name="$PROJECT_DIR$/SasSpring2025Munich" />
-      <recent name="$PROJECT_DIR$/SasSpringMunich" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/SasSpring2025Munich" />
@@ -216,23 +237,9 @@
       <workItem from="1749047571326" duration="2312000" />
       <workItem from="1749553843675" duration="2716000" />
       <workItem from="1750174855049" duration="10698000" />
-      <workItem from="1751193829630" duration="1320000" />
-    </task>
-    <task id="LOCAL-00004" summary="Member Management">
-      <option name="closed" value="true" />
-      <created>1710063697188</created>
-      <option name="number" value="00004" />
-      <option name="presentableId" value="LOCAL-00004" />
-      <option name="project" value="LOCAL" />
-      <updated>1710063697188</updated>
-    </task>
-    <task id="LOCAL-00005" summary="Member Management">
-      <option name="closed" value="true" />
-      <created>1710072529754</created>
-      <option name="number" value="00005" />
-      <option name="presentableId" value="LOCAL-00005" />
-      <option name="project" value="LOCAL" />
-      <updated>1710072529754</updated>
+      <workItem from="1751193829630" duration="12249000" />
+      <workItem from="1758109290463" duration="2089000" />
+      <workItem from="1780999388178" duration="4443000" />
     </task>
     <task id="LOCAL-00006" summary="Catalog Search">
       <option name="closed" value="true" />
@@ -610,7 +617,23 @@
       <option name="project" value="LOCAL" />
       <updated>1751193878265</updated>
     </task>
-    <option name="localTasksCounter" value="53" />
+    <task id="LOCAL-00053" summary="Pictures">
+      <option name="closed" value="true" />
+      <created>1751537563692</created>
+      <option name="number" value="00053" />
+      <option name="presentableId" value="LOCAL-00053" />
+      <option name="project" value="LOCAL" />
+      <updated>1751537563692</updated>
+    </task>
+    <task id="LOCAL-00054" summary="Pictures">
+      <option name="closed" value="true" />
+      <created>1751537828045</created>
+      <option name="number" value="00054" />
+      <option name="presentableId" value="LOCAL-00054" />
+      <option name="project" value="LOCAL" />
+      <updated>1751537828045</updated>
+    </task>
+    <option name="localTasksCounter" value="55" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -654,5 +677,13 @@
     <MESSAGE value="Catalog  Management Changes" />
     <MESSAGE value="Pictures" />
     <option name="LAST_COMMIT_MESSAGE" value="Pictures" />
+  </component>
+  <component name="github-copilot-workspace">
+    <instructionFileLocations>
+      <option value=".github/instructions" />
+    </instructionFileLocations>
+    <promptFileLocations>
+      <option value=".github/prompts" />
+    </promptFileLocations>
   </component>
 </project>
