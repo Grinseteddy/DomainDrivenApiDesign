@@ -1,0 +1,1405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VeloCity — Bike Sharing</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0c0c0e;
+    --bg2: #141418;
+    --bg3: #1c1c22;
+    --card: #1e1e26;
+    --card2: #25252f;
+    --border: rgba(255,255,255,0.08);
+    --border2: rgba(255,255,255,0.14);
+    --accent: #b8f542;
+    --accent2: #8ed420;
+    --accent-dim: rgba(184,245,66,0.12);
+    --text: #f0f0f2;
+    --text2: #9898a8;
+    --text3: #5a5a68;
+    --red: #ff5c5c;
+    --red-dim: rgba(255,92,92,0.12);
+    --blue: #5ca8ff;
+    --blue-dim: rgba(92,168,255,0.12);
+    --amber: #ffb83d;
+    --amber-dim: rgba(255,184,61,0.12);
+    --radius: 14px;
+    --radius-sm: 8px;
+    --font-display: 'Syne', sans-serif;
+    --font-body: 'DM Sans', sans-serif;
+    --font-mono: 'DM Mono', monospace;
+    --phone-w: 390px;
+    --phone-h: 780px;
+    --status-h: 44px;
+  }
+
+  html, body {
+    background: #07070a;
+    min-height: 100vh;
+    font-family: var(--font-body);
+    color: var(--text);
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 32px 16px 48px;
+  }
+
+  .layout {
+    display: flex;
+    gap: 48px;
+    align-items: flex-start;
+    max-width: 1200px;
+    width: 100%;
+  }
+
+  .sidebar {
+    flex: 0 0 260px;
+    position: sticky;
+    top: 32px;
+  }
+
+  .sidebar-title {
+    font-family: var(--font-display);
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--accent);
+    margin-bottom: 4px;
+    letter-spacing: -0.5px;
+  }
+  .sidebar-sub {
+    font-size: 12px;
+    color: var(--text3);
+    font-family: var(--font-mono);
+    margin-bottom: 28px;
+    letter-spacing: 0.5px;
+  }
+
+  .flow-section {
+    margin-bottom: 20px;
+  }
+  .flow-section-label {
+    font-size: 10px;
+    font-family: var(--font-mono);
+    color: var(--text3);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+    padding-left: 4px;
+  }
+
+  .flow-step {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 12px;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: background 0.15s;
+    margin-bottom: 2px;
+  }
+  .flow-step:hover { background: var(--bg3); }
+  .flow-step.active { background: var(--accent-dim); }
+  .flow-step.active .step-num { color: var(--accent); border-color: var(--accent); }
+  .flow-step.active .step-label { color: var(--text); }
+  .flow-step.done .step-num { background: var(--accent); color: #0c0c0e; border-color: var(--accent); }
+
+  .step-num {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    border: 1.5px solid var(--border2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--text3);
+    flex-shrink: 0;
+    transition: all 0.2s;
+  }
+  .step-label {
+    font-size: 13px;
+    color: var(--text2);
+    font-family: var(--font-body);
+  }
+  .step-domain {
+    font-size: 10px;
+    font-family: var(--font-mono);
+    color: var(--text3);
+    margin-left: auto;
+  }
+
+  .phone-wrap {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+  }
+
+  .phone {
+    width: var(--phone-w);
+    min-height: var(--phone-h);
+    background: var(--bg);
+    border-radius: 44px;
+    border: 1.5px solid var(--border2);
+    overflow: hidden;
+    position: relative;
+    box-shadow: 0 40px 80px rgba(0,0,0,0.6), 0 0 0 6px #111114;
+  }
+
+  .phone-notch {
+    width: 120px;
+    height: 32px;
+    background: #111114;
+    border-radius: 0 0 20px 20px;
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 100;
+  }
+
+  .status-bar {
+    height: var(--status-h);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 24px;
+    padding-top: 4px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 50;
+    pointer-events: none;
+  }
+  .status-time {
+    font-family: var(--font-mono);
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text);
+  }
+  .status-icons {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .status-icons svg { fill: var(--text); }
+
+  .screen {
+    display: none;
+    min-height: var(--phone-h);
+    padding-top: var(--status-h);
+    padding-bottom: 32px;
+    flex-direction: column;
+    position: relative;
+    animation: fadeIn 0.25s ease;
+  }
+  .screen.active { display: flex; }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .screen-inner {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 16px 24px 0;
+    overflow-y: auto;
+  }
+
+  .nav-bar {
+    display: flex;
+    align-items: center;
+    padding: 12px 24px;
+    gap: 12px;
+  }
+  .nav-back {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--bg3);
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: background 0.15s;
+  }
+  .nav-back:hover { background: var(--card2); }
+  .nav-back svg { stroke: var(--text); }
+  .nav-title {
+    font-family: var(--font-display);
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text);
+  }
+  .nav-badge {
+    margin-left: auto;
+    background: var(--accent-dim);
+    color: var(--accent);
+    font-size: 10px;
+    font-family: var(--font-mono);
+    padding: 3px 8px;
+    border-radius: 20px;
+    letter-spacing: 0.5px;
+  }
+
+  .h1 { font-family: var(--font-display); font-size: 30px; font-weight: 800; color: var(--text); letter-spacing: -1px; line-height: 1.15; }
+  .h2 { font-family: var(--font-display); font-size: 22px; font-weight: 700; color: var(--text); letter-spacing: -0.5px; }
+  .h3 { font-family: var(--font-display); font-size: 17px; font-weight: 600; color: var(--text); }
+  .body { font-size: 14px; color: var(--text2); line-height: 1.6; }
+  .mono { font-family: var(--font-mono); }
+  .muted { color: var(--text3); }
+
+  .spacer-sm { height: 8px; }
+  .spacer { height: 16px; }
+  .spacer-md { height: 24px; }
+  .spacer-lg { height: 32px; }
+
+  .btn {
+    width: 100%;
+    padding: 15px 20px;
+    border-radius: var(--radius);
+    border: none;
+    font-family: var(--font-display);
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.15s;
+    letter-spacing: 0.2px;
+  }
+  .btn:active { transform: scale(0.98); }
+  .btn-primary { background: var(--accent); color: #0c0c0e; }
+  .btn-primary:hover { background: var(--accent2); }
+  .btn-secondary { background: var(--bg3); color: var(--text); border: 1px solid var(--border2); }
+  .btn-secondary:hover { background: var(--card2); }
+  .btn-danger { background: var(--red-dim); color: var(--red); border: 1px solid rgba(255,92,92,0.2); }
+  .btn-ghost { background: transparent; color: var(--text2); border: 1px solid var(--border); }
+  .btn-sm { padding: 10px 16px; font-size: 13px; border-radius: var(--radius-sm); }
+
+  .card {
+    background: var(--card);
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    padding: 18px;
+    margin-bottom: 12px;
+  }
+  .card-accent {
+    background: var(--accent-dim);
+    border-color: rgba(184,245,66,0.2);
+  }
+  .card-blue {
+    background: var(--blue-dim);
+    border-color: rgba(92,168,255,0.2);
+  }
+  .card-amber {
+    background: var(--amber-dim);
+    border-color: rgba(255,184,61,0.2);
+  }
+
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-family: var(--font-mono);
+    letter-spacing: 0.3px;
+  }
+  .pill-green { background: var(--accent-dim); color: var(--accent); }
+  .pill-blue { background: var(--blue-dim); color: var(--blue); }
+  .pill-amber { background: var(--amber-dim); color: var(--amber); }
+  .pill-red { background: var(--red-dim); color: var(--red); }
+  .pill-gray { background: var(--bg3); color: var(--text3); }
+
+  .dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; display: inline-block; }
+
+  .field {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 13px 16px;
+    color: var(--text);
+    font-family: var(--font-body);
+    font-size: 14px;
+    width: 100%;
+    margin-bottom: 10px;
+    outline: none;
+    transition: border-color 0.15s;
+  }
+  .field:focus { border-color: var(--accent); }
+  .field::placeholder { color: var(--text3); }
+
+  .label {
+    font-size: 11px;
+    font-family: var(--font-mono);
+    color: var(--text3);
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+
+  .divider {
+    height: 1px;
+    background: var(--border);
+    margin: 16px 0;
+  }
+
+  .row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .row-between {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .bike-icon {
+    width: 48px; height: 48px;
+    background: var(--accent-dim);
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px;
+  }
+
+  .code-display {
+    font-family: var(--font-mono);
+    font-size: 38px;
+    font-weight: 500;
+    letter-spacing: 12px;
+    color: var(--accent);
+    text-align: center;
+    padding: 28px 0;
+    background: var(--accent-dim);
+    border-radius: var(--radius);
+    border: 1px solid rgba(184,245,66,0.2);
+    margin: 16px 0;
+  }
+
+  .map-placeholder {
+    background: var(--bg3);
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    height: 200px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 16px;
+  }
+
+  .map-grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+    background-size: 30px 30px;
+  }
+
+  .map-pin {
+    width: 28px; height: 28px;
+    border-radius: 50% 50% 50% 0;
+    transform: rotate(-45deg);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px;
+    position: absolute;
+  }
+  .map-pin-inner { transform: rotate(45deg); }
+  .map-pin-accent { background: var(--accent); color: #0c0c0e; }
+  .map-pin-blue { background: var(--blue); color: #0c0c0e; }
+
+  .station-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 14px 16px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    transition: border-color 0.15s, background 0.15s;
+  }
+  .station-card:hover { border-color: var(--border2); background: var(--card2); }
+  .station-card.selected { border-color: var(--accent); background: var(--accent-dim); }
+
+  .station-icon {
+    width: 40px; height: 40px;
+    background: var(--bg3);
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+
+  .bike-slot {
+    width: 28px; height: 28px;
+    border-radius: 6px;
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .bike-slot.available { border-color: rgba(184,245,66,0.3); background: var(--accent-dim); }
+  .bike-slot.selected { background: var(--accent); }
+  .bike-slot.booked { background: var(--bg3); opacity: 0.3; cursor: default; }
+
+  .progress-bar {
+    height: 4px;
+    background: var(--bg3);
+    border-radius: 2px;
+    overflow: hidden;
+    margin: 8px 0;
+  }
+  .progress-fill {
+    height: 100%;
+    background: var(--accent);
+    border-radius: 2px;
+    transition: width 0.3s;
+  }
+
+  .riding-timer {
+    font-family: var(--font-mono);
+    font-size: 52px;
+    font-weight: 500;
+    color: var(--text);
+    text-align: center;
+    letter-spacing: -2px;
+    line-height: 1;
+    padding: 20px 0;
+  }
+  .riding-sub {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--text3);
+    text-align: center;
+    letter-spacing: 1px;
+  }
+
+  .big-bike {
+    font-size: 80px;
+    text-align: center;
+    line-height: 1;
+    padding: 16px 0;
+    filter: grayscale(0.2);
+  }
+
+  .tabs {
+    display: flex;
+    background: var(--bg3);
+    border-radius: var(--radius-sm);
+    padding: 4px;
+    gap: 4px;
+    margin-bottom: 16px;
+  }
+  .tab {
+    flex: 1;
+    padding: 8px;
+    border-radius: 6px;
+    border: none;
+    background: transparent;
+    color: var(--text3);
+    font-family: var(--font-body);
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .tab.active { background: var(--card); color: var(--text); }
+
+  .success-check {
+    width: 72px; height: 72px;
+    border-radius: 50%;
+    background: var(--accent-dim);
+    border: 2px solid var(--accent);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 32px;
+    margin: 0 auto 20px;
+  }
+
+  .bottom-nav {
+    display: flex;
+    align-items: center;
+    padding: 12px 24px 8px;
+    border-top: 1px solid var(--border);
+    background: var(--bg);
+    gap: 0;
+    position: sticky;
+    bottom: 0;
+  }
+  .bottom-nav-btn {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+    border-radius: var(--radius-sm);
+    transition: background 0.15s;
+  }
+  .bottom-nav-btn:hover { background: var(--bg3); }
+  .bottom-nav-btn svg { stroke: var(--text3); }
+  .bottom-nav-btn.active svg { stroke: var(--accent); }
+  .bottom-nav-label { font-size: 10px; color: var(--text3); font-family: var(--font-mono); }
+  .bottom-nav-btn.active .bottom-nav-label { color: var(--accent); }
+
+  .info-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 13px;
+  }
+  .info-row:last-child { border-bottom: none; }
+  .info-row-label { color: var(--text3); }
+  .info-row-val { color: var(--text); font-weight: 500; }
+
+  .avatar {
+    width: 44px; height: 44px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #b8f542, #5ca8ff);
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--font-display);
+    font-size: 16px;
+    font-weight: 700;
+    color: #0c0c0e;
+    flex-shrink: 0;
+  }
+
+  input[type="text"], input[type="email"], input[type="password"], input[type="number"] {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 13px 16px;
+    color: var(--text);
+    font-family: var(--font-body);
+    font-size: 14px;
+    width: 100%;
+    margin-bottom: 10px;
+    outline: none;
+    transition: border-color 0.15s;
+  }
+  input[type="text"]:focus, input[type="email"]:focus, input[type="password"]:focus {
+    border-color: var(--accent);
+  }
+  input::placeholder { color: var(--text3); }
+
+</style>
+</head>
+<body>
+
+<div class="layout">
+
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <div class="sidebar-title">VeloCity</div>
+    <div class="sidebar-sub">Domain Story Prototype</div>
+
+    <div class="flow-section">
+      <div class="flow-section-label">Setup</div>
+      <div class="flow-step" id="nav-0" onclick="goto(0)">
+        <div class="step-num">·</div>
+        <div class="step-label">Welcome</div>
+        <div class="step-domain"></div>
+      </div>
+      <div class="flow-step" id="nav-1" onclick="goto(1)">
+        <div class="step-num">1</div>
+        <div class="step-label">Mechanic adds bike</div>
+        <div class="step-domain">dist.</div>
+      </div>
+      <div class="flow-step" id="nav-2" onclick="goto(2)">
+        <div class="step-num">2</div>
+        <div class="step-label">Register on app</div>
+        <div class="step-domain">user</div>
+      </div>
+      <div class="flow-step" id="nav-3" onclick="goto(3)">
+        <div class="step-num">3</div>
+        <div class="step-label">Pay monthly fee</div>
+        <div class="step-domain">acct.</div>
+      </div>
+    </div>
+
+    <div class="flow-section">
+      <div class="flow-section-label">Booking</div>
+      <div class="flow-step" id="nav-4" onclick="goto(4)">
+        <div class="step-num">4</div>
+        <div class="step-label">Search for bike</div>
+        <div class="step-domain">dist.</div>
+      </div>
+      <div class="flow-step" id="nav-5" onclick="goto(5)">
+        <div class="step-num">5</div>
+        <div class="step-label">Book bicycle</div>
+        <div class="step-domain">book.</div>
+      </div>
+      <div class="flow-step" id="nav-6" onclick="goto(6)">
+        <div class="step-num">6</div>
+        <div class="step-label">Get unlock code</div>
+        <div class="step-domain">rack</div>
+      </div>
+    </div>
+
+    <div class="flow-section">
+      <div class="flow-section-label">Riding & Return</div>
+      <div class="flow-step" id="nav-7" onclick="goto(7)">
+        <div class="step-num">7</div>
+        <div class="step-label">Unlock at rack</div>
+        <div class="step-domain">rack</div>
+      </div>
+      <div class="flow-step" id="nav-8" onclick="goto(8)">
+        <div class="step-num">8</div>
+        <div class="step-label">Ride home</div>
+        <div class="step-domain">ride</div>
+      </div>
+      <div class="flow-step" id="nav-9" onclick="goto(9)">
+        <div class="step-num">9</div>
+        <div class="step-label">Return bicycle</div>
+        <div class="step-domain">dist.</div>
+      </div>
+      <div class="flow-step" id="nav-10" onclick="goto(10)">
+        <div class="step-num">10</div>
+        <div class="step-label">Confirm return</div>
+        <div class="step-domain">rack</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- PHONE -->
+  <div class="phone-wrap">
+    <div class="phone">
+      <div class="phone-notch"></div>
+      <div class="status-bar">
+        <span class="status-time">9:41</span>
+        <div class="status-icons">
+          <svg width="16" height="12" viewBox="0 0 16 12"><rect x="0" y="3" width="3" height="9" rx="1" fill-opacity="0.4"/><rect x="4.5" y="2" width="3" height="10" rx="1" fill-opacity="0.6"/><rect x="9" y="0" width="3" height="12" rx="1"/><rect x="13.5" y="0" width="3" height="12" rx="1"/></svg>
+          <svg width="16" height="12" viewBox="0 0 24 12"><path d="M1 4a11 11 0 0 1 22 0" stroke-width="1.5" stroke="currentColor" fill="none" opacity="0.3"/><path d="M4 7a8 8 0 0 1 16 0" stroke-width="1.5" stroke="currentColor" fill="none" opacity="0.6"/><path d="M7 10a5 5 0 0 1 10 0" stroke-width="1.5" stroke="currentColor" fill="none"/><circle cx="12" cy="12" r="1.5" fill="currentColor"/></svg>
+          <svg width="25" height="12" viewBox="0 0 25 12"><rect x="0" y="1" width="21" height="10" rx="3" stroke="currentColor" stroke-width="1.2" fill="none"/><rect x="22" y="3.5" width="3" height="5" rx="1.5" fill="currentColor" opacity="0.5"/><rect x="1.5" y="2.5" width="14" height="7" rx="2" fill="currentColor"/></svg>
+        </div>
+      </div>
+
+      <!-- SCREEN 0: WELCOME -->
+      <div class="screen active" id="screen-0">
+        <div class="screen-inner">
+          <div style="flex:1; display:flex; flex-direction:column; justify-content:center; padding-bottom:32px;">
+            <div style="font-size:70px; text-align:center; padding:20px 0;">🚲</div>
+            <div class="h1" style="text-align:center; font-size:40px; margin-bottom:8px;">VeloCity</div>
+            <div class="body" style="text-align:center; margin-bottom:48px;">Urban bike sharing.<br>Find, book and ride — anywhere.</div>
+            <button class="btn btn-primary" onclick="goto(2)">Create account</button>
+            <div style="height:10px;"></div>
+            <button class="btn btn-secondary" onclick="goto(4)">Sign in</button>
+            <div style="height:20px;"></div>
+            <div style="text-align:center; font-size:12px; color:var(--text3); font-family:var(--font-mono);">
+              Or see how a <span style="color:var(--accent); cursor:pointer;" onclick="goto(1)">mechanic adds bikes →</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SCREEN 1: MECHANIC -->
+      <div class="screen" id="screen-1">
+        <div class="nav-bar">
+          <button class="nav-back" onclick="goto(0)">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke-width="1.8"><path d="M10 3L5 8l5 5"/></svg>
+          </button>
+          <span class="nav-title">Mechanic View</span>
+          <span class="nav-badge">DIST.</span>
+        </div>
+        <div class="screen-inner">
+          <div class="pill pill-amber" style="margin-bottom:16px;"><span class="dot"></span> Mechanic Portal</div>
+          <div class="h2" style="margin-bottom:4px;">Register bicycle</div>
+          <div class="body" style="margin-bottom:24px;">Step 1: Add a bike to the rack at a public transport station.</div>
+
+          <div class="label">Bicycle ID</div>
+          <input type="text" value="VLC-2847" />
+
+          <div class="label">Assign to Rack</div>
+          <div class="card" style="padding:12px 14px; margin-bottom:10px; cursor:pointer; border-color:var(--accent);">
+            <div class="row-between">
+              <div class="row" style="gap:10px;">
+                <div style="font-size:20px;">🏠</div>
+                <div>
+                  <div style="font-size:13px; font-weight:500; color:var(--text);">Hauptbahnhof Rack A</div>
+                  <div style="font-size:11px; color:var(--text3); font-family:var(--font-mono);">8 slots · 3 available</div>
+                </div>
+              </div>
+              <div style="width:18px;height:18px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;font-size:10px;color:#0c0c0e;">✓</div>
+            </div>
+          </div>
+          <div class="card" style="padding:12px 14px; margin-bottom:10px; cursor:pointer;">
+            <div class="row-between">
+              <div class="row" style="gap:10px;">
+                <div style="font-size:20px;">🏠</div>
+                <div>
+                  <div style="font-size:13px; font-weight:500; color:var(--text);">Marienplatz Rack B</div>
+                  <div style="font-size:11px; color:var(--text3); font-family:var(--font-mono);">6 slots · 1 available</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="label" style="margin-top:8px;">Condition check</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr; gap:8px; margin-bottom:20px;">
+            <div class="card" style="padding:10px 12px; display:flex;align-items:center;gap:8px;cursor:pointer;border-color:var(--accent);">
+              <div style="color:var(--accent);font-size:14px;">✓</div>
+              <div style="font-size:12px;color:var(--text);">Brakes OK</div>
+            </div>
+            <div class="card" style="padding:10px 12px; display:flex;align-items:center;gap:8px;cursor:pointer;border-color:var(--accent);">
+              <div style="color:var(--accent);font-size:14px;">✓</div>
+              <div style="font-size:12px;color:var(--text);">Tires OK</div>
+            </div>
+            <div class="card" style="padding:10px 12px; display:flex;align-items:center;gap:8px;cursor:pointer;border-color:var(--accent);">
+              <div style="color:var(--accent);font-size:14px;">✓</div>
+              <div style="font-size:12px;color:var(--text);">Lock OK</div>
+            </div>
+            <div class="card" style="padding:10px 12px; display:flex;align-items:center;gap:8px;cursor:pointer;border-color:var(--amber);">
+              <div style="color:var(--amber);font-size:14px;">!</div>
+              <div style="font-size:12px;color:var(--text);">Light low</div>
+            </div>
+          </div>
+
+          <button class="btn btn-primary" onclick="goto(0)">Register bicycle → Rack</button>
+        </div>
+      </div>
+
+      <!-- SCREEN 2: REGISTER -->
+      <div class="screen" id="screen-2">
+        <div class="nav-bar">
+          <button class="nav-back" onclick="goto(0)">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke-width="1.8"><path d="M10 3L5 8l5 5"/></svg>
+          </button>
+          <span class="nav-title">Create account</span>
+          <span class="nav-badge">USER</span>
+        </div>
+        <div class="screen-inner">
+          <div class="body" style="margin-bottom:24px;">Join VeloCity to access bikes at public transport stations across the city.</div>
+
+          <div class="label">Full name</div>
+          <input type="text" placeholder="Anna Müller" />
+
+          <div class="label">Email address</div>
+          <input type="email" placeholder="anna@example.com" />
+
+          <div class="label">Password</div>
+          <input type="password" placeholder="••••••••" />
+
+          <div class="label">Phone number</div>
+          <input type="text" placeholder="+49 171 000 0000" />
+
+          <div class="divider"></div>
+
+          <div class="card card-accent" style="padding:12px 14px; margin-bottom:16px;">
+            <div class="row-between">
+              <div>
+                <div style="font-size:13px; font-weight:500; color:var(--text); margin-bottom:2px;">Monthly subscription</div>
+                <div style="font-size:11px; color:var(--text3); font-family:var(--font-mono);">Required to use bikes</div>
+              </div>
+              <div style="font-family:var(--font-display); font-size:20px; font-weight:700; color:var(--accent);">€19</div>
+            </div>
+          </div>
+
+          <button class="btn btn-primary" onclick="goto(3)">Create account & continue</button>
+          <div style="height:8px;"></div>
+          <div style="text-align:center; font-size:12px; color:var(--text3);">Already have an account? <span style="color:var(--accent); cursor:pointer;" onclick="goto(4)">Sign in</span></div>
+          <div style="height:20px;"></div>
+        </div>
+      </div>
+
+      <!-- SCREEN 3: PAYMENT -->
+      <div class="screen" id="screen-3">
+        <div class="nav-bar">
+          <button class="nav-back" onclick="goto(2)">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke-width="1.8"><path d="M10 3L5 8l5 5"/></svg>
+          </button>
+          <span class="nav-title">Monthly fee</span>
+          <span class="nav-badge">ACCT.</span>
+        </div>
+        <div class="screen-inner">
+          <div class="pill pill-blue" style="margin-bottom:16px;"><span class="dot"></span> Step 3</div>
+          <div class="h2" style="margin-bottom:4px;">Pay monthly fee</div>
+          <div class="body" style="margin-bottom:24px;">Unlock unlimited 60-min rides. Renews on the 1st of each month.</div>
+
+          <div class="card" style="margin-bottom:16px;">
+            <div class="row-between" style="margin-bottom:16px;">
+              <div class="h3">VeloCity Monthly</div>
+              <div style="font-family:var(--font-display); font-size:24px; font-weight:700; color:var(--accent);">€19<span style="font-size:13px; color:var(--text3); font-weight:400;">/mo</span></div>
+            </div>
+            <div class="info-row"><span class="info-row-label">Rides per month</span><span class="info-row-val">Unlimited</span></div>
+            <div class="info-row"><span class="info-row-label">Max ride duration</span><span class="info-row-val">60 min</span></div>
+            <div class="info-row"><span class="info-row-label">Stations</span><span class="info-row-val">All cities</span></div>
+            <div class="info-row"><span class="info-row-label">Extra time fee</span><span class="info-row-val">€1/10 min</span></div>
+          </div>
+
+          <div class="label">Payment method</div>
+          <div class="tabs">
+            <button class="tab active">Card</button>
+            <button class="tab">PayPal</button>
+            <button class="tab">SEPA</button>
+          </div>
+
+          <div class="label">Card number</div>
+          <input type="text" placeholder="•••• •••• •••• 4242" value="•••• •••• •••• 4242"/>
+
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
+            <div>
+              <div class="label">Expiry</div>
+              <input type="text" value="09/27" />
+            </div>
+            <div>
+              <div class="label">CVC</div>
+              <input type="text" placeholder="•••" value="•••" />
+            </div>
+          </div>
+
+          <div class="divider"></div>
+
+          <div class="row-between" style="margin-bottom:16px; font-size:13px;">
+            <span class="muted">Total due today</span>
+            <span style="font-size:18px; font-weight:600; font-family:var(--font-display);">€19.00</span>
+          </div>
+
+          <button class="btn btn-primary" onclick="goto(4)">Pay €19.00 via App</button>
+          <div style="height:20px;"></div>
+        </div>
+      </div>
+
+      <!-- SCREEN 4: HOME / SEARCH -->
+      <div class="screen" id="screen-4">
+        <div class="screen-inner" style="padding-top:8px;">
+          <div class="row-between" style="margin-bottom:20px;">
+            <div>
+              <div style="font-size:12px; color:var(--text3); font-family:var(--font-mono); margin-bottom:2px;">GOOD MORNING</div>
+              <div class="h2">Find a bike</div>
+            </div>
+            <div class="avatar">AM</div>
+          </div>
+
+          <div class="pill pill-green" style="margin-bottom:12px;"><span class="dot"></span> Subscription active</div>
+
+          <div style="position:relative; margin-bottom:16px;">
+            <input type="text" placeholder="Search stations near you..." style="padding-left:40px;" value="Hauptbahnhof" />
+            <svg style="position:absolute;left:13px;top:13px;" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="var(--text3)" stroke-width="1.5"><circle cx="7" cy="7" r="4.5"/><path d="M10.5 10.5L14 14"/></svg>
+          </div>
+
+          <div class="map-placeholder">
+            <div class="map-grid"></div>
+            <div class="map-pin map-pin-accent" style="bottom:60px; left:100px;">
+              <div class="map-pin-inner">🏠</div>
+            </div>
+            <div class="map-pin map-pin-blue" style="top:50px; right:80px;">
+              <div class="map-pin-inner">🏠</div>
+            </div>
+            <div class="map-pin map-pin-accent" style="top:90px; left:60px;">
+              <div class="map-pin-inner">🚲</div>
+            </div>
+            <div style="position:absolute;bottom:12px;right:12px;background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:4px 8px;font-size:11px;color:var(--text3);font-family:var(--font-mono);">live map</div>
+          </div>
+
+          <div style="font-size:12px; color:var(--text3); font-family:var(--font-mono); margin-bottom:10px; letter-spacing:0.5px;">NEARBY STATIONS</div>
+
+          <div class="station-card selected" onclick="goto(5)">
+            <div class="station-icon">🏛️</div>
+            <div style="flex:1;">
+              <div style="font-size:14px; font-weight:500; color:var(--text);">Hauptbahnhof</div>
+              <div style="font-size:11px; color:var(--text3); font-family:var(--font-mono); margin-top:2px;">Rack A · 0.3 km</div>
+              <div class="row" style="gap:6px; margin-top:4px;">
+                <span class="pill pill-green" style="font-size:10px; padding:2px 7px;">4 bikes</span>
+                <span style="font-size:10px; color:var(--text3);">Updated now</span>
+              </div>
+            </div>
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="var(--text3)" stroke-width="1.5"><path d="M6 3l5 5-5 5"/></svg>
+          </div>
+
+          <div class="station-card" onclick="goto(5)">
+            <div class="station-icon">🏢</div>
+            <div style="flex:1;">
+              <div style="font-size:14px; font-weight:500; color:var(--text);">Marienplatz</div>
+              <div style="font-size:11px; color:var(--text3); font-family:var(--font-mono); margin-top:2px;">Rack B · 0.8 km</div>
+              <div class="row" style="gap:6px; margin-top:4px;">
+                <span class="pill pill-amber" style="font-size:10px; padding:2px 7px;">1 bike</span>
+                <span style="font-size:10px; color:var(--text3);">5 min ago</span>
+              </div>
+            </div>
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="var(--text3)" stroke-width="1.5"><path d="M6 3l5 5-5 5"/></svg>
+          </div>
+
+          <div class="station-card" onclick="goto(5)">
+            <div class="station-icon">🌳</div>
+            <div style="flex:1;">
+              <div style="font-size:14px; font-weight:500; color:var(--text);">Englischer Garten</div>
+              <div style="font-size:11px; color:var(--text3); font-family:var(--font-mono); margin-top:2px;">Rack C · 1.2 km</div>
+              <div class="row" style="gap:6px; margin-top:4px;">
+                <span class="pill pill-green" style="font-size:10px; padding:2px 7px;">7 bikes</span>
+                <span style="font-size:10px; color:var(--text3);">2 min ago</span>
+              </div>
+            </div>
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="var(--text3)" stroke-width="1.5"><path d="M6 3l5 5-5 5"/></svg>
+          </div>
+          <div style="height:16px;"></div>
+        </div>
+        <div class="bottom-nav">
+          <button class="bottom-nav-btn active">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke-width="1.5"><circle cx="10" cy="10" r="3"/><path d="M10 2v2M10 16v2M2 10h2M16 10h2"/></svg>
+            <span class="bottom-nav-label">search</span>
+          </button>
+          <button class="bottom-nav-btn" onclick="goto(8)">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke-width="1.5"><circle cx="5" cy="14" r="2.5"/><circle cx="15" cy="14" r="2.5"/><path d="M5 14V8l5-2 4 2v4M10 6V4"/></svg>
+            <span class="bottom-nav-label">riding</span>
+          </button>
+          <button class="bottom-nav-btn">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke-width="1.5"><rect x="3" y="5" width="14" height="12" rx="2"/><path d="M7 5V4a3 3 0 0 1 6 0v1"/></svg>
+            <span class="bottom-nav-label">history</span>
+          </button>
+          <button class="bottom-nav-btn">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke-width="1.5"><circle cx="10" cy="7" r="3"/><path d="M4 17c0-3.3 2.7-6 6-6s6 2.7 6 6"/></svg>
+            <span class="bottom-nav-label">profile</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- SCREEN 5: BOOK BICYCLE -->
+      <div class="screen" id="screen-5">
+        <div class="nav-bar">
+          <button class="nav-back" onclick="goto(4)">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke-width="1.8"><path d="M10 3L5 8l5 5"/></svg>
+          </button>
+          <span class="nav-title">Hauptbahnhof</span>
+          <span class="nav-badge">BOOK.</span>
+        </div>
+        <div class="screen-inner">
+          <div class="row-between" style="margin-bottom:4px;">
+            <div class="h2">Rack A</div>
+            <span class="pill pill-green"><span class="dot"></span> 4 available</span>
+          </div>
+          <div style="font-size:12px; color:var(--text3); font-family:var(--font-mono); margin-bottom:20px;">Public transport station · updated now</div>
+
+          <div style="font-size:12px; color:var(--text3); font-family:var(--font-mono); margin-bottom:10px; letter-spacing:0.5px;">SELECT A BICYCLE</div>
+
+          <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:8px; margin-bottom:20px;" id="bike-slots">
+            <div class="bike-slot available" onclick="selectBike(this,'VLC-2847')" data-id="VLC-2847">🚲</div>
+            <div class="bike-slot available" onclick="selectBike(this,'VLC-2891')" data-id="VLC-2891">🚲</div>
+            <div class="bike-slot booked">🚲</div>
+            <div class="bike-slot available" onclick="selectBike(this,'VLC-2903')" data-id="VLC-2903">🚲</div>
+            <div class="bike-slot booked">🚲</div>
+            <div class="bike-slot booked">🚲</div>
+            <div class="bike-slot available" onclick="selectBike(this,'VLC-2931')" data-id="VLC-2931">🚲</div>
+            <div class="bike-slot booked">🚲</div>
+          </div>
+
+          <div class="card" id="bike-info" style="display:none;">
+            <div class="row-between">
+              <div>
+                <div style="font-size:11px; color:var(--text3); font-family:var(--font-mono); margin-bottom:4px;">SELECTED BIKE</div>
+                <div class="h3" id="bike-id-display">VLC-2847</div>
+              </div>
+              <div class="bike-icon">🚲</div>
+            </div>
+            <div class="divider"></div>
+            <div class="info-row"><span class="info-row-label">Condition</span><span style="color:var(--accent);">✓ Good</span></div>
+            <div class="info-row"><span class="info-row-label">Last serviced</span><span class="info-row-val">2 days ago</span></div>
+            <div class="info-row"><span class="info-row-label">Slot</span><span class="info-row-val" id="bike-slot-num">—</span></div>
+          </div>
+
+          <div class="card card-accent" style="padding:12px 14px; margin-bottom:16px;">
+            <div class="row" style="gap:10px;">
+              <div style="font-size:20px;">ℹ️</div>
+              <div style="font-size:12px; color:var(--text2); line-height:1.5;">You have <strong style="color:var(--accent);">60 min</strong> free. After that, €1 per 10 min is charged automatically.</div>
+            </div>
+          </div>
+
+          <button class="btn btn-primary" id="book-btn" style="opacity:0.4;" onclick="goto(6)">Book this bicycle</button>
+          <div style="height:20px;"></div>
+        </div>
+      </div>
+
+      <!-- SCREEN 6: GET CODE -->
+      <div class="screen" id="screen-6">
+        <div class="nav-bar">
+          <button class="nav-back" onclick="goto(5)">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke-width="1.8"><path d="M10 3L5 8l5 5"/></svg>
+          </button>
+          <span class="nav-title">Your code</span>
+          <span class="nav-badge">RACK</span>
+        </div>
+        <div class="screen-inner">
+          <div class="pill pill-green" style="margin-bottom:16px;"><span class="dot"></span> Booking confirmed</div>
+          <div class="h2" style="margin-bottom:4px;">Unlock code</div>
+          <div class="body" style="margin-bottom:8px;">Step 6: Use this code at the rack to unlock bicycle <strong style="color:var(--text);">VLC-2847</strong>.</div>
+
+          <div class="code-display" id="unlock-code">7 4 2 8</div>
+
+          <div class="card" style="margin-bottom:12px;">
+            <div class="info-row"><span class="info-row-label">Bicycle</span><span class="info-row-val">VLC-2847</span></div>
+            <div class="info-row"><span class="info-row-label">Rack</span><span class="info-row-val">Hauptbahnhof A</span></div>
+            <div class="info-row"><span class="info-row-label">Slot</span><span class="info-row-val">#1</span></div>
+            <div class="info-row"><span class="info-row-label">Code expires</span><span style="color:var(--amber);">in 15 min</span></div>
+          </div>
+
+          <div class="card card-blue" style="padding:12px 14px; margin-bottom:20px;">
+            <div style="font-size:12px; color:var(--text2); line-height:1.6;">
+              Walk to Rack A at Hauptbahnhof. Find slot #1 and enter code <span style="font-family:var(--font-mono); color:var(--blue);">7428</span> on the keypad to release the lock.
+            </div>
+          </div>
+
+          <button class="btn btn-primary" onclick="goto(7)">I'm at the rack → Unlock</button>
+          <div style="height:8px;"></div>
+          <button class="btn btn-ghost btn-sm" style="width:100%;">Resend code via SMS</button>
+          <div style="height:20px;"></div>
+        </div>
+      </div>
+
+      <!-- SCREEN 7: UNLOCK BIKE -->
+      <div class="screen" id="screen-7">
+        <div class="nav-bar">
+          <button class="nav-back" onclick="goto(6)">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke-width="1.8"><path d="M10 3L5 8l5 5"/></svg>
+          </button>
+          <span class="nav-title">Enter code at rack</span>
+          <span class="nav-badge">RACK</span>
+        </div>
+        <div class="screen-inner">
+          <div class="body" style="margin-bottom:24px;">Step 7: Enter the code on the physical rack keypad to unlock your bicycle.</div>
+
+          <div class="card card-accent" style="padding:20px; text-align:center; margin-bottom:20px;">
+            <div style="font-size:11px; color:var(--text3); font-family:var(--font-mono); margin-bottom:8px; letter-spacing:0.5px;">YOUR CODE</div>
+            <div style="font-family:var(--font-mono); font-size:44px; font-weight:500; color:var(--accent); letter-spacing:10px;">7428</div>
+          </div>
+
+          <div style="font-size:12px; color:var(--text3); font-family:var(--font-mono); margin-bottom:10px; letter-spacing:0.5px;">RACK KEYPAD (SIMULATION)</div>
+
+          <div style="background:var(--bg3); border-radius:var(--radius); padding:20px; margin-bottom:20px; border:1px solid var(--border);">
+            <div style="font-family:var(--font-mono); font-size:28px; font-weight:500; text-align:center; letter-spacing:8px; color:var(--accent); background:var(--bg); border-radius:8px; padding:12px; margin-bottom:16px; border:1px solid var(--border);" id="keypad-display">_ _ _ _</div>
+            <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:8px;">
+              <button onclick="keypadPress(1)" style="padding:14px;background:var(--card);border:1px solid var(--border2);border-radius:10px;color:var(--text);font-family:var(--font-mono);font-size:18px;cursor:pointer;transition:background 0.1s;" onmouseover="this.style.background='var(--card2)'" onmouseout="this.style.background='var(--card)'">1</button>
+              <button onclick="keypadPress(2)" style="padding:14px;background:var(--card);border:1px solid var(--border2);border-radius:10px;color:var(--text);font-family:var(--font-mono);font-size:18px;cursor:pointer;transition:background 0.1s;" onmouseover="this.style.background='var(--card2)'" onmouseout="this.style.background='var(--card)'">2</button>
+              <button onclick="keypadPress(3)" style="padding:14px;background:var(--card);border:1px solid var(--border2);border-radius:10px;color:var(--text);font-family:var(--font-mono);font-size:18px;cursor:pointer;transition:background 0.1s;" onmouseover="this.style.background='var(--card2)'" onmouseout="this.style.background='var(--card)'">3</button>
+              <button onclick="keypadPress(4)" style="padding:14px;background:var(--card);border:1px solid var(--border2);border-radius:10px;color:var(--text);font-family:var(--font-mono);font-size:18px;cursor:pointer;transition:background 0.1s;" onmouseover="this.style.background='var(--card2)'" onmouseout="this.style.background='var(--card)'">4</button>
+              <button onclick="keypadPress(5)" style="padding:14px;background:var(--card);border:1px solid var(--border2);border-radius:10px;color:var(--text);font-family:var(--font-mono);font-size:18px;cursor:pointer;transition:background 0.1s;" onmouseover="this.style.background='var(--card2)'" onmouseout="this.style.background='var(--card)'">5</button>
+              <button onclick="keypadPress(6)" style="padding:14px;background:var(--card);border:1px solid var(--border2);border-radius:10px;color:var(--text);font-family:var(--font-mono);font-size:18px;cursor:pointer;transition:background 0.1s;" onmouseover="this.style.background='var(--card2)'" onmouseout="this.style.background='var(--card)'">6</button>
+              <button onclick="keypadPress(7)" style="padding:14px;background:var(--card);border:1px solid var(--border2);border-radius:10px;color:var(--text);font-family:var(--font-mono);font-size:18px;cursor:pointer;transition:background 0.1s;" onmouseover="this.style.background='var(--card2)'" onmouseout="this.style.background='var(--card)'">7</button>
+              <button onclick="keypadPress(8)" style="padding:14px;background:var(--card);border:1px solid var(--border2);border-radius:10px;color:var(--text);font-family:var(--font-mono);font-size:18px;cursor:pointer;transition:background 0.1s;" onmouseover="this.style.background='var(--card2)'" onmouseout="this.style.background='var(--card)'">8</button>
+              <button onclick="keypadPress(9)" style="padding:14px;background:var(--card);border:1px solid var(--border2);border-radius:10px;color:var(--text);font-family:var(--font-mono);font-size:18px;cursor:pointer;transition:background 0.1s;" onmouseover="this.style.background='var(--card2)'" onmouseout="this.style.background='var(--card)'">9</button>
+              <button onclick="keypadClear()" style="padding:14px;background:var(--red-dim);border:1px solid rgba(255,92,92,0.2);border-radius:10px;color:var(--red);font-family:var(--font-mono);font-size:13px;cursor:pointer;">CLR</button>
+              <button onclick="keypadPress(0)" style="padding:14px;background:var(--card);border:1px solid var(--border2);border-radius:10px;color:var(--text);font-family:var(--font-mono);font-size:18px;cursor:pointer;transition:background 0.1s;" onmouseover="this.style.background='var(--card2)'" onmouseout="this.style.background='var(--card)'">0</button>
+              <button onclick="keypadEnter()" style="padding:14px;background:var(--accent);border:1px solid var(--accent);border-radius:10px;color:#0c0c0e;font-family:var(--font-mono);font-size:13px;cursor:pointer;font-weight:500;">OK</button>
+            </div>
+          </div>
+          <div style="height:8px;"></div>
+        </div>
+      </div>
+
+      <!-- SCREEN 8: RIDING -->
+      <div class="screen" id="screen-8">
+        <div class="screen-inner" style="padding-top:8px;">
+          <div class="row-between" style="margin-bottom:16px;">
+            <div class="pill pill-green"><span class="dot"></span> Riding</div>
+            <div class="pill pill-gray">VLC-2847</div>
+          </div>
+
+          <div class="big-bike">🚲</div>
+
+          <div class="riding-timer" id="timer">00:00</div>
+          <div class="riding-sub">TIME ELAPSED</div>
+
+          <div style="height:20px;"></div>
+
+          <div class="card">
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:0;">
+              <div style="padding:8px 0; border-right:1px solid var(--border); padding-right:12px;">
+                <div style="font-size:11px; color:var(--text3); font-family:var(--font-mono); margin-bottom:4px;">DISTANCE</div>
+                <div style="font-size:22px; font-weight:600; font-family:var(--font-display);" id="distance">0.0 km</div>
+              </div>
+              <div style="padding:8px 0; padding-left:16px;">
+                <div style="font-size:11px; color:var(--text3); font-family:var(--font-mono); margin-bottom:4px;">REMAINING FREE</div>
+                <div style="font-size:22px; font-weight:600; font-family:var(--font-display); color:var(--accent);" id="remaining">60:00</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="divider"></div>
+
+          <div class="card card-accent" style="padding:12px 14px; margin-bottom:12px;">
+            <div class="row" style="gap:10px;">
+              <div style="font-size:20px;">📍</div>
+              <div>
+                <div style="font-size:12px; color:var(--text2);">Returning near</div>
+                <div style="font-size:14px; font-weight:500; color:var(--text);">Home — Leopoldstraße 22</div>
+              </div>
+            </div>
+          </div>
+
+          <button class="btn btn-primary" onclick="goto(9)">Return bicycle</button>
+          <div style="height:8px;"></div>
+          <button class="btn btn-secondary btn-sm" style="width:100%;" onclick="goto(4)">Find return rack</button>
+          <div style="height:20px;"></div>
+        </div>
+
+        <div class="bottom-nav">
+          <button class="bottom-nav-btn" onclick="goto(4)">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke-width="1.5"><circle cx="10" cy="10" r="3"/><path d="M10 2v2M10 16v2M2 10h2M16 10h2"/></svg>
+            <span class="bottom-nav-label">search</span>
+          </button>
+          <button class="bottom-nav-btn active">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke-width="1.5"><circle cx="5" cy="14" r="2.5"/><circle cx="15" cy="14" r="2.5"/><path d="M5 14V8l5-2 4 2v4M10 6V4"/></svg>
+            <span class="bottom-nav-label">riding</span>
+          </button>
+          <button class="bottom-nav-btn">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke-width="1.5"><rect x="3" y="5" width="14" height="12" rx="2"/><path d="M7 5V4a3 3 0 0 1 6 0v1"/></svg>
+            <span class="bottom-nav-label">history</span>
+          </button>
+          <button class="bottom-nav-btn">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke-width="1.5"><circle cx="10" cy="7" r="3"/><path d="M4 17c0-3.3 2.7-6 6-6s6 2.7 6 6"/></svg>
+            <span class="bottom-nav-label">profile</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- SCREEN 9: RETURN BICYCLE -->
+      <div class="screen" id="screen-9">
+        <div class="nav-bar">
+          <button class="nav-back" onclick="goto(8)">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke-width="1.8"><path d="M10 3L5 8l5 5"/></svg>
+          </button>
+          <span class="nav-title">Return bicycle</span>
+          <span class="nav-badge">DIST.</span>
+        </div>
+        <div class="screen-inner">
+          <div class="body" style="margin-bottom:20px;">Step 9: Return bicycle <strong style="color:var(--text);">VLC-2847</strong> at a rack near your destination.</div>
+
+          <div class="map-placeholder">
+            <div class="map-grid"></div>
+            <div class="map-pin map-pin-accent" style="bottom:40px; right:60px;">
+              <div class="map-pin-inner">🏠</div>
+            </div>
+            <div class="map-pin map-pin-blue" style="top:40px; left:70px;">
+              <div class="map-pin-inner">🏠</div>
+            </div>
+            <div class="map-pin map-pin-accent" style="top:70px; right:100px;">
+              <div class="map-pin-inner">🏠</div>
+            </div>
+            <div style="position:absolute;bottom:12px;left:12px;background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:4px 10px;font-size:11px;font-family:var(--font-mono); color:var(--text2);">
+              📍 near Leopoldstraße
+            </div>
+          </div>
+
+          <div style="font-size:12px; color:var(--text3); font-family:var(--font-mono); margin-bottom:10px; letter-spacing:0.5px;">RACKS NEAR HOME</div>
+
+          <div class="station-card selected">
+            <div class="station-icon">🏡</div>
+            <div style="flex:1;">
+              <div style="font-size:14px; font-weight:500; color:var(--text);">Leopoldstraße Rack</div>
+              <div style="font-size:11px; color:var(--text3); font-family:var(--font-mono); margin-top:2px;">0.1 km · 3 free slots</div>
+            </div>
+            <span class="pill pill-green" style="font-size:10px; padding:2px 7px;">✓ best</span>
+          </div>
+
+          <div class="station-card">
+            <div class="station-icon">🌳</div>
+            <div style="flex:1;">
+              <div style="font-size:14px; font-weight:500; color:var(--text);">Englischer Garten South</div>
+              <div style="font-size:11px; color:var(--text3); font-family:var(--font-mono); margin-top:2px;">0.4 km · 5 free slots</div>
+            </div>
+          </div>
+
+          <div style="height:12px;"></div>
+          <button class="btn btn-primary" onclick="goto(10)">Return here → confirm code</button>
+          <div style="height:20px;"></div>
+        </div>
+      </div>
+
+      <!-- SCREEN 10: CONFIRM RETURN -->
+      <div class="screen" id="screen-10">
+        <div class="nav-bar">
+          <button class="nav-back" onclick="goto(9)">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke-width="1.8"><path d="M10 3L5 8l5 5"/></svg>
+          </button>
+          <span class="nav-title">Confirm return</span>
+          <span class="nav-badge">RACK</span>
+        </div>
+        <div class="screen-inner">
+          <div class="body" style="margin-bottom:20px;">Step 10: Lock the bicycle in the rack and confirm via the return code displayed on the rack panel.</div>
+
+          <div class="card card-accent" style="text-align:center; padding:24px;">
+            <div style="font-size:12px; color:var(--text3); font-family:var(--font-mono); margin-bottom:6px; letter-spacing:0.5px;">RACK RETURN CODE</div>
+            <div style="font-family:var(--font-mono); font-size:42px; font-weight:500; color:var(--accent); letter-spacing:10px;">9 1 3 5</div>
+            <div style="font-size:11px; color:var(--text3); margin-top:8px;">Shown on rack panel after locking</div>
+          </div>
+
+          <div style="height:16px;"></div>
+
+          <div class="label">Enter return code from rack</div>
+          <div style="display:flex; gap:8px; margin-bottom:16px;" id="return-code-boxes">
+            <input type="text" maxlength="1" style="text-align:center;font-family:var(--font-mono);font-size:24px;padding:14px 0;flex:1;" id="rc0" oninput="returnCodeInput(0)"/>
+            <input type="text" maxlength="1" style="text-align:center;font-family:var(--font-mono);font-size:24px;padding:14px 0;flex:1;" id="rc1" oninput="returnCodeInput(1)"/>
+            <input type="text" maxlength="1" style="text-align:center;font-family:var(--font-mono);font-size:24px;padding:14px 0;flex:1;" id="rc2" oninput="returnCodeInput(2)"/>
+            <input type="text" maxlength="1" style="text-align:center;font-family:var(--font-mono);font-size:24px;padding:14px 0;flex:1;" id="rc3" oninput="returnCodeInput(3)"/>
+          </div>
+
+          <div class="card" style="margin-bottom:16px;">
+            <div class="info-row"><span class="info-row-label">Bicycle</span><span class="info-row-val">VLC-2847</span></div>
+            <div class="info-row"><span class="info-row-label">Duration</span><span class="info-row-val">23 min</span></div>
+            <div class="info-row"><span class="info-row-label">Distance</span><span class="info-row-val">4.2 km</span></div>
+            <div class="info-row"><span class="info-row-label">Extra charges</span><span style="color:var(--accent);">€0.00</span></div>
+          </div>
+
+          <button class="btn btn-primary" onclick="completeReturn()">Confirm return</button>
+          <div style="height:20px;"></div>
+        </div>
+      </div>
+
+      <!-- SCREEN 11: SUCCESS -->
+      <div class="screen" id="screen-11">
+        <div class="screen-inner" style="justify-content:center; align-items:center; text-align:center; padding-top:40px;">
+          <div class="success-check">✓</div>
+          <div class="h2" style="margin-bottom:8px;">Ride complete!</div>
+          <div class="body" style="margin-bottom:32px;">Bicycle successfully returned to<br><strong style="color:var(--text);">Leopoldstraße Rack</strong></div>
+
+          <div class="card" style="width:100%; text-align:left; margin-bottom:16px;">
+            <div style="font-size:12px; color:var(--text3); font-family:var(--font-mono); margin-bottom:12px; letter-spacing:0.5px;">RIDE SUMMARY</div>
+            <div class="info-row"><span class="info-row-label">Bike</span><span class="info-row-val">VLC-2847</span></div>
+            <div class="info-row"><span class="info-row-label">Duration</span><span class="info-row-val">23 min</span></div>
+            <div class="info-row"><span class="info-row-label">Distance</span><span class="info-row-val">4.2 km</span></div>
+            <div class="info-row"><span class="info-row-label">CO₂ saved</span><span style="color:var(--accent);">0.8 kg</span></div>
+            <div class="info-row"><span class="info-row-label">Charged</span><span style="color:var(--accent); font-weight:600;">€0.00</span></div>
+          </div>
+
+          <div style="display:flex; gap:12px; font-size:28px; margin:16px 0;">
+            <span>⭐</span><span>⭐</span><span>⭐</span><span>⭐</span><span style="opacity:0.3;">⭐</span>
+          </div>
+          <div style="font-size:13px; color:var(--text3); margin-bottom:24px;">Rate your ride</div>
+
+          <button class="btn btn-primary" style="width:100%;" onclick="goto(4)">Back to search</button>
+          <div style="height:20px;"></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<script>
+  let currentScreen = 0;
+  let keypadCode = '';
+  let timerInterval = null;
+  let timerSec = 0;
+  let distanceInterval = null;
+  let km = 0;
+
+  function goto(n) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById('screen-' + n).classList.add('active');
+    document.querySelectorAll('.flow-step').forEach(s => {
+      s.classList.remove('active');
+      const num = parseInt(s.id.replace('nav-',''));
+      if (num < n) s.classList.add('done');
+      else s.classList.remove('done');
+    });
+    const navEl = document.getElementById('nav-' + n);
+    if (navEl) navEl.classList.add('active');
+    currentScreen = n;
+    if (n === 8) startRiding();
+    else stopRiding();
+    window.scrollTo(0,0);
+  }
+
+  function startRiding() {
+    if (timerInterval) return;
+    timerSec = 0; km = 0;
+    timerInterval = setInterval(() => {
+      timerSec++;
+      const m = Math.floor(timerSec/60).toString().padStart(2,'0');
+      const s = (timerSec%60).toString().padStart(2,'0');
+      document.getElementById('timer').textContent = m + ':' + s;
+      const rem = Math.max(0, 3600 - timerSec);
+      const rm = Math.floor(rem/60).toString().padStart(2,'0');
+      const rs = (rem%60).toString().padStart(2,'0');
+      document.getElementById('remaining').textContent = rm + ':' + rs;
+    }, 1000);
+    distanceInterval = setInterval(() => {
+      km += 0.04;
+      document.getElementById('distance').textContent = km.toFixed(1) + ' km';
+    }, 500);
+  }
+
+  function stopRiding() {
+    if (timerInterval) { clearInterval(timerInterval); timerInterval = null; }
+    if (distanceInterval) { clearInterval(distanceInterval); distanceInterval = null; }
+  }
+
+  let selectedBikeId = null;
+  let selectedSlot = null;
+
+  function selectBike(el, id) {
+    if (el.classList.contains('booked')) return;
+    document.querySelectorAll('.bike-slot').forEach(s => s.classList.remove('selected'));
+    el.classList.add('selected');
+    selectedBikeId = id;
+    const slots = Array.from(document.querySelectorAll('.bike-slot'));
+    const idx = slots.indexOf(el) + 1;
+    selectedSlot = idx;
+    document.getElementById('bike-info').style.display = 'block';
+    document.getElementById('bike-id-display').textContent = id;
+    document.getElementById('bike-slot-num').textContent = '#' + idx;
+    document.getElementById('book-btn').style.opacity = '1';
+  }
+
+  let kpadVal = [];
+  function keypadPress(n) {
+    if (kpadVal.length >= 4) return;
+    kpadVal.push(n);
+    updateKeypad();
+  }
+  function keypadClear() { kpadVal = []; updateKeypad(); }
+  function updateKeypad() {
+    const disp = kpadVal.map(v => v).concat(Array(4-kpadVal.length).fill('_')).join(' ');
+    document.getElementById('keypad-display').textContent = disp;
+  }
+  function keypadEnter() {
+    if (kpadVal.join('') === '7428') {
+      document.getElementById('keypad-display').textContent = '✓ ✓ ✓ ✓';
+      document.getElementById('keypad-display').style.color = 'var(--accent)';
+      setTimeout(() => goto(8), 800);
+    } else {
+      document.getElementById('keypad-display').textContent = '✗ ✗ ✗ ✗';
+      document.getElementById('keypad-display').style.color = 'var(--red)';
+      setTimeout(() => { kpadVal=[]; updateKeypad(); document.getElementById('keypad-display').style.color='var(--accent)'; }, 900);
+    }
+  }
+
+  function returnCodeInput(idx) {
+    const val = document.getElementById('rc'+idx).value;
+    if (val && idx < 3) document.getElementById('rc'+(idx+1)).focus();
+  }
+
+  function completeReturn() {
+    const code = [0,1,2,3].map(i => document.getElementById('rc'+i).value).join('');
+    if (code === '9135' || code.length === 4) {
+      goto(11);
+    } else {
+      alert('Please enter the 4-digit code shown on the rack panel.');
+    }
+  }
+
+  goto(0);
+</script>
+</body>
+</html>

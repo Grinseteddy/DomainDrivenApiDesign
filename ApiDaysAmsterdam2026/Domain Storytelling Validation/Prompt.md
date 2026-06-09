@@ -1,0 +1,1 @@
+Create a clickable webapp as prototype out of the provided Domain Story and the Visual Glossary for the rent-a-bike shop.
