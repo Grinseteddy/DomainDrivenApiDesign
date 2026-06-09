@@ -10,19 +10,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9f418031-fa2f-4dcf-9ad8-1bd8158fd7e4" name="Changes" comment="Amsterdam">
+      <change afterPath="$PROJECT_DIR$/ApiDaysAmsterdam2026/LarderAfterDomainStoryTelling.asyncapi.yaml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ApiDaysAmsterdam2026/AsyncApiSkill/SKILL.md" beforeDir="false" afterPath="$PROJECT_DIR$/ApiDaysAmsterdam2026/asyncapi-spec-author/SKILL.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ApiDaysAmsterdam2026/AsyncApiSkill/assets/example-task-management.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/ApiDaysAmsterdam2026/asyncapi-spec-author/assets/example-task-management.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ApiDaysAmsterdam2026/AsyncApiSkill/assets/house-style.spectral.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/ApiDaysAmsterdam2026/asyncapi-spec-author/assets/house-style.spectral.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ApiDaysAmsterdam2026/AsyncApiSkill/assets/skeleton.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/ApiDaysAmsterdam2026/asyncapi-spec-author/assets/skeleton.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ApiDaysAmsterdam2026/AsyncApiSkill/references/conventions.md" beforeDir="false" afterPath="$PROJECT_DIR$/ApiDaysAmsterdam2026/asyncapi-spec-author/references/conventions.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ApiDaysAmsterdam2026/AsyncApiSkill/references/validations.md" beforeDir="false" afterPath="$PROJECT_DIR$/ApiDaysAmsterdam2026/asyncapi-spec-author/references/validations.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ApiDaysAmsterdam2026/OpenApiSkill/SKILL.md" beforeDir="false" afterPath="$PROJECT_DIR$/ApiDaysAmsterdam2026/openapi-spec-author/SKILL.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ApiDaysAmsterdam2026/OpenApiSkill/assets/example-catalog-management.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/ApiDaysAmsterdam2026/openapi-spec-author/assets/example-catalog-management.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ApiDaysAmsterdam2026/OpenApiSkill/assets/house-style.spectral.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/ApiDaysAmsterdam2026/openapi-spec-author/assets/house-style.spectral.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ApiDaysAmsterdam2026/OpenApiSkill/assets/skeleton.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/ApiDaysAmsterdam2026/openapi-spec-author/assets/skeleton.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ApiDaysAmsterdam2026/OpenApiSkill/references/conventions.md" beforeDir="false" afterPath="$PROJECT_DIR$/ApiDaysAmsterdam2026/openapi-spec-author/references/conventions.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ApiDaysAmsterdam2026/OpenApiSkill/references/validation.md" beforeDir="false" afterPath="$PROJECT_DIR$/ApiDaysAmsterdam2026/openapi-spec-author/references/validation.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -91,26 +80,26 @@
     <option name="openDirectoriesWithSingleClick" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "DefaultPlantUmlFileTemplate": "UML Sequence",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "full.screen.before.presentation.mode": "false",
-    "git-widget-placeholder": "main",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "/Users/annegretjunkercodecentricag/IdeaProjects/DdApiD/ApiDaysAmsterdam2026",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "preferences.pluginManager",
-    "two.files.diff.last.used.file": "/Users/annegretjunkercodecentricag/IdeaProjects/DdApiD/QaDays/CatalogManagementChanged.oas.yaml",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;DefaultPlantUmlFileTemplate&quot;: &quot;UML Sequence&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;full.screen.before.presentation.mode&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/annegretjunkercodecentricag/IdeaProjects/DdApiD/ApiDaysAmsterdam2026&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
+    &quot;two.files.diff.last.used.file&quot;: &quot;/Users/annegretjunkercodecentricag/IdeaProjects/DdApiD/QaDays/CatalogManagementChanged.oas.yaml&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/ApiDaysAmsterdam2026" />
@@ -237,14 +226,7 @@
       <workItem from="1758109290463" duration="2089000" />
       <workItem from="1780999388178" duration="5064000" />
       <workItem from="1781010496990" duration="960000" />
-    </task>
-    <task id="LOCAL-00007" summary="Messaging">
-      <option name="closed" value="true" />
-      <created>1710080145010</created>
-      <option name="number" value="00007" />
-      <option name="presentableId" value="LOCAL-00007" />
-      <option name="project" value="LOCAL" />
-      <updated>1710080145010</updated>
+      <workItem from="1781011466057" duration="1966000" />
     </task>
     <task id="LOCAL-00008" summary="Messaging">
       <option name="closed" value="true" />
@@ -630,11 +612,22 @@
       <option name="project" value="LOCAL" />
       <updated>1781009887525</updated>
     </task>
-    <option name="localTasksCounter" value="56" />
+    <task id="LOCAL-00056" summary="Amsterdam">
+      <option name="closed" value="true" />
+      <created>1781011495523</created>
+      <option name="number" value="00056" />
+      <option name="presentableId" value="LOCAL-00056" />
+      <option name="project" value="LOCAL" />
+      <updated>1781011495523</updated>
+    </task>
+    <option name="localTasksCounter" value="57" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="UnknownFeatures">
+    <option featureType="com.intellij.fileTypeFactory" implementationName="SKILL.md" />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">

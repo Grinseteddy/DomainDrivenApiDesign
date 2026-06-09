@@ -1,0 +1,398 @@
+asyncapi: 3.1.0
+info:
+  title: Larder
+  version: 1.0.0
+  description: |
+    Async API specification for Larder, a recipe-sharing application. It models the
+    domain lifecycle in which an anonymous visitor registers and becomes a Cook, a
+    Cook prepares meals and shares recipes, and Cooks try and rate one another's
+    recipes. Pictures may optionally accompany meals, recipes, tries, and ratings.
+    The Larder backend publishes these domain events for downstream consumers
+    (feeds, search indexing, notifications, and analytics).
+  contact:
+    name: Larder Team
+    url: https://larder.app
+    email: team@larder.app
+
+servers:
+  production:
+    host: "events.larder.app:9092"
+    protocol: "kafka"
+    description: "Production broker"
+    security:
+      - $ref: '#/components/securitySchemes/user-password'
+
+defaultContentType: application/json
+
+channels:
+  registrationEvents:
+    address: "larder/registration"
+    messages:
+      cookRegistered:
+        $ref: '#/components/messages/cookRegistered'
+
+  mealEvents:
+    address: "larder/meals"
+    messages:
+      mealPrepared:
+        $ref: '#/components/messages/mealPrepared'
+
+  recipeEvents:
+    address: "larder/recipes"
+    messages:
+      recipeShared:
+        $ref: '#/components/messages/recipeShared'
+
+  ratingEvents:
+    address: "larder/ratings"
+    messages:
+      recipeTried:
+        $ref: '#/components/messages/recipeTried'
+      recipeRated:
+        $ref: '#/components/messages/recipeRated'
+
+operations:
+  publishCookRegistered:
+    action: send
+    channel:
+      $ref: '#/channels/registrationEvents'
+    description: |
+      Emitted when an anonymous visitor registers with their e-mail and becomes a
+      Cook (Domain Story steps 1 "register" and 2 "becomes").
+    messages:
+      - $ref: '#/channels/registrationEvents/messages/cookRegistered'
+
+  publishMealPrepared:
+    action: send
+    channel:
+      $ref: '#/channels/mealEvents'
+    description: |
+      Emitted when a Cook prepares a Meal and optionally takes pictures of it
+      (Domain Story step 3 "prepares").
+    messages:
+      - $ref: '#/channels/mealEvents/messages/mealPrepared'
+
+  publishRecipeShared:
+    action: send
+    channel:
+      $ref: '#/channels/recipeEvents'
+    description: |
+      Emitted when a Cook shares a Recipe, including its ingredients and the
+      ordered making steps, and optionally pictures (Domain Story step 4 "shares").
+    messages:
+      - $ref: '#/channels/recipeEvents/messages/recipeShared'
+
+  publishRecipeTried:
+    action: send
+    channel:
+      $ref: '#/channels/ratingEvents'
+    description: |
+      Emitted when a Cook tries an existing Recipe and optionally takes pictures
+      (Domain Story step 5 "tries").
+    messages:
+      - $ref: '#/channels/ratingEvents/messages/recipeTried'
+
+  publishRecipeRated:
+    action: send
+    channel:
+      $ref: '#/channels/ratingEvents'
+    description: |
+      Emitted when a Cook rates a Recipe with a star score and optionally shares
+      pictures, producing a Rated Recipe (Domain Story step 6 "rates").
+    messages:
+      - $ref: '#/channels/ratingEvents/messages/recipeRated'
+
+components:
+  messages:
+    cookRegistered:
+      name: CookRegistered
+      title: Cook Registered Event
+      summary: Indicates that an anonymous visitor registered and became a Cook
+      headers:
+        $ref: '#/components/schemas/MessageHeader'
+      payload:
+        $ref: '#/components/schemas/CookRegisteredPayload'
+
+    mealPrepared:
+      name: MealPrepared
+      title: Meal Prepared Event
+      summary: Indicates that a Cook prepared a meal
+      headers:
+        $ref: '#/components/schemas/MessageHeader'
+      payload:
+        $ref: '#/components/schemas/MealPreparedPayload'
+
+    recipeShared:
+      name: RecipeShared
+      title: Recipe Shared Event
+      summary: Indicates that a Cook shared a recipe with ingredients and steps
+      headers:
+        $ref: '#/components/schemas/MessageHeader'
+      payload:
+        $ref: '#/components/schemas/RecipeSharedPayload'
+
+    recipeTried:
+      name: RecipeTried
+      title: Recipe Tried Event
+      summary: Indicates that a Cook tried an existing recipe
+      headers:
+        $ref: '#/components/schemas/MessageHeader'
+      payload:
+        $ref: '#/components/schemas/RecipeTriedPayload'
+
+    recipeRated:
+      name: RecipeRated
+      title: Recipe Rated Event
+      summary: Indicates that a Cook rated a recipe with stars and optional pictures
+      headers:
+        $ref: '#/components/schemas/MessageHeader'
+      payload:
+        $ref: '#/components/schemas/RecipeRatedPayload'
+
+  schemas:
+    MessageHeader:
+      type: object
+      required:
+        - correlationId
+        - messageId
+        - source
+      properties:
+        correlationId:
+          type: string
+          format: uuid
+          description: Identifier to trace the end-to-end recipe journey
+        messageId:
+          type: string
+          format: uuid
+          description: Unique identifier for this message
+        source:
+          type: string
+          description: Source system generating the event
+          minLength: 2
+          maxLength: 20
+
+    Picture:
+      type: object
+      description: An optional picture attached to a meal, recipe, try, or rating.
+      required:
+        - data
+      properties:
+        data:
+          type: string
+          contentEncoding: base64
+          description: Base64-encoded image
+        caption:
+          type: string
+          maxLength: 200
+
+    Ingredient:
+      type: object
+      description: A single ingredient line of a recipe.
+      required:
+        - name
+        - number
+        - unit
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 100
+          description: Ingredient name, e.g. "Wheat Flour"
+        number:
+          type: string
+          minLength: 1
+          maxLength: 20
+          description: Quantity, kept as text to allow fractions, e.g. "3/4"
+        unit:
+          type: string
+          minLength: 1
+          maxLength: 20
+          description: Unit of measurement, e.g. "cup"
+
+    Step:
+      type: object
+      description: A single ordered step of a recipe's making process.
+      required:
+        - orderNo
+        - title
+        - description
+      properties:
+        orderNo:
+          type: integer
+          minimum: 1
+          description: Position of this step within the making process, e.g. 3
+        title:
+          type: string
+          minLength: 1
+          maxLength: 100
+          description: Short label for the step, e.g. "Baking in Oven"
+        description:
+          type: string
+          minLength: 1
+          maxLength: 2000
+          description: Full instruction, e.g. "Bake it in the warmed-up oven at 180 °C"
+
+    CookRegisteredPayload:
+      type: object
+      required:
+        - cookId
+        - email
+        - status
+      properties:
+        cookId:
+          type: string
+          format: uuid
+        email:
+          type: string
+          format: email
+          description: E-mail provided at registration, e.g. "john.doe@gmail.com"
+        status:
+          type: string
+          enum: [REGISTERED]
+        registeredAt:
+          type: string
+          format: date-time
+
+    MealPreparedPayload:
+      type: object
+      required:
+        - mealId
+        - cookId
+        - status
+      properties:
+        mealId:
+          type: string
+          format: uuid
+        cookId:
+          type: string
+          format: uuid
+          description: The Cook who prepared the meal
+        name:
+          type: string
+          minLength: 1
+          maxLength: 200
+        status:
+          type: string
+          enum: [PREPARED]
+        pictures:
+          type: array
+          description: Optional pictures of the meal (0..*)
+          items:
+            $ref: '#/components/schemas/Picture'
+        preparedAt:
+          type: string
+          format: date-time
+
+    RecipeSharedPayload:
+      type: object
+      required:
+        - recipeId
+        - cookId
+        - title
+        - ingredients
+        - steps
+        - status
+      properties:
+        recipeId:
+          type: string
+          format: uuid
+        cookId:
+          type: string
+          format: uuid
+          description: The Cook who owns and shared the recipe
+        title:
+          type: string
+          minLength: 1
+          maxLength: 200
+        ingredients:
+          type: array
+          description: Recipe ingredients (1..*)
+          minItems: 1
+          items:
+            $ref: '#/components/schemas/Ingredient'
+        steps:
+          type: array
+          description: Ordered making steps of the recipe (1..*)
+          minItems: 1
+          items:
+            $ref: '#/components/schemas/Step'
+        status:
+          type: string
+          enum: [SHARED]
+        pictures:
+          type: array
+          description: Optional pictures of the recipe (0..*)
+          items:
+            $ref: '#/components/schemas/Picture'
+        sharedAt:
+          type: string
+          format: date-time
+
+    RecipeTriedPayload:
+      type: object
+      required:
+        - recipeId
+        - cookId
+        - status
+      properties:
+        recipeId:
+          type: string
+          format: uuid
+          description: The recipe that was tried
+        cookId:
+          type: string
+          format: uuid
+          description: The Cook who tried the recipe
+        status:
+          type: string
+          enum: [TRIED]
+        pictures:
+          type: array
+          description: Optional pictures taken while trying the recipe (0..*)
+          items:
+            $ref: '#/components/schemas/Picture'
+        triedAt:
+          type: string
+          format: date-time
+
+    RecipeRatedPayload:
+      type: object
+      required:
+        - ratingId
+        - recipeId
+        - cookId
+        - stars
+        - status
+      properties:
+        ratingId:
+          type: string
+          format: uuid
+        recipeId:
+          type: string
+          format: uuid
+          description: The rated recipe (a Rated Recipe inherits from Recipe)
+        cookId:
+          type: string
+          format: uuid
+          description: The Cook who rated the recipe
+        stars:
+          type: integer
+          minimum: 1
+          maximum: 5
+          description: Star score, e.g. 3
+        status:
+          type: string
+          enum: [RATED]
+        pictures:
+          type: array
+          description: Optional pictures shared with the rating (0..*)
+          items:
+            $ref: '#/components/schemas/Picture'
+        ratedAt:
+          type: string
+          format: date-time
+
+  securitySchemes:
+    user-password:
+      type: userPassword
+      description: Basic authentication for event broker
