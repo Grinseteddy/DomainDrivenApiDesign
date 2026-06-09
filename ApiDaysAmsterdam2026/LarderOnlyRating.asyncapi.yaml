@@ -1,0 +1,311 @@
+asyncapi: 3.1.0
+info:
+  title: Larder Rating
+  version: 0.1.0
+  description: |
+    Async API specification for the Rating bounded context of the Larder
+    application. Rating manages the ratings of recipes: it allows members to
+    rate and comment on the recipes of other members.
+
+    The Rating service consumes "Recipe shared" events emitted by the Sharing
+    context (so freshly shared recipes become available to rate) and produces
+    "Recipe rated" events whenever a member rates a recipe.
+  contact:
+    name: Annegret
+    url: https://apis.larder.com
+    email: annegret@larder.com
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0
+  tags:
+    - name: rating
+      description: Events for the Rating bounded context of Larder
+
+servers:
+  production:
+    host: "apis.larder.com"
+    pathname: "/broker"
+    protocol: "kafka"
+    description: "Production Kafka broker for the Larder Rating context"
+    security:
+      - $ref: '#/components/securitySchemes/user-password'
+
+defaultContentType: application/json
+
+channels:
+  recipeSharedEvents:
+    address: "larder/sharing/recipe-shared"
+    messages:
+      recipeShared:
+        $ref: '#/components/messages/recipeShared'
+
+  recipeRatedEvents:
+    address: "larder/rating/recipe-rated"
+    messages:
+      recipeRated:
+        $ref: '#/components/messages/recipeRated'
+
+operations:
+  onRecipeShared:
+    action: receive
+    channel:
+      $ref: '#/channels/recipeSharedEvents'
+    summary: Consume a shared recipe so it can be rated
+    description: |
+      Fires when the Sharing context publishes a recipe. The Rating context
+      consumes the event and registers the recipe as available for members to
+      rate and comment on.
+    messages:
+      - $ref: '#/channels/recipeSharedEvents/messages/recipeShared'
+
+  publishRecipeRated:
+    action: send
+    channel:
+      $ref: '#/channels/recipeRatedEvents'
+    summary: Publish a rating given by a member to a recipe
+    description: |
+      Fires when a member rates a recipe, supplying a star score and optionally
+      a picture and a note. The Rating context publishes the resulting rate.
+    messages:
+      - $ref: '#/channels/recipeRatedEvents/messages/recipeRated'
+
+components:
+  messages:
+    recipeShared:
+      name: RecipeShared
+      title: Recipe Shared Event
+      summary: A recipe has been shared and is now available to be rated
+      headers:
+        $ref: '#/components/schemas/MessageHeader'
+      payload:
+        $ref: '#/components/schemas/RecipeSharedPayload'
+
+    recipeRated:
+      name: RecipeRated
+      title: Recipe Rated Event
+      summary: A member has rated a recipe
+      headers:
+        $ref: '#/components/schemas/MessageHeader'
+      payload:
+        $ref: '#/components/schemas/RecipeRatedPayload'
+
+  schemas:
+    MessageHeader:
+      type: object
+      required:
+        - correlationId
+        - messageId
+        - source
+      properties:
+        correlationId:
+          type: string
+          format: uuid
+          description: Identifier to trace the end-to-end rating journey
+        messageId:
+          type: string
+          format: uuid
+          description: Unique identifier for this message
+        source:
+          type: string
+          description: Source context generating the event
+          minLength: 2
+          maxLength: 20
+
+    RecipeSharedPayload:
+      type: object
+      required:
+        - recipeId
+        - recipe
+        - status
+      properties:
+        recipeId:
+          type: string
+          format: uuid
+          description: Identifier of the recipe being shared
+        status:
+          type: string
+          enum: [SHARED]
+        recipe:
+          $ref: '#/components/schemas/Recipe'
+
+    RecipeRatedPayload:
+      type: object
+      required:
+        - rateId
+        - ratedRecipeId
+        - rate
+        - status
+      properties:
+        rateId:
+          type: string
+          format: uuid
+          description: Identifier of the rate
+        ratedRecipeId:
+          type: string
+          format: uuid
+          description: Identifier of the rated recipe the rate applies to
+        status:
+          type: string
+          enum: [RATED]
+        rate:
+          $ref: '#/components/schemas/Rate'
+
+    Rate:
+      type: object
+      description: |
+        A rating given by a member (the rater) to a rated recipe. A rated recipe
+        inherits from a recipe and may be rated many times.
+      required:
+        - stars
+        - rater
+      properties:
+        stars:
+          type: integer
+          description: Star score given to the recipe
+          minimum: 1
+          maximum: 5
+        rater:
+          $ref: '#/components/schemas/Cook'
+        pictures:
+          type: array
+          description: Zero or more pictures attached to the rate
+          items:
+            type: string
+            contentEncoding: base64
+            description: Base64 encoded image
+        note:
+          type: string
+          description: Optional comment on the recipe
+          maxLength: 1024
+
+    Recipe:
+      type: object
+      required:
+        - owner
+        - ingredients
+        - title
+        - howTo
+        - servings
+        - meal
+        - diet
+      properties:
+        owner:
+          $ref: '#/components/schemas/Cook'
+        ingredients:
+          type: array
+          minItems: 1
+          items:
+            $ref: '#/components/schemas/Ingredient'
+        title:
+          type: string
+          minLength: 1
+          maxLength: 200
+        howTo:
+          $ref: '#/components/schemas/HowTo'
+        shoppingList:
+          $ref: '#/components/schemas/ShoppingList'
+        servings:
+          type: integer
+          minimum: 1
+        meal:
+          type: string
+          enum: [BREAKFAST, LUNCH, DINNER, DESSERT]
+        diet:
+          type: string
+          enum: [NORMAL, VEGETARIAN, VEGAN]
+
+    Cook:
+      type: object
+      description: A member of Larder. An owner and a rater are both cooks.
+      required:
+        - cookId
+      properties:
+        cookId:
+          type: string
+          format: uuid
+
+    Ingredient:
+      type: object
+      required:
+        - name
+        - number
+        - unit
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 200
+        number:
+          type: string
+          description: Quantity of the ingredient, e.g. "3/4"
+          minLength: 1
+          maxLength: 50
+        unit:
+          type: string
+          description: Unit of measure, e.g. "cup"
+          minLength: 1
+          maxLength: 50
+
+    HowTo:
+      type: object
+      required:
+        - steps
+      properties:
+        steps:
+          type: array
+          minItems: 1
+          items:
+            $ref: '#/components/schemas/Step'
+
+    Step:
+      type: object
+      required:
+        - orderNo
+        - title
+        - description
+      properties:
+        orderNo:
+          type: integer
+          minimum: 1
+        title:
+          type: string
+          minLength: 1
+          maxLength: 200
+        description:
+          type: string
+          minLength: 1
+          maxLength: 2000
+
+    ShoppingList:
+      type: object
+      required:
+        - items
+      properties:
+        items:
+          type: array
+          minItems: 1
+          items:
+            $ref: '#/components/schemas/Item'
+
+    Item:
+      type: object
+      required:
+        - product
+        - number
+        - link
+      properties:
+        product:
+          type: string
+          minLength: 1
+          maxLength: 200
+        number:
+          type: integer
+          minimum: 1
+        link:
+          type: string
+          format: uri
+
+  securitySchemes:
+    user-password:
+      type: userPassword
+      description: Basic authentication for the event broker

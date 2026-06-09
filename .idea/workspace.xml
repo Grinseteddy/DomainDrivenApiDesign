@@ -10,7 +10,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9f418031-fa2f-4dcf-9ad8-1bd8158fd7e4" name="Changes" comment="Amsterdam">
-      <change afterPath="$PROJECT_DIR$/ApiDaysAmsterdam2026/LarderAfterEventStorming.AsyncAPI.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ApiDaysAmsterdam2026/LarderOnlyRating.asyncapi.yaml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -226,15 +226,7 @@
       <workItem from="1758109290463" duration="2089000" />
       <workItem from="1780999388178" duration="5064000" />
       <workItem from="1781010496990" duration="960000" />
-      <workItem from="1781011466057" duration="2753000" />
-    </task>
-    <task id="LOCAL-00009" summary="operationId">
-      <option name="closed" value="true" />
-      <created>1710081138432</created>
-      <option name="number" value="00009" />
-      <option name="presentableId" value="LOCAL-00009" />
-      <option name="project" value="LOCAL" />
-      <updated>1710081138432</updated>
+      <workItem from="1781011466057" duration="4239000" />
     </task>
     <task id="LOCAL-00010" summary="Contact">
       <option name="closed" value="true" />
@@ -620,7 +612,15 @@
       <option name="project" value="LOCAL" />
       <updated>1781013508154</updated>
     </task>
-    <option name="localTasksCounter" value="58" />
+    <task id="LOCAL-00058" summary="Amsterdam">
+      <option name="closed" value="true" />
+      <created>1781017303983</created>
+      <option name="number" value="00058" />
+      <option name="presentableId" value="LOCAL-00058" />
+      <option name="project" value="LOCAL" />
+      <updated>1781017303983</updated>
+    </task>
+    <option name="localTasksCounter" value="59" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
