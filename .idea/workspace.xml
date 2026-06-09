@@ -10,20 +10,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9f418031-fa2f-4dcf-9ad8-1bd8158fd7e4" name="Changes" comment="Amsterdam">
-      <change afterPath="$PROJECT_DIR$/ApiDaysAmsterdam2026/Domain Storytelling Validation/Images/DomainStory.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ApiDaysAmsterdam2026/Domain Storytelling Validation/Images/VisualGlossary.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ApiDaysAmsterdam2026/Domain Storytelling Validation/Prompt.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ApiDaysAmsterdam2026/Domain Storytelling Validation/rentabike.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ApiDaysAmsterdam2026/DomainStorytelling/Images/Login (1).png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ApiDaysAmsterdam2026/DomainStorytelling/Images/Maintenance.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ApiDaysAmsterdam2026/DomainStorytelling/Images/Map.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ApiDaysAmsterdam2026/DomainStorytelling/Images/Rack.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ApiDaysAmsterdam2026/DomainStorytelling/Images/Reserve.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ApiDaysAmsterdam2026/DomainStorytelling/Images/Return.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ApiDaysAmsterdam2026/DomainStorytelling/Images/Unlock.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ApiDaysAmsterdam2026/DomainStorytelling/Prompt.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ApiDaysAmsterdam2026/DomainStorytelling/ScenarioA.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ApiDaysAmsterdam2026/DomainStorytelling/ScenarioB.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ApiDaysAmsterdam2026/BicycleRentalApiProductCanvas.openapi.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ApiDaysAmsterdam2026/BicycleRentalDomainStorytelling.openapi.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ApiDaysAmsterdam2026/BicycleRentalEventStormping.openapi.yampl.yaml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -40,9 +29,9 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="UML Sequence" />
-        <option value="OpenAPI" />
         <option value="AsyncAPI specification 3 (yaml)" />
         <option value="AsyncAPI specification 2 (yaml)" />
+        <option value="OpenAPI" />
       </list>
     </option>
   </component>
@@ -239,15 +228,7 @@
       <workItem from="1758109290463" duration="2089000" />
       <workItem from="1780999388178" duration="5064000" />
       <workItem from="1781010496990" duration="960000" />
-      <workItem from="1781011466057" duration="5981000" />
-    </task>
-    <task id="LOCAL-00011" summary="Contact">
-      <option name="closed" value="true" />
-      <created>1710187668434</created>
-      <option name="number" value="00011" />
-      <option name="presentableId" value="LOCAL-00011" />
-      <option name="project" value="LOCAL" />
-      <updated>1710187668434</updated>
+      <workItem from="1781011466057" duration="9183000" />
     </task>
     <task id="LOCAL-00012" summary="Renaming Catalog Adminstration">
       <option name="closed" value="true" />
@@ -633,7 +614,15 @@
       <option name="project" value="LOCAL" />
       <updated>1781018844879</updated>
     </task>
-    <option name="localTasksCounter" value="60" />
+    <task id="LOCAL-00060" summary="Amsterdam">
+      <option name="closed" value="true" />
+      <created>1781021205286</created>
+      <option name="number" value="00060" />
+      <option name="presentableId" value="LOCAL-00060" />
+      <option name="project" value="LOCAL" />
+      <updated>1781021205286</updated>
+    </task>
+    <option name="localTasksCounter" value="61" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

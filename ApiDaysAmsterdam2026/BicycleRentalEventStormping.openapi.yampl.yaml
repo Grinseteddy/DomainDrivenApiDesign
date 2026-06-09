@@ -1,0 +1,1594 @@
+openapi: 3.1.0
+info:
+  title: Bicycle Distribution API
+  description: |
+    API for distributing and managing shared bicycles across racks at public-transport stations and partner hotels.
+    Operators register bicycles, riders (tourists and commuters), and storage, while riders obtain access codes to unlock racks and take or return bicycles. Fees are recorded per ride for tourists and monthly for commuters.
+  version: 1.0.0
+  contact:
+    name: Bicycle Distribution Team
+  x-api-id: 7b3e2c10-5f9a-4d6e-8a21-9c4f0b7d3e58
+  x-audience: external-public
+
+servers:
+  - url: 'https://apis.bike-distribution.org/bicycle-distribution'
+
+security:
+  - oAuth2:
+      - distribution:read
+      - distribution:write
+      - distribution:admin
+
+tags:
+  - name: Bicycles
+    description: Bicycle inventory and lifecycle operations
+  - name: Racks
+    description: Rack management at public-transport stations
+  - name: Locks
+    description: Lock operations within racks, including unlocking with a code
+  - name: Codes
+    description: Issuing and retrieving access codes for riders
+  - name: Riders
+    description: Tourist and commuter rider management
+  - name: Hotels
+    description: Partner hotel management and stored bicycles
+  - name: Fees
+    description: Charges recorded against riders
+
+paths:
+  /bicycles:
+    get:
+      operationId: listBicycles
+      tags:
+        - Bicycles
+      summary: List bicycles
+      description: |
+        Retrieve a collection of bicycles. Results can be filtered by the environment a bicycle is built for, its current status, and whether it has a motor.
+      parameters:
+        - $ref: '#/components/parameters/VersionParameter'
+        - $ref: '#/components/parameters/EnvironmentFilterParameter'
+        - $ref: '#/components/parameters/BicycleStatusFilterParameter'
+        - $ref: '#/components/parameters/HasMotorFilterParameter'
+      responses:
+        '200':
+          $ref: '#/components/responses/BicyclesResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestResponse'
+        '401':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '500':
+          $ref: '#/components/responses/ServiceNotAvailableResponse'
+
+    post:
+      operationId: createBicycle
+      tags:
+        - Bicycles
+      summary: Register a new bicycle
+      description: |
+        Register a new bicycle in the fleet. A bicycle must declare the environment it is built for (city, mountain, or general) and may optionally carry a motor and a wheel diameter. A newly registered bicycle starts with status `available` and is not yet assigned to a rack or hotel.
+      security:
+        - oAuth2:
+            - distribution:write
+      parameters:
+        - $ref: '#/components/parameters/VersionParameter'
+      requestBody:
+        $ref: '#/components/requestBodies/BicycleCreateRequest'
+      responses:
+        '201':
+          $ref: '#/components/responses/BicycleResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestResponse'
+        '401':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '500':
+          $ref: '#/components/responses/ServiceNotAvailableResponse'
+
+  /bicycles/{bicycleId}:
+    get:
+      operationId: getBicycleById
+      tags:
+        - Bicycles
+      summary: Get bicycle by ID
+      description: Retrieve a bicycle by its unique identifier.
+      parameters:
+        - $ref: '#/components/parameters/BicycleIdParameter'
+        - $ref: '#/components/parameters/VersionParameter'
+      responses:
+        '200':
+          $ref: '#/components/responses/BicycleResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestResponse'
+        '401':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '404':
+          $ref: '#/components/responses/NotFoundResponse'
+        '500':
+          $ref: '#/components/responses/ServiceNotAvailableResponse'
+
+    put:
+      operationId: updateBicycle
+      tags:
+        - Bicycles
+      summary: Update a bicycle
+      description: |
+        Update a bicycle's attributes. The environment, motor, and wheel diameter can be corrected, and the bicycle can be reassigned to a different rack or hotel or moved into `maintenance`. Reassigning a bicycle to a rack or hotel updates where it is stored.
+      security:
+        - oAuth2:
+            - distribution:write
+      parameters:
+        - $ref: '#/components/parameters/BicycleIdParameter'
+        - $ref: '#/components/parameters/VersionParameter'
+      requestBody:
+        $ref: '#/components/requestBodies/BicycleUpdateRequest'
+      responses:
+        '200':
+          $ref: '#/components/responses/BicycleResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestResponse'
+        '401':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '404':
+          $ref: '#/components/responses/NotFoundResponse'
+        '500':
+          $ref: '#/components/responses/ServiceNotAvailableResponse'
+
+    delete:
+      operationId: deleteBicycle
+      tags:
+        - Bicycles
+      summary: Decommission a bicycle
+      description: |
+        Permanently remove a bicycle from the fleet. This operation is irreversible. A bicycle that is currently in use cannot be removed and must be returned first.
+      security:
+        - oAuth2:
+            - distribution:admin
+      parameters:
+        - $ref: '#/components/parameters/BicycleIdParameter'
+        - $ref: '#/components/parameters/VersionParameter'
+      responses:
+        '204':
+          description: Bicycle decommissioned successfully
+        '400':
+          $ref: '#/components/responses/BadRequestResponse'
+        '401':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '404':
+          $ref: '#/components/responses/NotFoundResponse'
+        '500':
+          $ref: '#/components/responses/ServiceNotAvailableResponse'
+
+  /racks:
+    get:
+      operationId: listRacks
+      tags:
+        - Racks
+      summary: List racks
+      description: |
+        Retrieve a collection of racks. Results can be filtered by the public-transport station a rack is located at.
+      parameters:
+        - $ref: '#/components/parameters/VersionParameter'
+        - $ref: '#/components/parameters/PublicTransportStationFilterParameter'
+      responses:
+        '200':
+          $ref: '#/components/responses/RacksResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestResponse'
+        '401':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '500':
+          $ref: '#/components/responses/ServiceNotAvailableResponse'
+
+    post:
+      operationId: createRack
+      tags:
+        - Racks
+      summary: Create a new rack
+      description: |
+        Create a new rack located at a public-transport station. The rack capacity defines how many locks (and therefore bicycle slots) it provides; the corresponding locks are created automatically.
+      security:
+        - oAuth2:
+            - distribution:write
+      parameters:
+        - $ref: '#/components/parameters/VersionParameter'
+      requestBody:
+        $ref: '#/components/requestBodies/RackCreateRequest'
+      responses:
+        '201':
+          $ref: '#/components/responses/RackResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestResponse'
+        '401':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '500':
+          $ref: '#/components/responses/ServiceNotAvailableResponse'
+
+  /racks/{rackId}:
+    get:
+      operationId: getRackById
+      tags:
+        - Racks
+      summary: Get rack by ID
+      description: Retrieve a rack by its unique identifier.
+      parameters:
+        - $ref: '#/components/parameters/RackIdParameter'
+        - $ref: '#/components/parameters/VersionParameter'
+      responses:
+        '200':
+          $ref: '#/components/responses/RackResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestResponse'
+        '401':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '404':
+          $ref: '#/components/responses/NotFoundResponse'
+        '500':
+          $ref: '#/components/responses/ServiceNotAvailableResponse'
+
+    put:
+      operationId: updateRack
+      tags:
+        - Racks
+      summary: Update a rack
+      description: |
+        Update a rack's station location or capacity. Reducing capacity below the number of bicycles currently stored is rejected.
+      security:
+        - oAuth2:
+            - distribution:write
+      parameters:
+        - $ref: '#/components/parameters/RackIdParameter'
+        - $ref: '#/components/parameters/VersionParameter'
+      requestBody:
+        $ref: '#/components/requestBodies/RackUpdateRequest'
+      responses:
+        '200':
+          $ref: '#/components/responses/RackResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestResponse'
+        '401':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '404':
+          $ref: '#/components/responses/NotFoundResponse'
+        '500':
+          $ref: '#/components/responses/ServiceNotAvailableResponse'
+
+    delete:
+      operationId: deleteRack
+      tags:
+        - Racks
+      summary: Delete a rack
+      description: |
+        Permanently remove a rack and its locks. This operation is irreversible and is rejected while any bicycle is still stored in the rack.
+      security:
+        - oAuth2:
+            - distribution:admin
+      parameters:
+        - $ref: '#/components/parameters/RackIdParameter'
+        - $ref: '#/components/parameters/VersionParameter'
+      responses:
+        '204':
+          description: Rack deleted successfully
+        '400':
+          $ref: '#/components/responses/BadRequestResponse'
+        '401':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '404':
+          $ref: '#/components/responses/NotFoundResponse'
+        '500':
+          $ref: '#/components/responses/ServiceNotAvailableResponse'
+
+  /racks/{rackId}/bicycles:
+    get:
+      operationId: listRackBicycles
+      tags:
+        - Racks
+      summary: List bicycles stored in a rack
+      description: Retrieve the bicycles currently stored in the locks of a given rack.
+      parameters:
+        - $ref: '#/components/parameters/RackIdParameter'
+        - $ref: '#/components/parameters/VersionParameter'
+      responses:
+        '200':
+          $ref: '#/components/responses/BicyclesResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestResponse'
+        '401':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '404':
+          $ref: '#/components/responses/NotFoundResponse'
+        '500':
+          $ref: '#/components/responses/ServiceNotAvailableResponse'
+
+  /racks/{rackId}/locks:
+    get:
+      operationId: listRackLocks
+      tags:
+        - Locks
+      summary: List locks in a rack
+      description: Retrieve the locks contained by a given rack.
+      parameters:
+        - $ref: '#/components/parameters/RackIdParameter'
+        - $ref: '#/components/parameters/VersionParameter'
+      responses:
+        '200':
+          $ref: '#/components/responses/LocksResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestResponse'
+        '401':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '404':
+          $ref: '#/components/responses/NotFoundResponse'
+        '500':
+          $ref: '#/components/responses/ServiceNotAvailableResponse'
+
+  /racks/{rackId}/locks/{lockId}:
+    get:
+      operationId: getLockById
+      tags:
+        - Locks
+      summary: Get lock by ID
+      description: Retrieve a single lock within a rack, including which bicycle it currently holds.
+      parameters:
+        - $ref: '#/components/parameters/RackIdParameter'
+        - $ref: '#/components/parameters/LockIdParameter'
+        - $ref: '#/components/parameters/VersionParameter'
+      responses:
+        '200':
+          $ref: '#/components/responses/LockResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestResponse'
+        '401':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '404':
+          $ref: '#/components/responses/NotFoundResponse'
+        '500':
+          $ref: '#/components/responses/ServiceNotAvailableResponse'
+
+  /racks/{rackId}/locks/{lockId}/unlock:
+    post:
+      operationId: unlockLock
+      tags:
+        - Locks
+      summary: Unlock a lock with a code
+      description: |
+        Unlock a lock using an access code held by a rider. When the code is valid for this lock, the lock opens and the bicycle it holds (if any) is released to the rider, becoming `in-use`. The code is marked as used.
+      security:
+        - oAuth2:
+            - distribution:write
+      parameters:
+        - $ref: '#/components/parameters/RackIdParameter'
+        - $ref: '#/components/parameters/LockIdParameter'
+        - $ref: '#/components/parameters/VersionParameter'
+      requestBody:
+        $ref: '#/components/requestBodies/UnlockRequest'
+      responses:
+        '200':
+          $ref: '#/components/responses/UnlockResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestResponse'
+        '401':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '404':
+          $ref: '#/components/responses/NotFoundResponse'
+        '500':
+          $ref: '#/components/responses/ServiceNotAvailableResponse'
+
+  /codes:
+    post:
+      operationId: issueCode
+      tags:
+        - Codes
+      summary: Issue an access code
+      description: |
+        Issue an access code to a rider for a specific lock. The system generates the code value, which the rider then uses to unlock the lock and take the bicycle stored there. Commuters use a code tied to their subscription; tourists receive a single-use code for the ride.
+      security:
+        - oAuth2:
+            - distribution:write
+      parameters:
+        - $ref: '#/components/parameters/VersionParameter'
+      requestBody:
+        $ref: '#/components/requestBodies/CodeIssueRequest'
+      responses:
+        '201':
+          $ref: '#/components/responses/CodeResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestResponse'
+        '401':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '500':
+          $ref: '#/components/responses/ServiceNotAvailableResponse'
+
+  /codes/{codeId}:
+    get:
+      operationId: getCodeById
+      tags:
+        - Codes
+      summary: Get code by ID
+      description: Retrieve an access code by its unique identifier, including its status and what it unlocks.
+      parameters:
+        - $ref: '#/components/parameters/CodeIdParameter'
+        - $ref: '#/components/parameters/VersionParameter'
+      responses:
+        '200':
+          $ref: '#/components/responses/CodeResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestResponse'
+        '401':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '404':
+          $ref: '#/components/responses/NotFoundResponse'
+        '500':
+          $ref: '#/components/responses/ServiceNotAvailableResponse'
+
+  /riders:
+    get:
+      operationId: listRiders
+      tags:
+        - Riders
+      summary: List riders
+      description: |
+        Retrieve a collection of riders. Results can be filtered by rider type (tourist or commuter).
+      parameters:
+        - $ref: '#/components/parameters/VersionParameter'
+        - $ref: '#/components/parameters/RiderTypeFilterParameter'
+      responses:
+        '200':
+          $ref: '#/components/responses/RidersResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestResponse'
+        '401':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '500':
+          $ref: '#/components/responses/ServiceNotAvailableResponse'
+
+    post:
+      operationId: createRider
+      tags:
+        - Riders
+      summary: Register a new rider
+      description: |
+        Register a new rider. Tourists are charged a per-ride fee and commuters pay a monthly fee. The rider type is fixed once the rider is created.
+      security:
+        - oAuth2:
+            - distribution:write
+      parameters:
+        - $ref: '#/components/parameters/VersionParameter'
+      requestBody:
+        $ref: '#/components/requestBodies/RiderCreateRequest'
+      responses:
+        '201':
+          $ref: '#/components/responses/RiderResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestResponse'
+        '401':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '500':
+          $ref: '#/components/responses/ServiceNotAvailableResponse'
+
+  /riders/{riderId}:
+    get:
+      operationId: getRiderById
+      tags:
+        - Riders
+      summary: Get rider by ID
+      description: Retrieve a rider by their unique identifier.
+      parameters:
+        - $ref: '#/components/parameters/RiderIdParameter'
+        - $ref: '#/components/parameters/VersionParameter'
+      responses:
+        '200':
+          $ref: '#/components/responses/RiderResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestResponse'
+        '401':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '404':
+          $ref: '#/components/responses/NotFoundResponse'
+        '500':
+          $ref: '#/components/responses/ServiceNotAvailableResponse'
+
+    put:
+      operationId: updateRider
+      tags:
+        - Riders
+      summary: Update a rider
+      description: |
+        Update a rider's name or email. The rider type cannot be changed after creation.
+      security:
+        - oAuth2:
+            - distribution:write
+      parameters:
+        - $ref: '#/components/parameters/RiderIdParameter'
+        - $ref: '#/components/parameters/VersionParameter'
+      requestBody:
+        $ref: '#/components/requestBodies/RiderUpdateRequest'
+      responses:
+        '200':
+          $ref: '#/components/responses/RiderResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestResponse'
+        '401':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '404':
+          $ref: '#/components/responses/NotFoundResponse'
+        '500':
+          $ref: '#/components/responses/ServiceNotAvailableResponse'
+
+    delete:
+      operationId: deleteRider
+      tags:
+        - Riders
+      summary: Delete a rider
+      description: |
+        Permanently remove a rider. This operation is irreversible and is rejected while the rider has an active ride or unsettled fees.
+      security:
+        - oAuth2:
+            - distribution:admin
+      parameters:
+        - $ref: '#/components/parameters/RiderIdParameter'
+        - $ref: '#/components/parameters/VersionParameter'
+      responses:
+        '204':
+          description: Rider deleted successfully
+        '400':
+          $ref: '#/components/responses/BadRequestResponse'
+        '401':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '404':
+          $ref: '#/components/responses/NotFoundResponse'
+        '500':
+          $ref: '#/components/responses/ServiceNotAvailableResponse'
+
+  /riders/{riderId}/fees:
+    get:
+      operationId: listRiderFees
+      tags:
+        - Fees
+      summary: List fees for a rider
+      description: Retrieve the fees recorded against a specific rider, both per-ride and monthly.
+      parameters:
+        - $ref: '#/components/parameters/RiderIdParameter'
+        - $ref: '#/components/parameters/VersionParameter'
+      responses:
+        '200':
+          $ref: '#/components/responses/FeesResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestResponse'
+        '401':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '404':
+          $ref: '#/components/responses/NotFoundResponse'
+        '500':
+          $ref: '#/components/responses/ServiceNotAvailableResponse'
+
+  /hotels:
+    get:
+      operationId: listHotels
+      tags:
+        - Hotels
+      summary: List hotels
+      description: Retrieve a collection of partner hotels that store bicycles for their guests.
+      parameters:
+        - $ref: '#/components/parameters/VersionParameter'
+      responses:
+        '200':
+          $ref: '#/components/responses/HotelsResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestResponse'
+        '401':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '500':
+          $ref: '#/components/responses/ServiceNotAvailableResponse'
+
+    post:
+      operationId: createHotel
+      tags:
+        - Hotels
+      summary: Register a new hotel
+      description: Register a new partner hotel that can store bicycles and charge fees to its guests.
+      security:
+        - oAuth2:
+            - distribution:write
+      parameters:
+        - $ref: '#/components/parameters/VersionParameter'
+      requestBody:
+        $ref: '#/components/requestBodies/HotelCreateRequest'
+      responses:
+        '201':
+          $ref: '#/components/responses/HotelResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestResponse'
+        '401':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '500':
+          $ref: '#/components/responses/ServiceNotAvailableResponse'
+
+  /hotels/{hotelId}:
+    get:
+      operationId: getHotelById
+      tags:
+        - Hotels
+      summary: Get hotel by ID
+      description: Retrieve a hotel by its unique identifier.
+      parameters:
+        - $ref: '#/components/parameters/HotelIdParameter'
+        - $ref: '#/components/parameters/VersionParameter'
+      responses:
+        '200':
+          $ref: '#/components/responses/HotelResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestResponse'
+        '401':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '404':
+          $ref: '#/components/responses/NotFoundResponse'
+        '500':
+          $ref: '#/components/responses/ServiceNotAvailableResponse'
+
+    put:
+      operationId: updateHotel
+      tags:
+        - Hotels
+      summary: Update a hotel
+      description: Update a hotel's name or address.
+      security:
+        - oAuth2:
+            - distribution:write
+      parameters:
+        - $ref: '#/components/parameters/HotelIdParameter'
+        - $ref: '#/components/parameters/VersionParameter'
+      requestBody:
+        $ref: '#/components/requestBodies/HotelUpdateRequest'
+      responses:
+        '200':
+          $ref: '#/components/responses/HotelResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestResponse'
+        '401':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '404':
+          $ref: '#/components/responses/NotFoundResponse'
+        '500':
+          $ref: '#/components/responses/ServiceNotAvailableResponse'
+
+    delete:
+      operationId: deleteHotel
+      tags:
+        - Hotels
+      summary: Delete a hotel
+      description: |
+        Permanently remove a partner hotel. This operation is irreversible and is rejected while the hotel still stores bicycles.
+      security:
+        - oAuth2:
+            - distribution:admin
+      parameters:
+        - $ref: '#/components/parameters/HotelIdParameter'
+        - $ref: '#/components/parameters/VersionParameter'
+      responses:
+        '204':
+          description: Hotel deleted successfully
+        '400':
+          $ref: '#/components/responses/BadRequestResponse'
+        '401':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '404':
+          $ref: '#/components/responses/NotFoundResponse'
+        '500':
+          $ref: '#/components/responses/ServiceNotAvailableResponse'
+
+  /hotels/{hotelId}/bicycles:
+    get:
+      operationId: listHotelBicycles
+      tags:
+        - Hotels
+      summary: List bicycles stored at a hotel
+      description: Retrieve the bicycles currently stored by a given partner hotel.
+      parameters:
+        - $ref: '#/components/parameters/HotelIdParameter'
+        - $ref: '#/components/parameters/VersionParameter'
+      responses:
+        '200':
+          $ref: '#/components/responses/BicyclesResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestResponse'
+        '401':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '404':
+          $ref: '#/components/responses/NotFoundResponse'
+        '500':
+          $ref: '#/components/responses/ServiceNotAvailableResponse'
+
+  /fees:
+    get:
+      operationId: listFees
+      tags:
+        - Fees
+      summary: List fees
+      description: |
+        Retrieve a collection of recorded fees. Results can be filtered by rider and by fee type (per-ride or monthly).
+      parameters:
+        - $ref: '#/components/parameters/VersionParameter'
+        - $ref: '#/components/parameters/FeeRiderIdFilterParameter'
+        - $ref: '#/components/parameters/FeeTypeFilterParameter'
+      responses:
+        '200':
+          $ref: '#/components/responses/FeesResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestResponse'
+        '401':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '500':
+          $ref: '#/components/responses/ServiceNotAvailableResponse'
+
+  /fees/{feeId}:
+    get:
+      operationId: getFeeById
+      tags:
+        - Fees
+      summary: Get fee by ID
+      description: Retrieve a recorded fee by its unique identifier.
+      parameters:
+        - $ref: '#/components/parameters/FeeIdParameter'
+        - $ref: '#/components/parameters/VersionParameter'
+      responses:
+        '200':
+          $ref: '#/components/responses/FeeResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestResponse'
+        '401':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '404':
+          $ref: '#/components/responses/NotFoundResponse'
+        '500':
+          $ref: '#/components/responses/ServiceNotAvailableResponse'
+
+components:
+  parameters:
+    BicycleIdParameter:
+      name: bicycleId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+
+    RackIdParameter:
+      name: rackId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+
+    LockIdParameter:
+      name: lockId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+
+    CodeIdParameter:
+      name: codeId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+
+    RiderIdParameter:
+      name: riderId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+
+    HotelIdParameter:
+      name: hotelId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+
+    FeeIdParameter:
+      name: feeId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+
+    EnvironmentFilterParameter:
+      name: environment
+      in: query
+      required: false
+      schema:
+        type: string
+        enum:
+          - city
+          - mountain
+          - general
+
+    BicycleStatusFilterParameter:
+      name: status
+      in: query
+      required: false
+      schema:
+        type: string
+        enum:
+          - available
+          - reserved
+          - in-use
+          - locked
+          - maintenance
+
+    HasMotorFilterParameter:
+      name: hasMotor
+      in: query
+      required: false
+      schema:
+        type: boolean
+
+    PublicTransportStationFilterParameter:
+      name: publicTransportStation
+      in: query
+      required: false
+      schema:
+        type: string
+        minLength: 1
+        maxLength: 200
+
+    RiderTypeFilterParameter:
+      name: type
+      in: query
+      required: false
+      schema:
+        type: string
+        enum:
+          - tourist
+          - commuter
+
+    FeeRiderIdFilterParameter:
+      name: riderId
+      in: query
+      required: false
+      schema:
+        type: string
+        format: uuid
+
+    FeeTypeFilterParameter:
+      name: type
+      in: query
+      required: false
+      schema:
+        type: string
+        enum:
+          - per-ride
+          - monthly
+
+    VersionParameter:
+      name: version
+      in: header
+      required: true
+      schema:
+        type: string
+        default: "1.0.0"
+        enum: ["1.0.0"]
+
+  schemas:
+    Motor:
+      type: object
+      required:
+        - powerWatts
+      properties:
+        powerWatts:
+          type: integer
+          minimum: 100
+          maximum: 1000
+        assistLevels:
+          type: integer
+          minimum: 1
+          maximum: 9
+
+    WheelDiameter:
+      type: object
+      required:
+        - value
+        - unit
+      properties:
+        value:
+          type: number
+          minimum: 12
+          maximum: 36
+        unit:
+          type: string
+          enum:
+            - inch
+            - cm
+          default: inch
+
+    PublicTransportStation:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 200
+        stationCode:
+          type: string
+          maxLength: 20
+
+    Bicycle:
+      type: object
+      required:
+        - bicycleId
+        - environment
+        - status
+      properties:
+        bicycleId:
+          type: string
+          format: uuid
+        environment:
+          type: string
+          enum:
+            - city
+            - mountain
+            - general
+        status:
+          type: string
+          enum:
+            - available
+            - reserved
+            - in-use
+            - locked
+            - maintenance
+        motor:
+          $ref: '#/components/schemas/Motor'
+        wheelDiameter:
+          $ref: '#/components/schemas/WheelDiameter'
+        currentRackId:
+          type: [string, "null"]
+          format: uuid
+        currentHotelId:
+          type: [string, "null"]
+          format: uuid
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+
+    BicycleCreate:
+      type: object
+      required:
+        - environment
+      properties:
+        environment:
+          type: string
+          enum:
+            - city
+            - mountain
+            - general
+        motor:
+          $ref: '#/components/schemas/Motor'
+        wheelDiameter:
+          $ref: '#/components/schemas/WheelDiameter'
+
+    BicycleUpdate:
+      type: object
+      properties:
+        environment:
+          type: string
+          enum:
+            - city
+            - mountain
+            - general
+        status:
+          type: string
+          enum:
+            - available
+            - reserved
+            - in-use
+            - locked
+            - maintenance
+        motor:
+          $ref: '#/components/schemas/Motor'
+        wheelDiameter:
+          $ref: '#/components/schemas/WheelDiameter'
+        currentRackId:
+          type: [string, "null"]
+          format: uuid
+        currentHotelId:
+          type: [string, "null"]
+          format: uuid
+
+    Rack:
+      type: object
+      required:
+        - rackId
+        - publicTransportStation
+        - capacity
+      properties:
+        rackId:
+          type: string
+          format: uuid
+        publicTransportStation:
+          $ref: '#/components/schemas/PublicTransportStation'
+        capacity:
+          type: integer
+          minimum: 1
+          maximum: 100
+        availableSlots:
+          type: integer
+          minimum: 0
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+
+    RackCreate:
+      type: object
+      required:
+        - publicTransportStation
+        - capacity
+      properties:
+        publicTransportStation:
+          $ref: '#/components/schemas/PublicTransportStation'
+        capacity:
+          type: integer
+          minimum: 1
+          maximum: 100
+
+    RackUpdate:
+      type: object
+      properties:
+        publicTransportStation:
+          $ref: '#/components/schemas/PublicTransportStation'
+        capacity:
+          type: integer
+          minimum: 1
+          maximum: 100
+
+    Lock:
+      type: object
+      required:
+        - lockId
+        - rackId
+        - status
+      properties:
+        lockId:
+          type: string
+          format: uuid
+        rackId:
+          type: string
+          format: uuid
+        status:
+          type: string
+          enum:
+            - locked
+            - unlocked
+        bicycleId:
+          type: [string, "null"]
+          format: uuid
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+
+    UnlockCommand:
+      type: object
+      required:
+        - code
+      properties:
+        code:
+          type: string
+          pattern: '^[0-9]{6}$'
+
+    UnlockResult:
+      type: object
+      required:
+        - lock
+      properties:
+        lock:
+          $ref: '#/components/schemas/Lock'
+        bicycle:
+          $ref: '#/components/schemas/Bicycle'
+
+    Code:
+      type: object
+      required:
+        - codeId
+        - value
+        - riderId
+        - status
+      properties:
+        codeId:
+          type: string
+          format: uuid
+        value:
+          type: string
+          pattern: '^[0-9]{6}$'
+        riderId:
+          type: string
+          format: uuid
+        lockId:
+          type: [string, "null"]
+          format: uuid
+        bicycleId:
+          type: [string, "null"]
+          format: uuid
+        status:
+          type: string
+          enum:
+            - active
+            - used
+            - expired
+        expiresAt:
+          type: [string, "null"]
+          format: date-time
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+
+    CodeIssue:
+      type: object
+      required:
+        - riderId
+        - lockId
+      properties:
+        riderId:
+          type: string
+          format: uuid
+        lockId:
+          type: string
+          format: uuid
+
+    Rider:
+      type: object
+      required:
+        - riderId
+        - type
+        - name
+      properties:
+        riderId:
+          type: string
+          format: uuid
+        type:
+          type: string
+          enum:
+            - tourist
+            - commuter
+        name:
+          type: string
+          minLength: 1
+          maxLength: 200
+        email:
+          type: [string, "null"]
+          format: email
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+
+    RiderCreate:
+      type: object
+      required:
+        - type
+        - name
+      properties:
+        type:
+          type: string
+          enum:
+            - tourist
+            - commuter
+        name:
+          type: string
+          minLength: 1
+          maxLength: 200
+        email:
+          type: string
+          format: email
+
+    RiderUpdate:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 200
+        email:
+          type: string
+          format: email
+
+    Hotel:
+      type: object
+      required:
+        - hotelId
+        - name
+      properties:
+        hotelId:
+          type: string
+          format: uuid
+        name:
+          type: string
+          minLength: 1
+          maxLength: 200
+        address:
+          type: [string, "null"]
+          maxLength: 500
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+
+    HotelCreate:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 200
+        address:
+          type: string
+          maxLength: 500
+
+    HotelUpdate:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 200
+        address:
+          type: string
+          maxLength: 500
+
+    Fee:
+      type: object
+      required:
+        - feeId
+        - riderId
+        - type
+        - amount
+        - currency
+      properties:
+        feeId:
+          type: string
+          format: uuid
+        riderId:
+          type: string
+          format: uuid
+        type:
+          type: string
+          enum:
+            - per-ride
+            - monthly
+        amount:
+          type: number
+          minimum: 0
+        currency:
+          type: string
+          pattern: '^[A-Z]{3}$'
+        hotelId:
+          type: [string, "null"]
+          format: uuid
+        chargedAt:
+          type: string
+          format: date-time
+        createdAt:
+          type: string
+          format: date-time
+
+    Error:
+      type: object
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        details:
+          type: object
+
+  responses:
+    BicycleResponse:
+      description: Single bicycle response
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Bicycle'
+
+    BicyclesResponse:
+      description: List of bicycles
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/Bicycle'
+
+    RackResponse:
+      description: Single rack response
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Rack'
+
+    RacksResponse:
+      description: List of racks
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/Rack'
+
+    LockResponse:
+      description: Single lock response
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Lock'
+
+    LocksResponse:
+      description: List of locks
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/Lock'
+
+    UnlockResponse:
+      description: Result of unlocking a lock, including the released bicycle
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UnlockResult'
+
+    CodeResponse:
+      description: Single access code response
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Code'
+
+    RiderResponse:
+      description: Single rider response
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Rider'
+
+    RidersResponse:
+      description: List of riders
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/Rider'
+
+    HotelResponse:
+      description: Single hotel response
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Hotel'
+
+    HotelsResponse:
+      description: List of hotels
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/Hotel'
+
+    FeeResponse:
+      description: Single fee response
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Fee'
+
+    FeesResponse:
+      description: List of fees
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/Fee'
+
+    BadRequestResponse:
+      description: Invalid request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+
+    NotFoundResponse:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+
+    ForbiddenResponse:
+      description: Access forbidden
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+
+    ServiceNotAvailableResponse:
+      description: Service unavailable
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+
+  requestBodies:
+    BicycleCreateRequest:
+      description: Bicycle registration request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/BicycleCreate'
+
+    BicycleUpdateRequest:
+      description: Bicycle update request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/BicycleUpdate'
+
+    RackCreateRequest:
+      description: Rack creation request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RackCreate'
+
+    RackUpdateRequest:
+      description: Rack update request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RackUpdate'
+
+    UnlockRequest:
+      description: Unlock command carrying the rider's access code
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UnlockCommand'
+
+    CodeIssueRequest:
+      description: Access code issuance request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CodeIssue'
+
+    RiderCreateRequest:
+      description: Rider registration request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RiderCreate'
+
+    RiderUpdateRequest:
+      description: Rider update request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RiderUpdate'
+
+    HotelCreateRequest:
+      description: Hotel registration request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/HotelCreate'
+
+    HotelUpdateRequest:
+      description: Hotel update request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/HotelUpdate'
+
+  securitySchemes:
+    oAuth2:
+      type: oauth2
+      description: OAuth 2.0 Authorization Code Flow with PKCE
+      flows:
+        authorizationCode:
+          authorizationUrl: https://bike-distribution.org/auth
+          tokenUrl: https://bike-distribution.org/tokens
+          refreshUrl: https://bike-distribution.org/refresh
+          scopes:
+            distribution:read: Grants read access to resources
+            distribution:write: Grants write access to modify resources
+            distribution:admin: Grants administrative access to manage resources
