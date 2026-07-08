@@ -1,0 +1,1 @@
+I need a Domain Story in regard to Stefan Hofer, Henning Schwentner: "Domain Storytelling". Based on the provided wiremocks of a rent a bike shop. Create the domain story as numbered sentences.

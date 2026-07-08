@@ -1,0 +1,410 @@
+openapi: 3.1.0
+info:
+  title: Bicycle Distribution API
+  description: |
+    API for managing the distribution of bicycles to racks and from racks back to the garage.
+    It supports distributing, searching and booking bicycles for the rent-a-bike platform and is used by the operations teams managing the bicycle fleet.
+  version: 1.0.0
+  contact:
+    name: Ferdinand Ade, Annegret Junker
+  x-api-id: 7b3e2c91-5a4d-4f8e-9c12-3d6a8b40e1f7
+  x-audience: company-internal
+
+servers:
+  - url: 'https://rent-a-bike.com/bicycle-distribution'
+
+security:
+  - oAuth2:
+      - bicycle:read
+      - bicycle:write
+      - bicycle:admin
+
+tags:
+  - name: Bicycles
+    description: Bicycle distribution, search and booking operations
+
+paths:
+  /bicycles:
+    get:
+      operationId: getBicycles
+      tags:
+        - Bicycles
+      summary: Search bicycles
+      description: |
+        Retrieve the list of bicycles, optionally filtered by location and by the rack at which they are stored.
+        Searches are expected to complete in under two seconds.
+      parameters:
+        - $ref: '#/components/parameters/VersionParameter'
+        - $ref: '#/components/parameters/LocationQueryParameter'
+        - $ref: '#/components/parameters/RackQueryParameter'
+      responses:
+        '200':
+          $ref: '#/components/responses/BicycleListResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestResponse'
+        '401':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '500':
+          $ref: '#/components/responses/ServiceNotAvailableResponse'
+        default:
+          $ref: '#/components/responses/DefaultErrorResponse'
+
+    post:
+      operationId: createBicycle
+      tags:
+        - Bicycles
+      summary: Create a new bicycle
+      description: |
+        Register a new bicycle in the distribution system.
+        The bicycle is created with its environment, optional motor, wheel diameter and the rack it is initially distributed to.
+      security:
+        - oAuth2:
+            - bicycle:write
+      parameters:
+        - $ref: '#/components/parameters/VersionParameter'
+      requestBody:
+        $ref: '#/components/requestBodies/BicycleCreateRequest'
+      responses:
+        '201':
+          $ref: '#/components/responses/BicycleCreatedLinkResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestResponse'
+        '401':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '500':
+          $ref: '#/components/responses/ServiceNotAvailableResponse'
+        default:
+          $ref: '#/components/responses/DefaultErrorResponse'
+
+  /bicycles/{bicycleId}:
+    get:
+      operationId: getBicycleById
+      tags:
+        - Bicycles
+      summary: Get bicycle by ID
+      description: Retrieve a single bicycle by its unique identifier.
+      parameters:
+        - $ref: '#/components/parameters/BicycleIdParameter'
+        - $ref: '#/components/parameters/VersionParameter'
+      responses:
+        '200':
+          $ref: '#/components/responses/BicycleResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestResponse'
+        '401':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '404':
+          $ref: '#/components/responses/NotFoundResponse'
+        '500':
+          $ref: '#/components/responses/ServiceNotAvailableResponse'
+        default:
+          $ref: '#/components/responses/DefaultErrorResponse'
+
+    put:
+      operationId: updateBicycle
+      tags:
+        - Bicycles
+      summary: Update a bicycle
+      description: |
+        Update an existing bicycle. This is used to redistribute a bicycle between racks and the garage by changing its rack and status,
+        and to maintain its motor, wheel diameter and environment.
+      security:
+        - oAuth2:
+            - bicycle:write
+      parameters:
+        - $ref: '#/components/parameters/BicycleIdParameter'
+        - $ref: '#/components/parameters/VersionParameter'
+      requestBody:
+        $ref: '#/components/requestBodies/BicycleUpdateRequest'
+      responses:
+        '200':
+          $ref: '#/components/responses/BicycleChangedLinkResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestResponse'
+        '401':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '404':
+          $ref: '#/components/responses/NotFoundResponse'
+        '500':
+          $ref: '#/components/responses/ServiceNotAvailableResponse'
+        default:
+          $ref: '#/components/responses/DefaultErrorResponse'
+
+components:
+  parameters:
+    BicycleIdParameter:
+      name: bicycleId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+
+    LocationQueryParameter:
+      name: location
+      in: query
+      required: false
+      description: Filter bicycles by the location at which their rack is placed.
+      schema:
+        type: string
+        minLength: 1
+        maxLength: 200
+
+    RackQueryParameter:
+      name: rack
+      in: query
+      required: false
+      description: Filter bicycles by the identifier of the rack they are stored in.
+      schema:
+        type: string
+        format: uuid
+
+    VersionParameter:
+      name: version
+      in: header
+      required: true
+      schema:
+        type: string
+        default: "1.0.0"
+        enum: ["1.0.0"]
+
+  schemas:
+    Bicycle:
+      type: object
+      required:
+        - bicycleId
+        - environment
+        - status
+      properties:
+        bicycleId:
+          type: string
+          format: uuid
+        environment:
+          $ref: '#/components/schemas/Environment'
+        status:
+          $ref: '#/components/schemas/BicycleStatus'
+        wheelDiameter:
+          $ref: '#/components/schemas/WheelDiameter'
+        motor:
+          $ref: '#/components/schemas/Motor'
+        rackId:
+          type: [string, "null"]
+          format: uuid
+        lockId:
+          type: [string, "null"]
+          format: uuid
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+
+    Environment:
+      type: string
+      description: |
+        The environment a bicycle is built for. Derived from the glossary specializations of Environment.
+      enum:
+        - CITY
+        - MOUNTAIN
+        - GENERAL
+
+    BicycleStatus:
+      type: string
+      description: |
+        Distribution status of a bicycle as it moves between the garage and racks.
+      enum:
+        - IN_GARAGE
+        - AT_RACK
+        - BOOKED
+        - IN_TRANSIT
+
+    WheelDiameter:
+      type: object
+      required:
+        - value
+        - unit
+      properties:
+        value:
+          type: number
+          minimum: 10
+          maximum: 40
+        unit:
+          type: string
+          enum:
+            - INCH
+            - CM
+
+    Motor:
+      type: object
+      required:
+        - power
+      properties:
+        power:
+          type: integer
+          format: int32
+          description: Nominal motor power in watts.
+          minimum: 1
+          maximum: 2000
+        serialNumber:
+          type: string
+          minLength: 1
+          maxLength: 100
+
+    BicycleList:
+      type: array
+      items:
+        $ref: '#/components/schemas/Bicycle'
+      maxItems: 10000
+
+    BicycleCreate:
+      type: object
+      required:
+        - environment
+      properties:
+        environment:
+          $ref: '#/components/schemas/Environment'
+        wheelDiameter:
+          $ref: '#/components/schemas/WheelDiameter'
+        motor:
+          $ref: '#/components/schemas/Motor'
+        rackId:
+          type: string
+          format: uuid
+
+    BicycleUpdate:
+      type: object
+      properties:
+        environment:
+          $ref: '#/components/schemas/Environment'
+        status:
+          $ref: '#/components/schemas/BicycleStatus'
+        wheelDiameter:
+          $ref: '#/components/schemas/WheelDiameter'
+        motor:
+          $ref: '#/components/schemas/Motor'
+        rackId:
+          type: [string, "null"]
+          format: uuid
+
+    Error:
+      type: object
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        details:
+          type: object
+
+  responses:
+    BicycleResponse:
+      description: Single bicycle response
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Bicycle'
+
+    BicycleListResponse:
+      description: List of bicycles
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/BicycleList'
+
+    BicycleCreatedLinkResponse:
+      description: Link to the created bicycle
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              bicycleLink:
+                type: string
+                format: uri
+
+    BicycleChangedLinkResponse:
+      description: Link to the changed bicycle
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              bicycleLink:
+                type: string
+                format: uri
+
+    BadRequestResponse:
+      description: Invalid request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+
+    NotFoundResponse:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+
+    ForbiddenResponse:
+      description: Access forbidden
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+
+    ServiceNotAvailableResponse:
+      description: Service unavailable
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+
+    DefaultErrorResponse:
+      description: Unexpected error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+
+  requestBodies:
+    BicycleCreateRequest:
+      description: Bicycle creation request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/BicycleCreate'
+
+    BicycleUpdateRequest:
+      description: Bicycle update request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/BicycleUpdate'
+
+  securitySchemes:
+    oAuth2:
+      type: oauth2
+      description: OAuth 2.0 Authorization Code Flow with PKCE
+      flows:
+        authorizationCode:
+          authorizationUrl: https://rent-a-bike.com/auth
+          tokenUrl: https://rent-a-bike.com/tokens
+          refreshUrl: https://rent-a-bike.com/refresh
+          scopes:
+            bicycle:read: Grants read access to bicycles
+            bicycle:write: Grants write access to modify bicycles
+            bicycle:admin: Grants administrative access to manage bicycles
