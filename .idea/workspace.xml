@@ -9,7 +9,9 @@
     </option>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9f418031-fa2f-4dcf-9ad8-1bd8158fd7e4" name="Changes" comment="Amsterdam">
+    <list default="true" id="9f418031-fa2f-4dcf-9ad8-1bd8158fd7e4" name="Changes" comment="Munich">
+      <change afterPath="$PROJECT_DIR$/MeetupDddMuc20260812/facilitator-script.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/MeetupDddMuc20260812/table-card.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -84,11 +86,10 @@
     &quot;DefaultPlantUmlFileTemplate&quot;: &quot;UML Sequence&quot;,
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
     &quot;full.screen.before.presentation.mode&quot;: &quot;false&quot;,
     &quot;git-widget-placeholder&quot;: &quot;main&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/Users/annegretjunkercodecentricag/IdeaProjects/DdApiD/ApiDaysAmsterdam2026&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/annegretjunkercodecentricag/IdeaProjects/DdApiD&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
@@ -101,11 +102,11 @@
 }</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$" />
       <recent name="$PROJECT_DIR$/ApiDaysAmsterdam2026" />
       <recent name="$PROJECT_DIR$/ApiDaysMunich2025" />
       <recent name="$PROJECT_DIR$/QaDays" />
       <recent name="$PROJECT_DIR$/MAD Afternoon 2025-04-07" />
-      <recent name="$PROJECT_DIR$/SasSpring2025Munich" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/SasSpring2025Munich" />
@@ -226,14 +227,11 @@
       <workItem from="1780999388178" duration="5064000" />
       <workItem from="1781010496990" duration="960000" />
       <workItem from="1781011466057" duration="13885000" />
-    </task>
-    <task id="LOCAL-00013" summary="Changing only in Administration">
-      <option name="closed" value="true" />
-      <created>1710230143496</created>
-      <option name="number" value="00013" />
-      <option name="presentableId" value="LOCAL-00013" />
-      <option name="project" value="LOCAL" />
-      <updated>1710230143496</updated>
+      <workItem from="1783511856115" duration="13519000" />
+      <workItem from="1783934031042" duration="599000" />
+      <workItem from="1784649890144" duration="584000" />
+      <workItem from="1785510937446" duration="599000" />
+      <workItem from="1786197083993" duration="4693000" />
     </task>
     <task id="LOCAL-00014" summary="Groups">
       <option name="closed" value="true" />
@@ -619,7 +617,15 @@
       <option name="project" value="LOCAL" />
       <updated>1781024424702</updated>
     </task>
-    <option name="localTasksCounter" value="62" />
+    <task id="LOCAL-00062" summary="Munich">
+      <option name="closed" value="true" />
+      <created>1783511969523</created>
+      <option name="number" value="00062" />
+      <option name="presentableId" value="LOCAL-00062" />
+      <option name="project" value="LOCAL" />
+      <updated>1783511969523</updated>
+    </task>
+    <option name="localTasksCounter" value="63" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -640,7 +646,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Catalog Maintenance" />
     <MESSAGE value="Member Management" />
     <MESSAGE value="Catalog Search" />
     <MESSAGE value="Messaging" />
@@ -665,7 +670,8 @@
     <MESSAGE value="Catalog  Management Changes" />
     <MESSAGE value="Pictures" />
     <MESSAGE value="Amsterdam" />
-    <option name="LAST_COMMIT_MESSAGE" value="Amsterdam" />
+    <MESSAGE value="Munich" />
+    <option name="LAST_COMMIT_MESSAGE" value="Munich" />
   </component>
   <component name="github-copilot-workspace">
     <instructionFileLocations>
