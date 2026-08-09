@@ -28,14 +28,13 @@ opposite of what the evening is for.
 
 | # | Station | Board or paper | Why |
 |---|---|---|---|
-| 1 | NSM divergence | **Either** | Board is fine — parallel typing works here, and quantity is the goal |
-| 2 | Impact Map | **Board** | Four-level tree, gets restructured after the critique — dragging beats redrawing |
-| 3 | Domain Story | **Paper** ⚠️ *(or egon.io)* | The station where a mouse pointer becomes an accidental talking stick |
-| 4 | Bounded Contexts | **Board** | Rings get redrawn constantly, and contested sentences are easier to drag than to rewrite |
-| 5 | Visual Glossary (core context) | **Board** ✅ | Biggest win: cardinalities read perfectly, no photo misreads |
-| 6 | Prototype | n/a | Paste the prototype link into the board's last frame |
+| 1 | North Star | **Either** | Board is fine — parallel typing works here, and quantity is the goal |
+| 2 | Domain Story | **Paper** ⚠️ *(or egon.io)* | The station where a mouse pointer becomes an accidental talking stick |
+| 3 | Bounded Contexts | **Board** | Rings get redrawn constantly, and contested sentences are easier to drag than to rewrite |
+| 4 | Visual Glossary (core context) | **Board** ✅ | Biggest win: cardinalities read perfectly, no photo misreads |
+| 5 | Prototype | n/a | Paste the prototype link into the board's last frame |
 
-**Station 3 is the one to defend.** If a table wants a digital story, point them at
+**Station 2 (Domain Story) is the one to defend.** If a table wants a digital story, point them at
 **egon.io** — it's purpose-built for Domain Storytelling, and its export is read directly
 by the `domain-story-interpreter` skill, so you skip the photo step entirely. If they use
 egon.io, they still read each sentence aloud and correct it as a group. The medium changes;
@@ -46,16 +45,15 @@ the ritual doesn't.
 ## Board template — build this before the event
 
 One Miro board **per table** (not one shared board — tables carry different actors and
-will collide). Eight frames, left to right, each pre-labelled:
+will collide). Seven frames, left to right, each pre-labelled:
 
-1. **Table info** — table number, actor, room NSM (leave blank, filled at 18:52)
+1. **Table info** — table number, room NSM and actor (blank, filled at 18:53), core context (blank, filled at 20:00)
 2. **S1 · North Star candidates** — empty canvas
-3. **S2 · Impact Map** — four labelled horizontal bands: WHY / WHO / HOW / WHAT
-4. **S3 · Domain Story** — *photo drop zone* (or egon.io link) — deliberately not a workspace
-5. **S4 · Bounded Contexts** — space to ring the story, plus two axes: business differentiation (x) × model complexity (y)
-6. **S5 · Visual Glossary (core context only)** — empty canvas + a legend note: `1 · 0..1 · 1..* · 0..25`
-7. **S6 · Prototype** — link + screenshot
-8. **Parking lot** — hotspots, disagreements, "we made this up" flags
+3. **S2 · Domain Story** — *photo drop zone* (or egon.io link) — deliberately not a workspace
+4. **S3 · Bounded Contexts** — space to ring the story, plus two axes: business differentiation (x) × model complexity (y)
+5. **S4 · Visual Glossary (core context only)** — empty canvas + a legend note: `1 · 0..1 · 1..* · 0..25`
+6. **S5 · Prototype** — link + screenshot
+7. **Parking lot** — hotspots, disagreements, "we made this up" flags
 
 Colour convention, written on frame 1 so nobody has to ask:
 **yellow = actor · blue = activity · green = work object · pink = external system ·
@@ -86,7 +84,7 @@ Three things that make exports go wrong, all avoidable:
   on top of a term get read as part of the term.
 
 The prompts in the table card are unchanged; just attach the PNG export instead of a photo.
-One addition worth making at Station 5, since the board makes it worth asking:
+One addition worth making at Station 4, since the board makes it worth asking:
 
 ```
 [attach frame export]
@@ -125,7 +123,7 @@ tables, not less.
 or turn a laptop outward at the table. Paper tables do it as before. Both work; don't make
 the digital tables move.
 
-**Demos (20:50).** Board tables have an advantage — they can screen-share a frame instantly.
+**Demos (20:52).** Board tables have an advantage — they can screen-share a frame instantly.
 Hold them to the same rule anyway: **two minutes, one screen, three sentences.** A Miro
 board is not a demo.
 

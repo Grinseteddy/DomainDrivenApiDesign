@@ -9,10 +9,9 @@
     </option>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9f418031-fa2f-4dcf-9ad8-1bd8158fd7e4" name="Changes" comment="Munich">
-      <change afterPath="$PROJECT_DIR$/MeetupDddMuc20260812/facilitator-script.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/MeetupDddMuc20260812/table-card.md" afterDir="false" />
+    <list default="true" id="9f418031-fa2f-4dcf-9ad8-1bd8158fd7e4" name="Changes" comment="MUC DDD preparation">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MeetupDddMuc20260812/facilitator-script.md" beforeDir="false" afterPath="$PROJECT_DIR$/MeetupDddMuc20260812/facilitator-script.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -231,15 +230,7 @@
       <workItem from="1783934031042" duration="599000" />
       <workItem from="1784649890144" duration="584000" />
       <workItem from="1785510937446" duration="599000" />
-      <workItem from="1786197083993" duration="4693000" />
-    </task>
-    <task id="LOCAL-00014" summary="Groups">
-      <option name="closed" value="true" />
-      <created>1710230389114</created>
-      <option name="number" value="00014" />
-      <option name="presentableId" value="LOCAL-00014" />
-      <option name="project" value="LOCAL" />
-      <updated>1710230389114</updated>
+      <workItem from="1786197083993" duration="6885000" />
     </task>
     <task id="LOCAL-00015" summary="MyShelf - searched by member via authentication">
       <option name="closed" value="true" />
@@ -625,7 +616,15 @@
       <option name="project" value="LOCAL" />
       <updated>1783511969523</updated>
     </task>
-    <option name="localTasksCounter" value="63" />
+    <task id="LOCAL-00063" summary="MUC DDD preparation">
+      <option name="closed" value="true" />
+      <created>1786202007328</created>
+      <option name="number" value="00063" />
+      <option name="presentableId" value="LOCAL-00063" />
+      <option name="project" value="LOCAL" />
+      <updated>1786202007328</updated>
+    </task>
+    <option name="localTasksCounter" value="64" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -646,7 +645,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Member Management" />
     <MESSAGE value="Catalog Search" />
     <MESSAGE value="Messaging" />
     <MESSAGE value="operationId" />
@@ -671,7 +669,8 @@
     <MESSAGE value="Pictures" />
     <MESSAGE value="Amsterdam" />
     <MESSAGE value="Munich" />
-    <option name="LAST_COMMIT_MESSAGE" value="Munich" />
+    <MESSAGE value="MUC DDD preparation" />
+    <option name="LAST_COMMIT_MESSAGE" value="MUC DDD preparation" />
   </component>
   <component name="github-copilot-workspace">
     <instructionFileLocations>
